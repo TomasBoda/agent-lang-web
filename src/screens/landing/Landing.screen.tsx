@@ -18,7 +18,7 @@ export default function LandingScreen() {
                 </InfoPanel>
 
                 <ImagePanel>
-                    <ExampleImage src="/assets/example-1.png" />
+                    <ExampleImage src="/assets/example-2.png" />
                 </ImagePanel>
             </Content>
         </Container>
@@ -30,8 +30,6 @@ const Container = styled.div`
 
     display: flex;
     flex-direction: column;
-
-    border-bottom: 1px solid lightgray;
 `;
 
 const Content = styled.div`
@@ -76,7 +74,7 @@ const ButtonPanel = styled.div`
 const ImagePanel = styled.div`
     flex: 1;
 
-    padding: 50px 0px 50px 150px;
+    padding: 20px 0px 20px 50px;
 `;
 
 const ExampleImage = styled.img`

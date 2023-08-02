@@ -1,13 +1,20 @@
 import { styled } from "styled-components";
 import CodeView from "./views/code/Code.view";
 import VisualisationView from "./views/visualisation/Visualisation.view";
+import { useEffect, useState } from "react";
 
 export default function MainScreen() {
 
+    const [agents, setAgents] = useState<any[]>([]);
+
+    function updateAgents(newAgents: any[]): void {
+        setAgents(newAgents);
+    }
+
     return (
         <Container>
-            <CodeView />
-            <VisualisationView />
+            <CodeView updateAgents={updateAgents} />
+            <VisualisationView agents={agents} />
         </Container>
     )
 }

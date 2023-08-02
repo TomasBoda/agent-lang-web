@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { styled } from "styled-components"
 import $ from "jquery";
 
-export default function CodeEditor() {
+export default function CodeEditor({ code, setCode }: { code: string; setCode: (code: string) => void }) {
 
     const placeholder = `Start typing code...\n\nFor example:\n    agent person 10 {\n        const age = ...\n    }`
 
@@ -14,6 +14,8 @@ export default function CodeEditor() {
         var $backdrop = $('#backdrop');
         var $highlights = $('#highlights');
         var $textarea = $('#textarea');
+
+        $textarea.val(code);
 
         var ua = window.navigator.userAgent.toLowerCase();
         var isIE = !!ua.match(/msie|trident\/7|edge/);
@@ -117,7 +119,9 @@ export default function CodeEditor() {
             <TextArea
                 id="textarea"
                 onKeyDown={handleTabIdent}
-                placeholder={placeholder}></TextArea>
+                onChange={(event) => setCode(event.target.value)}
+                placeholder={placeholder}>
+            </TextArea>
         </Container>
     )
 }
@@ -133,6 +137,8 @@ const Container = styled.div`
 
     border: 1px solid lightgray;
     border-radius: 5px;
+
+    background-color: white;
 `;
 
 const Backdrop = styled.div`

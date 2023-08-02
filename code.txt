@@ -1,0 +1,4 @@
+agent person 10 {
+    variable x: random(0, 390) = (x + choice(-10, 10)) % 400;
+    variable y: random(0, 390) = (y + choice(-10, 10)) % 400;
+}
