@@ -12,7 +12,7 @@ export default function Header() {
                 
                     <Menu>
                         <Item href="/">Home</Item>
-                        <Item href="/">Documentation</Item>
+                        <Item href="/documentation">Documentation</Item>
                         <Item href="/">About</Item>
                         <Item href="/">
                             <Icon src="/assets/logo-github.svg" />
@@ -44,7 +44,7 @@ const Content = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    padding: 10px;
+    padding: 10px 0px;
 `;
 
 const Logo = styled(Link)`

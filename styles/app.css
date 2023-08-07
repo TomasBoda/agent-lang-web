@@ -40,3 +40,74 @@ mark.highlight-logical {
 *, *::before, *::after {
   box-sizing: border-box;
 }
+
+/* ---------- */
+
+.markdown {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 5px;
+
+  line-height: 180%;
+}
+
+.markdown p {
+  margin-bottom: 25px;
+}
+
+.markdown h1 {
+  font-size: 30px;
+  font-weight: 800;
+
+  margin-bottom: 30px;
+}
+
+.markdown h2 {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.markdown h3 {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.markdown ul {
+  padding-left: 15px;
+  margin-bottom: 30px;
+
+  display: grid;
+  grid-template-columns: auto;
+  gap: 5px;
+
+  margin-top: -20px;
+}
+
+.markdown pre {
+  padding: 20px !important;
+  margin-top: -20px;
+
+  border-radius: 5px;
+
+  background-color: rgba(0, 0, 0, 0.08);
+
+  border: none !important;
+}
+
+.markdown code {
+  padding: 3px 8px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.markdown pre code {
+  padding: 0px;
+  border-radius: 0px;
+  background-color: transparent;
+}
+
+.markdown pre {
+  padding: 20px;
+
+  background-color: rgba(0, 0, 0, 0.05);
+}

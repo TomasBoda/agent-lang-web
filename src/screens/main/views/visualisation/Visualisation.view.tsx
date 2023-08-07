@@ -25,9 +25,9 @@ export default function VisualisationView({ agents }: { agents: any[] }) {
                 const alive = variables["alive"];
 
                 if (alive) {
-                    context.fillStyle = "#000000"
-                } else {
                     context.fillStyle = "#FF0000"
+                } else {
+                    context.fillStyle = "#000000"
                 }
                 
                 context.fillRect(x, y, 10, 10);
@@ -46,7 +46,7 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
 
-    padding: 50px;
+    padding: 50px 0px;
 `;
 
 const Canvas = styled.canvas`

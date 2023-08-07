@@ -23,5 +23,6 @@ const Container = styled.div`
     width: 100%;
 
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr auto;
+    gap: 50px;
 `;

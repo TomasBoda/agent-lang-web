@@ -13,7 +13,7 @@ export default function LandingScreen() {
                     
                     <ButtonPanel>
                         <Button href="/sandbox">Try for free</Button>
-                        <ButtonOutline href="/">Documentation</ButtonOutline>
+                        <ButtonOutline href="/documentation">Documentation</ButtonOutline>
                     </ButtonPanel>
                 </InfoPanel>
 

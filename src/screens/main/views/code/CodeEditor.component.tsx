@@ -24,7 +24,7 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
 
         function applyHighlights(text: string) {
             const keywords = ["agent", "const", "variable", "dynamic", "if", "else", "then"];
-            const functions = ["random", "choice", "sqrt"];
+            const functions = ["agents", "empty", "pi", "count", "filter", "step", "random", "choice", "sqrt", "abs", "floor", "ceil", "round", "sin", "cos", "tan"];
             const booleans = ["true", "false"];
             const logical = ["and", "or"];
 
@@ -118,6 +118,7 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
 
             <TextArea
                 id="textarea"
+                spellCheck={false}
                 onKeyDown={handleTabIdent}
                 onChange={(event) => setCode(event.target.value)}
                 placeholder={placeholder}>
@@ -128,7 +129,7 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
 
 const Container = styled.div`
     width: 100%;
-    height: 500px;
+    height: 400px;
 
     display: block;
     margin: 0 auto;
@@ -160,7 +161,6 @@ const Backdrop = styled.div`
 
 const Highlights = styled.div`
     width: 100%;
-    height: 400px;
 
     padding: 20px;
     font: 15px/30px 'Poppins', sans-serif;
