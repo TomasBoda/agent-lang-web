@@ -1,6 +1,6 @@
 'use client'
 
-import MainScreen from "@/src/screens/main/Main.screen"
+import SandboxScreen from "@/src/screens/sandbox/Sandbox.screen"
 import Head from "next/head"
 
 export default function SandboxPage() {
@@ -10,7 +10,7 @@ export default function SandboxPage() {
         <title>Sandbox | AgentLang Hub</title>
       </Head>
       
-      <MainScreen />
+      <SandboxScreen />
     </>
   )
 }

@@ -14,7 +14,7 @@ export default function Header() {
                         <Item href="/">Home</Item>
                         <Item href="/documentation">Documentation</Item>
                         <Item href="/">About</Item>
-                        <Item href="/">
+                        <Item href="https://github.com/TomasBoda/agent-lang-interpreter">
                             <Icon src="/assets/logo-github.svg" />
                         </Item>
                         <HeaderButton href="/sandbox">Try for free</HeaderButton>

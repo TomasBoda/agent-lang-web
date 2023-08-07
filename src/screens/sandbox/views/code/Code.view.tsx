@@ -7,7 +7,7 @@ import { Subscription } from "rxjs";
 
 export default function CodeView({ updateAgents }: { updateAgents: (agents: any[]) => void }) {
 
-    const [code, setCode] = useState(`agent person 10 {
+    const [code, setCode] = useState(`agent person 20 {
         const speed = 2;
         variable angle: random(0, 2 * pi()) = angle + choice(-0.1, 0.1);
     
@@ -60,6 +60,10 @@ export default function CodeView({ updateAgents }: { updateAgents: (agents: any[
 
                 updateAgents(currentAgents);
                 setStep(currentStep);
+
+                if (currentStep === steps - 1) {
+                    setRunning(false);
+                }
             });
         }
 

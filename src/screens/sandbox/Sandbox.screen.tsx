@@ -3,7 +3,7 @@ import CodeView from "./views/code/Code.view";
 import VisualisationView from "./views/visualisation/Visualisation.view";
 import { useEffect, useState } from "react";
 
-export default function MainScreen() {
+export default function SandboxScreen() {
 
     const [agents, setAgents] = useState<any[]>([]);
 

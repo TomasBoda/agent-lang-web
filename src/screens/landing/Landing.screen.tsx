@@ -9,7 +9,7 @@ export default function LandingScreen() {
             <Content>
                 <InfoPanel>
                     <Title>Agent-based<br />modeling from<br />a new <Gradient>perspective</Gradient></Title>
-                    <Text>A brand new user-friendly programming language to<br />simulate agent-based models</Text>
+                    <Text>A brand new user-friendly programming language<br />designed to simulate agent-based models</Text>
                     
                     <ButtonPanel>
                         <Button href="/sandbox">Try for free</Button>
