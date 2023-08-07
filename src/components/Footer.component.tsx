@@ -10,9 +10,7 @@ export default function Footer() {
                 <Content>
                     <Column>
                         <Logo href="/">Agent<Thin>Lang</Thin></Logo>
-                        <Description>
-                            A brand new user-friendly programming language designed to simulate agent-based models
-                        </Description>
+                        <Description>A brand new user-friendly programming language designed to simulate agent-based models</Description>
                         <Button href="/sandbox">Try for free</Button>
                     </Column>
 
@@ -63,7 +61,7 @@ const Content = styled.div`
     grid-template-columns: 270px 50px 1fr 1fr 1fr;
     gap: 50px;
 
-    padding: 60px 0px 100px 0px;
+    padding: 75px 0px 100px 0px;
 `;
 
 const Column = styled.div`
@@ -93,6 +91,7 @@ const Description = styled.p`
     color: black;
     font-size: 15px;
     font-weight: 400;
+    line-height: 200%;
 
     margin: 15px 0px;
 `;
@@ -109,6 +108,8 @@ const Item = styled(Link)`
     text-decoration: none;
 
     padding: 11px;
+    margin-top: -11px;
+    margin-bottom: 11px;
 
     cursor: pointer;
     transition: all 100ms;
