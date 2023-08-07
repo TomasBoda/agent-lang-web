@@ -1,0 +1,3 @@
+[submodule "agent-lang-interpreter"]
+	path = agent-lang-interpreter
+	url = https://github.com/TomasBoda/agent-lang-interpreter.git
