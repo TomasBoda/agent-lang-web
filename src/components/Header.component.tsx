@@ -1,5 +1,5 @@
 import { styled } from "styled-components"
-import { Button, Gradient, PageWrapper } from "./Components.styles";
+import { Button, PageWrapper } from "./Components.styles";
 import Link from "next/link";
 
 export default function Header() {
@@ -48,6 +48,8 @@ const Content = styled.div`
 `;
 
 const Logo = styled(Link)`
+    display: inline-block;
+
     color: black;
     font-size: 20px;
     font-weight: 700;
