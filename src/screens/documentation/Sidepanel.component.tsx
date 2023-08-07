@@ -44,9 +44,11 @@ const Container = styled.div`
     position: sticky;
     top: 50px;
 
+    padding-right: 60px;
+
     display: grid;
     grid-template-columns: auto;
-    gap: 30px;
+    gap: 15px;
 
     border-right: 1px solid lightgray;
 `;
@@ -54,21 +56,28 @@ const Container = styled.div`
 const Section = styled.div`
     display: grid;
     grid-template-columns: auto;
-    gap: 15px;
 `;
 
 const Item = styled(Link)`
     display: inline-block;
 
     color: black;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 400;
     line-height: 100%;
 
     text-decoration: none;
 
+    padding: 8px 10px;
+    margin-left: -10px;
+
+    cursor: pointer;
+    transition: all 100ms;
+
+    border-radius: 3px;
+
     &:hover {
-        text-decoration: underline;
+        background-color: rgba(0, 0, 0, 0.07);
     }
 `;
 
@@ -79,6 +88,6 @@ const HeadingItem = styled(Item)`
     margin-bottom: 5px;
 
     &:hover {
-        text-decoration: none;
+        background-color: transparent;
     }
 `;

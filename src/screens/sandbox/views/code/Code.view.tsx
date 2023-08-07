@@ -14,7 +14,7 @@ export default function CodeView({ updateAgents }: { updateAgents: (agents: any[
         variable x: random(50, 350) = (x + speed * cos(angle)) % 400;
         variable y: random(50, 350) = (y + speed * sin(angle)) % 400;
     
-        const distance = 30;
+        const distance = 20;
     
         variable people: empty() = agents(person);
         dynamic closePeople = filter(people => p => sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y)) <= distance);
@@ -22,7 +22,7 @@ export default function CodeView({ updateAgents }: { updateAgents: (agents: any[
     
         const timespan = 200;
         variable remaining: timespan = if infected then remaining - 1 else timespan;
-        const probability = 0.5;
+        const probability = 0.4;
     
         variable infected: choice(true, false) = (infected and remaining > 0) or (count(closeInfected) > 0 and random(0, 1) <= probability);
     
