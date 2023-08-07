@@ -18,7 +18,7 @@ export default function LandingScreen() {
                 </InfoPanel>
 
                 <ImagePanel>
-                    <ExampleImage src="/assets/example-2.png" />
+                    <ExampleImage src="/assets/example-3.png" />
                 </ImagePanel>
             </Content>
         </Container>

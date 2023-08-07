@@ -53,3 +53,23 @@ export const Gradient = styled.span`
     background-clip: text;
     -webkit-text-fill-color: transparent;
 `;
+
+export const InputField = styled.input`
+    color: black;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 100%;
+
+    padding: 7px;
+
+    background-color: white;
+    border: 1px solid lightgray;
+    outline: none;
+
+    border-radius: 3px;
+
+    &:disabled {
+        background-color: rgba(0, 0, 0, 0.05);
+        cursor: not-allowed;
+    }
+`;
