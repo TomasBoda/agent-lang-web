@@ -18,19 +18,27 @@ export default function VisualisationView({ agents }: { agents: any[] }) {
         for (const agent of agents) {
             const variables = agent.variables;
 
-            if (variables["x"] && variables["y"] && typeof variables["x"] === "number" && typeof variables["y"] === "number") {
-                const x = variables["x"];
-                const y = variables["y"];
+            if (variables["x"] && variables["y"]) {
+                interface RuntimeValue {
+                    type: any;
+                    value: any;
+                }
+                
+                const x: RuntimeValue = variables["x"] as unknown as RuntimeValue;
+                const y: RuntimeValue = variables["y"] as unknown as RuntimeValue;
+                const alive: RuntimeValue = variables["alive"] as unknown as RuntimeValue;
 
-                const alive = variables["alive"];
+                const xValue = x.value;
+                const yValue = y.value;
+                const aliveValue = alive.value;
 
-                if (alive) {
+                if (aliveValue === true) {
                     context.fillStyle = "#FF0000"
                 } else {
                     context.fillStyle = "#000000"
                 }
                 
-                context.fillRect(x, y, 10, 10);
+                context.fillRect(xValue, yValue, 10, 10);
             }
         }
     }
