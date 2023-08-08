@@ -7,12 +7,17 @@ import { Subscription } from "rxjs";
 
 export default function CodeView({ updateAgents }: { updateAgents: (agents: any[]) => void }) {
 
-    const [code, setCode] = useState(`agent person 20 {
-        const speed = 2;
+    const [code, setCode] = useState(`agent person 30 {
+        const speed = 3;
         variable angle: random(0, 2 * pi()) = angle + choice(-0.1, 0.1);
+
+        dynamic shouldStay = prob(0.5);
     
-        variable x: random(50, 350) = (x + speed * cos(angle)) % 400;
-        variable y: random(50, 350) = (y + speed * sin(angle)) % 400;
+        variable x: random(50, 350) = if shouldStay then x else xNew;
+        variable y: random(50, 350) = if shouldStay then y else yNew;
+        
+        dynamic xNew = (x + speed * cos(angle)) % 400;
+        dynamic yNew = (y + speed * sin(angle)) % 400;
     
         const distance = 20;
     
@@ -22,9 +27,10 @@ export default function CodeView({ updateAgents }: { updateAgents: (agents: any[
     
         const timespan = 200;
         variable remaining: timespan = if infected then remaining - 1 else timespan;
-        const probability = 0.4;
+
+        dynamic shouldInfect = prob(0.4);
     
-        variable infected: choice(true, false) = (infected and remaining > 0) or (count(closeInfected) > 0 and random(0, 1) <= probability);
+        variable infected: prob(0.5) = (infected and remaining > 0) or (count(closeInfected) > 0 and shouldInfect);
     
         dynamic alive = infected;
 }

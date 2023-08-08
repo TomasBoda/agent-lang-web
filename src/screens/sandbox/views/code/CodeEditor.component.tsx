@@ -24,7 +24,7 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
 
         function applyHighlights(text: string) {
             const keywords = ["agent", "const", "variable", "dynamic", "if", "else", "then"];
-            const functions = ["agents", "empty", "pi", "count", "filter", "step", "random", "choice", "sqrt", "abs", "floor", "ceil", "round", "sin", "cos", "tan"];
+            const functions = ["agents", "empty", "pi", "prob", "count", "filter", "step", "random", "choice", "sqrt", "abs", "floor", "ceil", "round", "sin", "cos", "tan"];
             const booleans = ["true", "false"];
             const logical = ["and", "or"];
 
