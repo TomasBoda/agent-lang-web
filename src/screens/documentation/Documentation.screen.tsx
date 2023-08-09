@@ -1,12 +1,17 @@
 import { styled } from "styled-components";
 import SidePanel from "./Sidepanel.component";
+import { Breadcrumb } from "@/pages/documentation/[...slug]";
+import Breadcrumbs from "@/src/components/Breadcrumbs.component";
 
-export default function DocumentationScreen({ markdown }: { markdown: string }) {
+export default function DocumentationScreen({ markdown, breadcrumbs }: { markdown: string, breadcrumbs: Breadcrumb[] }) {
 
     return (
         <Container>
             <SidePanel />
-            <Content className="markdown" dangerouslySetInnerHTML={{ __html: markdown }} />
+            <Content>
+                <Breadcrumbs breadcrumbs={breadcrumbs} />
+                <HTML className="markdown" dangerouslySetInnerHTML={{ __html: markdown }} />
+            </Content>
         </Container>
     )
 }
@@ -23,4 +28,14 @@ const Container = styled.div`
     padding: 50px 0px;
 `;
 
-const Content = styled.div``;
+const Content = styled.div`
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+`;
+
+const HTML = styled.div`
+    margin-top: 30px;
+`;

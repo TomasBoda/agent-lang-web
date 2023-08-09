@@ -124,7 +124,7 @@ const Item = styled(Link)`
 const Heading = styled(Item)`
     font-weight: 800;
 
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 
     &:hover {
         background-color: transparent;

@@ -1,38 +1,41 @@
 import styled from "styled-components";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function SidePanel() {
 
     return (
         <Container>
             <Section>
-                <HeadingItem href="">Introduction</HeadingItem>
-                <Item href="">Agent-based Modeling</Item>
-                <Item href="">Installation</Item>
-                <Item href="">Usage</Item>
+                <HeadingItem href="/documentation/introduction">Introduction</HeadingItem>
+                <Item href="/documentation/introduction/what-is-agent-lang">What is AgentLang</Item>
+                <Item href="/documentation/introduction/agent-based-modeling">Agent-based modeling</Item>
+                <Item href="/documentation/introduction/installation-and-usage">Installation and Usage</Item>
             </Section>
 
             <Section>
-                <HeadingItem href="">Software Specification</HeadingItem>
-                <Item href="">Aim of the Project</Item>
-                <Item href="">Main Functionality</Item>
-                <Item href="">Interpreter</Item>
+                <HeadingItem href="/documentation/software-specification">Software Specification</HeadingItem>
+                <Item href="/documentation/software-specification/project-description">Project Description</Item>
+                <Item href="/documentation/software-specification/technologies">Technologies</Item>
+                <Item href="/documentation/software-specification/aim-of-the-project">Aim of the Project</Item>
+                <Item href="/documentation/software-specification/main-functionality">Main Functionality</Item>
             </Section>
             
             <Section>
-                <HeadingItem href="">Language Design</HeadingItem>
-                <Item href="">Agents</Item>
-                <Item href="">Datatypes</Item>
-                <Item href="">Variables</Item>
-                <Item href="">Conditional Statements</Item>
-                <Item href="">Standard Library</Item>
+                <HeadingItem href="/documentation/language-design">Language Design</HeadingItem>
+                <Item href="/documentation/language-design/data-types">Data Types</Item>
+                <Item href="/documentation/language-design/properties">Properties</Item>
+                <Item href="/documentation/language-design/agents">Agents</Item>
+                <Item href="/documentation/language-design/conditional-expressions">Conditional Expressions</Item>
+                <Item href="/documentation/language-design/built-in-functions">Built-in Functions</Item>
             </Section>
 
             <Section>
-                <HeadingItem href="">Code Sandbox</HeadingItem>
-                <Item href="">Main Features</Item>
-                <Item href="">Usage</Item>
-                <Item href="">Visualisation</Item>
+                <HeadingItem href="/documentation/code-sandbox">Code Sandbox</HeadingItem>
+                <Item href="/documentation/code-sandbox/main-features">Main Features</Item>
+                <Item href="/documentation/code-sandbox/code-editor">Code Editor</Item>
+                <Item href="/documentation/code-sandbox/table-editor">Table Editor</Item>
+                <Item href="/documentation/code-sandbox/visualisation">Visualisation</Item>
             </Section>
         </Container>
     )
@@ -40,9 +43,6 @@ export default function SidePanel() {
 
 const Container = styled.div`
     width: 100%;
-
-    position: sticky;
-    top: 50px;
 
     padding-right: 60px;
 

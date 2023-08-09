@@ -48,6 +48,7 @@ mark.highlight-logical {
   grid-template-columns: auto;
   gap: 5px;
 
+  font-size: 15px;
   line-height: 180%;
 }
 
@@ -72,7 +73,7 @@ mark.highlight-logical {
   font-weight: 800;
 }
 
-.markdown ul {
+.markdown ul, .markdown ol {
   padding-left: 15px;
   margin-bottom: 30px;
 
@@ -83,31 +84,28 @@ mark.highlight-logical {
   margin-top: -20px;
 }
 
+/* code container */
 .markdown pre {
   padding: 20px !important;
-  margin-top: -20px;
+  margin-top: -15px;
+  margin-bottom: 10px;
 
-  border-radius: 5px;
-
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: rgba(0, 0, 0, 0.04);
 
   border: none !important;
+  border-radius: 5px;
 }
 
+/* inline */
 .markdown code {
   padding: 3px 8px;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.08);
 }
 
+/* code */
 .markdown pre code {
   padding: 0px;
   border-radius: 0px;
   background-color: transparent;
-}
-
-.markdown pre {
-  padding: 20px;
-
-  background-color: rgba(0, 0, 0, 0.05);
 }
