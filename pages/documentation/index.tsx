@@ -18,6 +18,6 @@ export default function DocumentationPage({ content }: { content: string }) {
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   return { redirect: { permanent: false, destination: "/documentation/introduction" }, props: {} };    
 }
