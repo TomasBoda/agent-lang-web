@@ -1,6 +1,7 @@
 'use client'
 
 import fs from 'fs';
+import path from 'path';
 import matter from 'gray-matter';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
@@ -28,23 +29,24 @@ export async function getServerSideProps({ params }: { params: any }) {
 
     const document: Document = findDocument(slugPath) ?? documents[0];
     const breadcrumbs: Breadcrumb[] = getBreadcrumbs(slugs);
-  
+
     try {
-      const file = fs.readFileSync(document.document, "utf8");
-      const { content } = matter(file);
+        const documentPath = path.join(process.cwd(), "public", document.document);
+        const file = fs.readFileSync(documentPath, "utf8");
+        const { content } = matter(file);
 
-      const result = await unified().use(remarkParse).use(remarkHtml).process(content);
-      const documentContent: DocumentContent = {
-          title: document.title,
-          html: result.toString(),
-          breadcrumbs
-      };
+        const result = await unified().use(remarkParse).use(remarkHtml).process(content);
+        const documentContent: DocumentContent = {
+            title: document.title,
+            html: result.toString(),
+            breadcrumbs
+        };
 
-      return {
-        props: {
-          document: documentContent,
-        },
-      };
+        return {
+            props: {
+                document: documentContent,
+            },
+        };
     } catch (error) {
         return { redirect: { permanent: false, destination: "/" }, props: {} };
     }
