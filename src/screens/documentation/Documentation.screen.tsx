@@ -1,10 +1,10 @@
 import { styled } from "styled-components";
 import SidePanel from "./Sidepanel.component";
-import { Breadcrumb } from "@/pages/documentation/[...slug]";
 import Breadcrumbs from "@/src/components/Breadcrumbs.component";
 import {PageWrapper} from "@/src/components/Components.styles";
+import {Breadcrumb} from "@/src/lib/documentation";
 
-export default function DocumentationScreen({ markdown, breadcrumbs }: { markdown: string, breadcrumbs: Breadcrumb[] }) {
+export default function DocumentationScreen({ html, breadcrumbs }: { html: string, breadcrumbs: Breadcrumb[] }) {
 
     return (
         <Container>
@@ -13,7 +13,7 @@ export default function DocumentationScreen({ markdown, breadcrumbs }: { markdow
                     <SidePanel />
                     <DocsPage>
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
-                        <HTML className="markdown" dangerouslySetInnerHTML={{ __html: markdown }} />
+                        <HTML className="markdown" dangerouslySetInnerHTML={{ __html: html }} />
                     </DocsPage>
                 </Content>
             </PageWrapper>

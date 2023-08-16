@@ -17,7 +17,7 @@ export default function DocumentationSubPage({ document }: { document: DocumentC
                 <title>{document.title} | Documentation</title>
             </Head>
 
-            <DocumentationScreen markdown={document.html} breadcrumbs={document.breadcrumbs}/>
+            <DocumentationScreen html={document.html} breadcrumbs={document.breadcrumbs}/>
         </>
     )
 }
