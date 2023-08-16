@@ -9,21 +9,13 @@ export default function Offset() {
 
     function updateHeaderOffset(): void {
         let header = document.getElementById("header");
+        let offset = document.getElementById("offset");
 
-        if (!header) {
+        if (!header || !offset) {
             return;
         }
 
         const height = header.offsetHeight;
-
-        console.log(height);
-
-        let offset = document.getElementById("offset");
-
-        if (!offset) {
-            return;
-        }
-
         offset.style.height = height + 21 + "px";
     }
 

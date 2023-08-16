@@ -13,11 +13,11 @@ export default function CodeView({ updateAgents }: { updateAgents: (agents: any[
 
         dynamic shouldStay = prob(0.5);
     
-        variable x: random(50, 350) = if shouldStay then x else xNew;
-        variable y: random(50, 350) = if shouldStay then y else yNew;
-        
         dynamic xNew = (x + speed * cos(angle)) % 400;
         dynamic yNew = (y + speed * sin(angle)) % 400;
+    
+        variable x: random(50, 350) = if shouldStay then x else xNew;
+        variable y: random(50, 350) = if shouldStay then y else yNew;
     
         const distance = 20;
     
@@ -32,7 +32,7 @@ export default function CodeView({ updateAgents }: { updateAgents: (agents: any[
     
         variable infected: prob(0.5) = (infected and remaining > 0) or (count(closeInfected) > 0 and shouldInfect);
     
-        dynamic alive = infected;
+        variable alive: false = infected;
 }
     `);
 

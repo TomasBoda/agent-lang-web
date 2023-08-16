@@ -4,6 +4,7 @@ import Header from "./Header.component"
 import ContactView from "@/src/components/Contact.view";
 import {useEffect} from "react";
 import Offset from "@/src/components/Offset.component";
+import Transition from "@/src/components/Transition.component";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     
@@ -14,6 +15,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {children}
             <ContactView />
             <Footer />
+
+            <Transition />
         </PageContainer>
     )
 }

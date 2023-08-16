@@ -8,7 +8,7 @@ export default function Breadcrumbs({ breadcrumbs }: { breadcrumbs: Breadcrumb[]
     return (
         <Container>
             {breadcrumbs.map((item: Breadcrumb, index: number) => (
-                <Item>
+                <Item key={index}>
                     <Label href={item.path}>{item.title}</Label>
                     {index !== breadcrumbs.length - 1 && <Slash>/</Slash>}
                 </Item>
