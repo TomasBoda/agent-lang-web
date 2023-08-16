@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import CodeView from "./views/code/Code.view";
 import VisualisationView from "./views/visualisation/Visualisation.view";
 import { useEffect, useState } from "react";
+import {PageWrapper} from "@/src/components/Components.styles";
 
 export default function SandboxScreen() {
 
@@ -13,16 +14,30 @@ export default function SandboxScreen() {
 
     return (
         <Container>
-            <CodeView updateAgents={updateAgents} />
-            <VisualisationView agents={agents} />
+            <PageWrapper>
+                <Content>
+                    <CodeView updateAgents={updateAgents} />
+                    <VisualisationView agents={agents} />
+                </Content>
+            </PageWrapper>
         </Container>
     )
 }
 
 const Container = styled.div`
+  width: 100%;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Content = styled.div`
     width: 100%;
 
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 50px;
+  
+    padding: 50px 100px;
 `;

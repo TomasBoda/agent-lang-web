@@ -104,8 +104,6 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-
-    padding: 50px 0px;
 `;
 
 const Status = styled.div`
@@ -115,7 +113,7 @@ const Status = styled.div`
 
     align-items: center;
 
-    margin: 20px 0px;
+    margin: 20px 0;
 `;
 
 const Label = styled.p`

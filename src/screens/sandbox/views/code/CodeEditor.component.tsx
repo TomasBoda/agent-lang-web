@@ -129,7 +129,7 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
 
 const Container = styled.div`
     width: 100%;
-    height: 400px;
+    height: 600px;
 
     display: block;
     margin: 0 auto;
@@ -144,7 +144,7 @@ const Container = styled.div`
 
 const Backdrop = styled.div`
     width: 100%;
-    height: 400px;
+    height: 600px;
 
     position: absolute;
     z-index: 1;
@@ -173,7 +173,7 @@ const Highlights = styled.div`
 
 const TextArea = styled.textarea`
     width: 100%;
-    height: 400px;
+    height: 600px;
 
     color: black;
 

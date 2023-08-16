@@ -11,7 +11,7 @@ export default function Footer() {
                     <Column>
                         <Logo href="/">Agent<Thin>Lang</Thin></Logo>
                         <Description>A brand new user-friendly programming language designed to simulate agent-based models</Description>
-                        <Button href="/sandbox">Try for free</Button>
+                        <Button href="/sandbox" color="white">Try for free</Button>
                     </Column>
 
                     <span />
@@ -51,17 +51,17 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
 
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgb(20, 20, 20);
 `;
 
 const Content = styled.div`
     width: 100%;
 
     display: grid;
-    grid-template-columns: 270px 50px 1fr 1fr 1fr;
+    grid-template-columns: 270px 50px auto auto auto;
     gap: 50px;
 
-    padding: 75px 0px 100px 0px;
+    padding: 100px;
 `;
 
 const Column = styled.div`
@@ -75,7 +75,7 @@ const Column = styled.div`
 const Logo = styled(Link)`
     display: inline-block;
 
-    color: black;
+    color: white;
     font-size: 20px;
     font-weight: 700;
     line-height: 100%;
@@ -84,25 +84,25 @@ const Logo = styled(Link)`
 `;
 
 const Thin = styled.span`
-    font-weight: 400;
+    font-weight: 300;
 `;
 
 const Description = styled.p`
-    color: black;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 15px;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 200%;
 
-    margin: 15px 0px;
+    margin: 20px 0;
 `;
 
 const Item = styled(Link)`
     display: inline-block;
     width: 100%;
 
-    color: black;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 15px;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 100%;
 
     text-decoration: none;
@@ -117,14 +117,16 @@ const Item = styled(Link)`
     border-radius: 3px;
 
     &:hover {
+        color: white;
         background-color: rgba(0, 0, 0, 0.07);
     }
 `;
 
 const Heading = styled(Item)`
+    color: white;
     font-weight: 800;
 
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 
     &:hover {
         background-color: transparent;

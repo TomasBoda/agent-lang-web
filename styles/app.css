@@ -44,6 +44,8 @@ mark.highlight-logical {
 /* ---------- */
 
 .markdown {
+  width: 100%;
+
   display: grid;
   grid-template-columns: auto;
   gap: 5px;
@@ -89,6 +91,8 @@ mark.highlight-logical {
   padding: 20px !important;
   margin-top: -15px;
   margin-bottom: 10px;
+
+  font-size: 14px;
 
   background-color: rgba(0, 0, 0, 0.04);
 

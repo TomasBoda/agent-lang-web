@@ -11,13 +11,13 @@ export const PageContainer = styled.div`
 
 export const PageWrapper = styled.div`
     width: 100%;
-    max-width: 1200px;
+    max-width: 1500px;
 `;
 
 export const Button = styled(Link)`
     display: inline-block;
 
-    color: white;
+    color: ${props => props.color === "white" ? "black" : "white"};
     font-size: 13px;
     font-weight: 500;
     line-height: 100%;
@@ -32,23 +32,30 @@ export const Button = styled(Link)`
     transition: all 100ms;
     border: 2px solid transparent;
 
-    background-color: black;
+    background-color: ${props => props.color === "white" ? "white" : "black"};
 
     &:hover {
-        color: black;
-        background-color: white;
-        border: 2px solid black;
+        color: ${props => props.color === "white" ? "white" : "black"};
+        background-color: transparent;
+        border: 2px solid ${props => props.color === "white" ? "white" : "black"};
     }
 `;
 
 export const ButtonOutline = styled(Button)`
-    color: black;
-    background-color: white;
-    border: 2px solid black;
+    color: ${props => props.color === "white" ? "white" : "black"};
+    background-color: transparent;
+    border: 2px solid ${props => props.color === "white" ? "white" : "black"};
+
+  &:hover {
+    background-color: transparent;
+  }
 `;
 
-export const Gradient = styled.span`
-    background: -webkit-linear-gradient(-70deg, #2188ff 0%, #804eda 100%);
+export const GradientBackground = styled.div`
+  background: -webkit-linear-gradient(-70deg, #2188ff 0%, #804eda 100%);
+`;
+
+export const Gradient = styled(GradientBackground)`
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

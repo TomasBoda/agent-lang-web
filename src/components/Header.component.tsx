@@ -44,7 +44,7 @@ const Content = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    padding: 10px 0px;
+    padding: 10px 100px;
 `;
 
 const Logo = styled(Link)`
