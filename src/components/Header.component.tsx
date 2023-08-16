@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Header() {
 
     return (
-        <Container>
+        <Container id="header">
             <PageWrapper>
                 <Content>
                     <Logo href="/">Agent<Thin>Lang</Thin></Logo>
@@ -26,6 +26,12 @@ export default function Header() {
 }
 
 const Container = styled.div`
+    position: fixed;
+    left: 0;
+    top: 0;
+  
+    z-index: 100;
+  
     width: 100%;
 
     display: flex;

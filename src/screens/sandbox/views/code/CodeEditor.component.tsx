@@ -4,23 +4,21 @@ import $ from "jquery";
 
 export default function CodeEditor({ code, setCode }: { code: string; setCode: (code: string) => void }) {
 
-    const placeholder = `Start typing code...\n\nFor example:\n    agent person 10 {\n        const age = ...\n    }`
-
     useEffect(() => {
         initializeSyntaxHighlighting();
     }, []);
 
     function initializeSyntaxHighlighting(): void {
-        var $backdrop = $('#backdrop');
-        var $highlights = $('#highlights');
-        var $textarea = $('#textarea');
+        let $backdrop = $('#backdrop');
+        let $highlights = $('#highlights');
+        let $textarea = $('#textarea');
 
         $textarea.val(code);
 
-        var ua = window.navigator.userAgent.toLowerCase();
-        var isIE = !!ua.match(/msie|trident\/7|edge/);
-        var isWinPhone = ua.indexOf('windows phone') !== -1;
-        var isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
+        let ua = window.navigator.userAgent.toLowerCase();
+        let isIE = !!ua.match(/msie|trident\/7|edge/);
+        let isWinPhone = ua.indexOf('windows phone') !== -1;
+        let isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
 
         function applyHighlights(text: string) {
             const keywords = ["agent", "const", "variable", "dynamic", "if", "else", "then"];
@@ -47,16 +45,16 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
         }
 
         function handleInput() {
-            var text = $textarea.val();
-            var highlightedText = applyHighlights(text as string);
+            let text = $textarea.val();
+            let highlightedText = applyHighlights(text as string);
             $highlights.html(highlightedText);
         }
     
         function handleScroll() {
-            var scrollTop = $textarea.scrollTop();
+            let scrollTop = $textarea.scrollTop();
             $backdrop.scrollTop(scrollTop as number);
-    
-            var scrollLeft = $textarea.scrollLeft();
+
+            let scrollLeft = $textarea.scrollLeft();
             $backdrop.scrollLeft(scrollLeft as number);  
         }
 
@@ -121,7 +119,7 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
                 spellCheck={false}
                 onKeyDown={handleTabIdent}
                 onChange={(event) => setCode(event.target.value)}
-                placeholder={placeholder}>
+                placeholder="Start writing code...">
             </TextArea>
         </Container>
     )
@@ -129,7 +127,7 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
 
 const Container = styled.div`
     width: 100%;
-    height: 600px;
+    height: 400px;
 
     display: block;
     margin: 0 auto;
@@ -144,7 +142,7 @@ const Container = styled.div`
 
 const Backdrop = styled.div`
     width: 100%;
-    height: 600px;
+    height: 400px;
 
     position: absolute;
     z-index: 1;
@@ -173,19 +171,18 @@ const Highlights = styled.div`
 
 const TextArea = styled.textarea`
     width: 100%;
-    height: 600px;
-
+    height: 400px;
+    
     color: black;
-
-    padding: 20px;
     font: 15px/30px 'Poppins', sans-serif;
     letter-spacing: 1px;
+  
+    padding: 20px;
+    margin: 0;
 
     display: block;
     position: absolute;
     z-index: 2;
-    margin: 0;
-    border-radius: 0;
     background-color: transparent;
     overflow: auto;
     resize: none;

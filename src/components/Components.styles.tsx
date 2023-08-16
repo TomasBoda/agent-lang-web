@@ -56,6 +56,7 @@ export const GradientBackground = styled.div`
 `;
 
 export const Gradient = styled(GradientBackground)`
+    display: inline-block;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

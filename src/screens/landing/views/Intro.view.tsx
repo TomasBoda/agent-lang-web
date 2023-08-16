@@ -33,7 +33,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
 
-    background-color: rgba(0, 0, 0, 0.1);
+    //background-color: rgba(0, 0, 0, 0.1);
 `;
 
 const Content = styled.div`
@@ -62,9 +62,9 @@ const Title = styled.h2`
 
 const Text = styled.p`
     color: gray;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 300;
-    line-height: 150%;
+    line-height: 180%;
 
     margin: 10px 0px 25px 0px;
 `;
