@@ -57,3 +57,5 @@ In each step of the simulation, the agents of type `person` move in some directi
 
 ### Conclusion
 In this way, we can model any number of agents and their interactions with each other to create complex simulations.
+
+[**Next:** Conditional Expressions](/documentation/language-design/conditional-expressions)

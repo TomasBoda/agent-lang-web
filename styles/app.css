@@ -116,7 +116,25 @@ mark.highlight-logical {
 
 /* code */
 .markdown pre code {
-  padding: 0px;
-  border-radius: 0px;
+  padding: 0;
+  border-radius: 0;
   background-color: transparent;
+}
+
+.markdown a {
+  color: black;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: none;
+
+  padding: 10px 15px;
+  border-radius: 5px;
+
+  transition: all 150ms;
+
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.markdown a:hover {
+  background-color: rgba(0, 0, 0, 0.15);
 }

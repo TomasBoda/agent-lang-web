@@ -30,4 +30,6 @@ dynamic direction = if isInfected forwardAngle else backwardAngle;
 In this example, we want the agent to move in a direction of `forwardAngle` if they are infected, otherwise in a direction of `backwardAngle`.
 
 ## Nesting
-Conditional expressions can be nested without the need to use parentheses, but their usage is highly recomenned for cleaner code and readability.
+Conditional expressions can be nested without the need to use parentheses, but their usage is highly recommended for cleaner code and readability.
+
+[**Next:** Built-in Functions](/documentation/language-design/built-in-functions)

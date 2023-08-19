@@ -34,3 +34,5 @@ The `agent` value represents one agent with all their current properties. To und
 
 ### Agents
 the `agents` value represents a list of agents with all their current properties. To understand the `agents` value in context, let's again look at the previously explained `filter(...)` function. The `filter(agents(person) => p => p.infected == true)` function returns a value of type `agents`, where all the returned agents satisfy the condition in the `lambda` expression.
+
+[**Next:** Properties](/documentation/language-design/properties)

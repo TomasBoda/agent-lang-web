@@ -25,3 +25,5 @@ The visualisation will be a two-dimensional grid displaying agents and their att
 
 ### Control panel
 The control panel serves as a configuration panel, mainly for the visualisation. The user will be able to **start**, **stop** and **reset** the visualisation, set the default `x` and `y` agent coordinate attributes or change the color of the agents based on their attributes.
+
+[**Next:** Language Design](/documentation/language-design)

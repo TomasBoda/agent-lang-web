@@ -5,3 +5,5 @@ Since agent-based modeling is useful in many scientific fields, it is necessary 
 The project consists of the following parts.
 - **interpreter** - a program that parses and runs the **AgentLang** source code
 - **web application** - a web-based interface for editing source code and visualising the simulation
+
+[**Next:** Main Functionality](/documentation/software-specification/main-functionality)
