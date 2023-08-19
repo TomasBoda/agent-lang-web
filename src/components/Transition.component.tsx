@@ -36,7 +36,7 @@ export default function Transition() {
             return;
         }
 
-        const height = header.offsetHeight;
+        const height = header.clientHeight;
         transition.style.top = height + 21 + "px";
     }
 
