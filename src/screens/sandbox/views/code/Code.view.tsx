@@ -21,7 +21,7 @@ export default function CodeView({ updateAgents }: { updateAgents: (agents: any[
     
         const distance = 20;
     
-        variable people: empty() = agents(person);
+        dynamic people = agents(person);
         dynamic closePeople = filter(people => p => sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y)) <= distance);
         dynamic closeInfected = filter(closePeople => c => c.infected == true);
     

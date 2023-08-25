@@ -11,8 +11,8 @@ export default function ContactView() {
                     <Text>Write us a message in case you need help with setting up AgentLang in your<br />environment or wish to contribute to the AgentLang community.</Text>
 
                     <ButtonPanel>
-                        <Button color="white" href="">Contact</Button>
-                        <ButtonOutline color="white" href="">Get Help</ButtonOutline>
+                        <Button color="white" href="mailto: tominoboda@gmail.com">Contact</Button>
+                        <ButtonOutline color="white" href="/documentation">Documentation</ButtonOutline>
                     </ButtonPanel>
                 </Content>
             </PageWrapper>

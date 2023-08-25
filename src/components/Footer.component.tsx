@@ -19,24 +19,23 @@ export default function Footer() {
                     <Column>
                         <Heading href="/documentation">Documentation</Heading>
                         <Item href="/documentation">Introduction</Item>
-                        <Item href="/documentation">Software Specification</Item>
-                        <Item href="/documentation">Language Design</Item>
-                        <Item href="/documentation">Code Sandbox</Item>
+                        <Item href="/documentation/software-specification">Software Specification</Item>
+                        <Item href="/documentation/language-design">Language Design</Item>
+                        <Item href="/documentation/code-sandbox">Code Sandbox</Item>
                     </Column>
 
                     <Column>
                         <Heading href="/sandbox">Code Sandbox</Heading>
-                        <Item href="/sandbox">Example Programs</Item>
-                        <Item href="/sandbox">Code Editor</Item>
-                        <Item href="/sandbox">Table Editor</Item>
-                        <Item href="/sandbox">Visualisation</Item>
+                        <Item href="/documentation/code-sandbox/code-editor">Code Editor</Item>
+                        <Item href="/documentation/code-sandbox/table-editor">Table Editor</Item>
+                        <Item href="/documentation/code-sandbox/visualisation">Visualisation</Item>
                     </Column>
                         
                     <Column>
                         <Heading href="/about">About</Heading>
-                        <Item href="/about">Our Story</Item>
-                        <Item href="/about">Aim of the Project</Item>
-                        <Item href="/about">Contact Us</Item>
+                        <Item href="/documentation/project-specification/aim-of-the-project">Aim of the project</Item>
+                        <Item href="https://github.com/TomasBoda/agent-lang-interpreter">AgentLang GitHub</Item>
+                        <Item href="mailto: tominoboda@gmail.com">Contact Us</Item>
                     </Column>
                 </Content>
             </PageWrapper>

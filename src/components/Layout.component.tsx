@@ -15,8 +15,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {children}
             <ContactView />
             <Footer />
-
-            <Transition />
         </PageContainer>
     )
 }

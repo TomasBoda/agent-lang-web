@@ -129,11 +129,6 @@ export const documents: Document[] = [
         document: "documentation/code-sandbox/code-sandbox.md"
     },
     {
-        title: "Main Features",
-        slug: "code-sandbox/main-features",
-        document: "documentation/code-sandbox/main-features.md"
-    },
-    {
         title: "Code Editor",
         slug: "code-sandbox/code-editor",
         document: "documentation/code-sandbox/code-editor.md"

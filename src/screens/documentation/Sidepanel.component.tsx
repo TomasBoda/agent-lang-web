@@ -32,7 +32,6 @@ export default function SidePanel() {
 
             <Section>
                 <HeadingItem href="/documentation/code-sandbox">Code Sandbox</HeadingItem>
-                <Item href="/documentation/code-sandbox/main-features">Main Features</Item>
                 <Item href="/documentation/code-sandbox/code-editor">Code Editor</Item>
                 <Item href="/documentation/code-sandbox/table-editor">Table Editor</Item>
                 <Item href="/documentation/code-sandbox/visualisation">Visualisation</Item>

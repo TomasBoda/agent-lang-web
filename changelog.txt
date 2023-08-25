@@ -1,0 +1,8 @@
+
+CHANGELOG
+-----------------------------------
+- const vs variable vs dynamic
+- previous / current agents merged into one shared output
+- built-in functions
+- error logging
+- documentation

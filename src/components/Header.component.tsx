@@ -1,26 +1,31 @@
 import { styled } from "styled-components"
 import { Button, PageWrapper } from "./Components.styles";
 import Link from "next/link";
+import Transition from "@/src/components/Transition.component";
 
 export default function Header() {
 
     return (
         <Container id="header">
-            <PageWrapper>
-                <Content>
-                    <Logo href="/">Agent<Thin>Lang</Thin></Logo>
-                
-                    <Menu>
-                        <Item href="/">Home</Item>
-                        <Item href="/documentation">Documentation</Item>
-                        <Item href="/">About</Item>
-                        <Item href="https://github.com/TomasBoda/agent-lang-interpreter">
-                            <Icon src="/assets/logo-github.svg" />
-                        </Item>
-                        <HeaderButton href="/sandbox">Try for free</HeaderButton>
-                    </Menu>
-                </Content>
-            </PageWrapper>
+            <Wrapper>
+                <PageWrapper>
+                    <Content>
+                        <Logo href="/">Agent<Thin>Lang</Thin></Logo>
+
+                        <Menu>
+                            <Item href="/">Home</Item>
+                            <Item href="/documentation">Documentation</Item>
+                            <Item href="mailto: tominoboda@gmail.com">Contact</Item>
+                            <Item href="https://github.com/TomasBoda/agent-lang-interpreter">
+                                <Icon src="/assets/logo-github.svg" />
+                            </Item>
+                            <HeaderButton href="/sandbox">Try for free</HeaderButton>
+                        </Menu>
+                    </Content>
+                </PageWrapper>
+
+                <Transition />
+            </Wrapper>
         </Container>
     )
 }
@@ -34,12 +39,18 @@ const Container = styled.div`
   
     width: 100%;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
     border-bottom: 1px solid lightgray;
     background-color: white;
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  width: 100%;
 `;
 
 const Content = styled.div`

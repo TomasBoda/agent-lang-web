@@ -11,8 +11,6 @@ export default function Transition() {
         router.events.on('routeChangeStart', handleRouteChangeStart);
         router.events.on('routeChangeComplete', handleRouteChangeComplete);
 
-        updateTransitionPosition();
-
         return () => {
             router.events.off('routeChangeStart', handleRouteChangeStart);
             router.events.off('routeChangeComplete', handleRouteChangeComplete);
@@ -26,18 +24,6 @@ export default function Transition() {
     const handleRouteChangeComplete = (url: string): void => {
         setTimeout(hideTransition, 100);
         //hideTransition();
-    }
-
-    function updateTransitionPosition(): void {
-        let header = document.getElementById("header");
-        let transition = document.getElementById("transition");
-
-        if (!header || !transition) {
-            return;
-        }
-
-        const height = header.clientHeight;
-        transition.style.top = height + 21 + "px";
     }
 
     return (
@@ -68,10 +54,10 @@ export function hideTransition(): void {
 }
 
 const Container = styled.div`
-    position: fixed;
+    position: absolute;
+    bottom: 0;
     left: 0;
-    top: 0;
-
+  
     width: 100vw;
     height: 3px;
 

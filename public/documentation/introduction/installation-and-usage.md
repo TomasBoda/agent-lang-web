@@ -14,7 +14,7 @@ git submodule add https://github.com/TomasBoda/agent-lang-interpreter
 ```
 
 ## Usage
-After cloning the repository to your local machine/project, you can import the necessary objects to your project.
+After cloning the repository to your local project, you can import the necessary objects to your project.
 ```typescript
 import { Interpreter, InterpreterConfiguration } from '@/agent-lang-interpreter/src';
 ```
@@ -35,4 +35,4 @@ subscription = interpreter.interpret(code, config).subscribe(output => {
 ```
 The subscription will receive new `output` every `delay` milliseconds for `steps` times.
 
-[**Next:** Software Specification](/documentation/software-specification/software-specification)
+[**Next:** Software Specification](/documentation/software-specification)
