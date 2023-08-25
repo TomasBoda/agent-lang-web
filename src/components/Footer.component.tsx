@@ -33,7 +33,7 @@ export default function Footer() {
                         
                     <Column>
                         <Heading href="/about">About</Heading>
-                        <Item href="/documentation/project-specification/aim-of-the-project">Aim of the project</Item>
+                        <Item href="/documentation/software-specification/aim-of-the-project">Aim of the project</Item>
                         <Item href="https://github.com/TomasBoda/agent-lang-interpreter">AgentLang GitHub</Item>
                         <Item href="mailto: tominoboda@gmail.com">Contact Us</Item>
                     </Column>
