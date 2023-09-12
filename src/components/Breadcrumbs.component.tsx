@@ -32,7 +32,7 @@ const Item = styled.div`
 const Label = styled(Link)`
     display: inline-block;
 
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.5);
     font-size: 12px;
     font-weight: 400;
     line-height: 100%;
@@ -41,12 +41,12 @@ const Label = styled(Link)`
     transition: all 150ms;
 
     &:hover {
-        color: black;
+        color: white;
     }
 `;
 
 const Slash = styled.span`
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.5);
     font-size: 10px;
     font-weight: 400;
     line-height: 100%;
