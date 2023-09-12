@@ -14,6 +14,31 @@ export const PageWrapper = styled.div`
     max-width: 1500px;
 `;
 
+export const ButtonContrast = styled(Link)`
+  display: inline-block;
+
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 100%;
+
+  text-decoration: none;
+
+  padding: 15px 30px;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+  transition: all 100ms;
+  border: 2px solid transparent;
+
+  background-color: #DE3C4B;
+
+  &:hover {
+    background-color: #b02c3a;
+  }
+`;
+
 export const Button = styled(Link)`
     display: inline-block;
 
@@ -63,21 +88,20 @@ export const Gradient = styled(GradientBackground)`
 `;
 
 export const InputField = styled.input`
-    color: black;
+    color: white;
     font-size: 13px;
     font-weight: 400;
     line-height: 100%;
 
     padding: 7px;
 
-    background-color: white;
-    border: 1px solid lightgray;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
     outline: none;
 
     border-radius: 3px;
 
     &:disabled {
-        background-color: rgba(0, 0, 0, 0.05);
         cursor: not-allowed;
     }
 `;

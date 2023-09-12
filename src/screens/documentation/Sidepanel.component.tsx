@@ -49,7 +49,7 @@ const Container = styled.div`
     grid-template-columns: auto;
     gap: 15px;
 
-    border-right: 1px solid lightgray;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
 `;
 
 const Section = styled.div`
@@ -60,9 +60,9 @@ const Section = styled.div`
 const Item = styled(Link)`
     display: inline-block;
 
-    color: black;
+    color: rgba(255, 255, 255, 0.6);
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 100%;
 
     text-decoration: none;
@@ -81,8 +81,9 @@ const Item = styled(Link)`
 `;
 
 const HeadingItem = styled(Item)`
+    color: white;
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 700;
 
     margin-bottom: 5px;
 

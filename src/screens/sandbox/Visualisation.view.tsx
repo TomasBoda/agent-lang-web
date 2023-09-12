@@ -33,9 +33,9 @@ export default function VisualisationView({ agents }: { agents: any[] }) {
                 const aliveValue = alive.value;
 
                 if (aliveValue === true) {
-                    context.fillStyle = "#FF0000"
+                    context.fillStyle = "#DE3C4B"
                 } else {
-                    context.fillStyle = "#000000"
+                    context.fillStyle = "#FFFFFF"
                 }
                 
                 context.fillRect(xValue, yValue, 10, 10);
@@ -45,19 +45,15 @@ export default function VisualisationView({ agents }: { agents: any[] }) {
 
     return (
         <Container>
-            <Canvas id="canvas" width="400" height="400"></Canvas>
+            <Canvas id="canvas" width="550" height="550"></Canvas>
         </Container>
     )
 }
 
 const Container = styled.div`
-    width: 100%;
-    height: 100%;
+  
 `;
 
 const Canvas = styled.canvas`
-    border: 1px solid lightgray;
-    border-radius: 5px;
-
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.05);
 `;

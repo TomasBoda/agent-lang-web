@@ -37,7 +37,7 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
                 .replace(functionsRegex, '<mark class="highlight-function">$&</mark>')
                 .replace(booleansRegex, '<mark class="highlight-boolean">$&</mark>')
                 .replace(logicalRegex, '<mark class="highlight-logical">$&</mark>')
-                .replace(numbersRegex, '<mark class="highlight-number">$&</mark>');;
+                .replace(numbersRegex, '<mark class="highlight-number">$&</mark>');
             
                 if (isIE) text = text.replace(/ /g, ' <wbr>');
 
@@ -85,18 +85,6 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
             event.target.setSelectionRange(newCursorPosition, newCursorPosition);
         }
 
-        if (event.key === "Enter") {
-            if (value[selectionStart - 1] === "{") {
-                event.preventDefault();
-                
-                const updatedValue = value.substring(0, selectionStart) + '\n\n}' + value.substring(selectionEnd);
-                const newCursorPosition = selectionStart + 1;
-    
-                event.target.value = updatedValue;
-                event.target.setSelectionRange(newCursorPosition, newCursorPosition);
-            }
-        }
-
         if (event.key === "(") {
             event.preventDefault();
                 
@@ -127,30 +115,23 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
 
 const Container = styled.div`
     width: 100%;
-    height: 400px;
+    height: 100%;
 
     display: block;
     margin: 0 auto;
     transform: translateZ(0);
     -webkit-text-size-adjust: none;
-
-    border: 1px solid lightgray;
-    border-radius: 5px;
-
-    background-color: white;
 `;
 
 const Backdrop = styled.div`
     width: 100%;
-    height: 400px;
+    height: 100%;
 
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     overflow: auto;
     pointer-events: none;
     transition: transform 1s;
-
-    border-radius: 5px;
 
     &::-webkit-scrollbar {
         display: none;
@@ -161,8 +142,9 @@ const Highlights = styled.div`
     width: 100%;
 
     padding: 20px;
-    font: 15px/30px 'Poppins', sans-serif;
-    letter-spacing: 1px;
+    font: 18px/30px 'Ubuntu Mono', monospace;
+    font-weight: 400;
+    letter-spacing: 0;
 
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -171,18 +153,19 @@ const Highlights = styled.div`
 
 const TextArea = styled.textarea`
     width: 100%;
-    height: 400px;
-    
-    color: black;
-    font: 15px/30px 'Poppins', sans-serif;
-    letter-spacing: 1px;
+    height: 100%;
+  
+    color: rgb(220, 220, 220);
+    font: 18px/30px 'Ubuntu Mono', monospace;
+    font-weight: 400;
+    letter-spacing: 0;
   
     padding: 20px;
     margin: 0;
 
     display: block;
     position: absolute;
-    z-index: 2;
+    z-index: 1;
     background-color: transparent;
     overflow: auto;
     resize: none;
