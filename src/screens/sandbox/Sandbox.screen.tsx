@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import VisualisationView from "./Visualisation.view";
 import { useEffect, useState } from "react";
-import {ButtonContrast, InputField, PageWrapper} from "@/src/components/Components.styles";
+import {Button, InputField} from "@/src/components/Components.styles";
 import CodeEditor from "@/src/screens/sandbox/CodeEditor.component";
 import {Subscription} from "rxjs";
 import {Interpreter, InterpreterConfiguration} from "@/agent-lang-interpreter";
@@ -102,17 +102,8 @@ export default function SandboxScreen() {
                     <InputField type="text" disabled={running} value={delay} onChange={e => e.target.value.trim() === "" ? setDelay(0) : setDelay(parseInt(e.target.value))} pattern="[0-9]*" />
                 </Status>
 
-                <ButtonContrast style={{ margin: 20, marginTop: 0 }} href="" onClick={() => setRunning(previous => !previous)}>{running ? "Stop" : "Run"}</ButtonContrast>
+                <Button style={{ margin: 20, marginTop: 0 }} href="" onClick={() => setRunning(previous => !previous)}>{running ? "Stop" : "Run"}</Button>
             </Right>
-
-            {/*
-            <PageWrapper>
-                <Content>
-                    <CodeView updateAgents={updateAgents} />
-                    <VisualisationView agents={agents} />
-                </Content>
-            </PageWrapper>
-            */}
         </Container>
     )
 }

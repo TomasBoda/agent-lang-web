@@ -1,7 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
-import {GradientBackground} from "@/src/components/Components.styles";
 
 export default function Transition() {
 
@@ -23,7 +22,6 @@ export default function Transition() {
 
     const handleRouteChangeComplete = (url: string): void => {
         setTimeout(hideTransition, 100);
-        //hideTransition();
     }
 
     return (
@@ -54,8 +52,8 @@ export function hideTransition(): void {
 }
 
 const Container = styled.div`
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    top: 0;
     left: 0;
   
     width: 100vw;
@@ -87,5 +85,5 @@ const Progress = styled.div`
     animation: ${animation} 700ms infinite linear;
     transform-origin: 0 50%;
 
-    background-color: #2188ff;
+    background-color: #DE3C4B;
 `;
