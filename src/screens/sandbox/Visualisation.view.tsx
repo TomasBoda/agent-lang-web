@@ -28,16 +28,15 @@ export default function VisualisationView({ agents }: { agents: any[] }) {
                 const y: RuntimeValue = variables["y"] as unknown as RuntimeValue;
                 const coloured: RuntimeValue = variables["coloured"] as unknown as RuntimeValue;
 
-                const xValue = x.value;
-                const yValue = y.value;
+                const xValue = x?.value;
+                const yValue = y?.value;
                 const colouredValue = coloured?.value ?? false;
 
-                if (colouredValue === true) {
-                    context.fillStyle = "#DE3C4B"
-                } else {
-                    context.fillStyle = "#FFFFFF"
+                if (!xValue || !yValue) {
+                    continue;
                 }
-                
+
+                context.fillStyle = colouredValue ? "#DE3C4B" : "#FFFFFF";
                 context.fillRect(xValue, yValue, 10, 10);
             }
         }
