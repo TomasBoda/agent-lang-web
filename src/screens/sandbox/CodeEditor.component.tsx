@@ -175,7 +175,6 @@ const TextArea = styled.textarea`
     outline: none;
 
     border: none;
-    border-radius: 5px;
 
     &::-webkit-scrollbar {
         display: none;

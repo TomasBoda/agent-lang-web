@@ -30,7 +30,7 @@ export default function VisualisationView({ agents }: { agents: any[] }) {
 
                 const xValue = x.value;
                 const yValue = y.value;
-                const colouredValue = coloured.value;
+                const colouredValue = coloured?.value ?? false;
 
                 if (colouredValue === true) {
                     context.fillStyle = "#DE3C4B"
@@ -43,17 +43,12 @@ export default function VisualisationView({ agents }: { agents: any[] }) {
         }
     }
 
-    return (
-        <Container>
-            <Canvas id="canvas" width="550" height="550"></Canvas>
-        </Container>
-    )
+    return <Canvas id="canvas" width="550" height="550"></Canvas>;
 }
 
-const Container = styled.div`
-  
-`;
 
 const Canvas = styled.canvas`
     background-color: rgba(255, 255, 255, 0.05);
+
+    border-radius: 3px;
 `;

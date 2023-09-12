@@ -62,16 +62,6 @@ export default function SandboxScreen() {
 
     return (
         <Container>
-            <Left>
-                <Toolbar>
-                    <ToolbarHeading>Example programs:</ToolbarHeading>
-
-                    {Examples.ALL.map(example => <ToolbarItem onClick={() => setCode(example.code)}>{example.label}</ToolbarItem>)}
-                </Toolbar>
-
-                <CodeEditor code={code} setCode={setCode} />
-            </Left>
-
             <Right>
                 <VisualisationView agents={agents} />
 
@@ -84,8 +74,18 @@ export default function SandboxScreen() {
                     <InputField type="text" disabled={running} value={delay} onChange={e => e.target.value.trim() === "" ? setDelay(0) : setDelay(parseInt(e.target.value))} pattern="[0-9]*" />
                 </Status>
 
-                <Button style={{ margin: 20, marginTop: 0 }} href="" onClick={() => setRunning(previous => !previous)}>{running ? "Stop" : "Run"}</Button>
+                <Button href="" onClick={() => setRunning(previous => !previous)}>{running ? "Stop" : "Run"}</Button>
             </Right>
+
+            <Left>
+                <Toolbar>
+                    <ToolbarHeading>Example programs:</ToolbarHeading>
+
+                    {Examples.ALL.map(example => <ToolbarItem onClick={() => setCode(example.code)}>{example.label}</ToolbarItem>)}
+                </Toolbar>
+
+                <CodeEditor code={code} setCode={setCode} />
+            </Left>
         </Container>
     )
 }
@@ -146,11 +146,13 @@ const ToolbarItem = styled.div`
 `;
 
 const Right = styled.div`
-  width: 550px;
+  width: 610px;
   
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  
+  padding: 30px;
   
   background-color: black;
 `;
@@ -159,9 +161,6 @@ const Error = styled.span`
   color: #DE3C4B;
   font-size: 16px;
   font-weight: 400;
-  
-  margin: 20px;
-  margin-bottom: 0px;
 `;
 
 const Status = styled.div`
@@ -170,8 +169,8 @@ const Status = styled.div`
     gap: 10px;
 
     align-items: center;
-
-    margin: 20px;
+  
+    margin: 20px 0px;
 `;
 
 const Label = styled.p`
