@@ -38,12 +38,7 @@ mark.highlight-keyword {
 
 mark.highlight-number {
   background-color: #0A1128;
-  color: #3689de;
-}
-
-mark.highlight-operator {
-  background-color: #0A1128;
-  color: #3689de;
+  color: #8ebcec;
 }
 
 mark.highlight-function {

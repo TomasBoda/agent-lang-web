@@ -26,13 +26,13 @@ export default function VisualisationView({ agents }: { agents: any[] }) {
                 
                 const x: RuntimeValue = variables["x"] as unknown as RuntimeValue;
                 const y: RuntimeValue = variables["y"] as unknown as RuntimeValue;
-                const alive: RuntimeValue = variables["alive"] as unknown as RuntimeValue;
+                const coloured: RuntimeValue = variables["coloured"] as unknown as RuntimeValue;
 
                 const xValue = x.value;
                 const yValue = y.value;
-                const aliveValue = alive.value;
+                const colouredValue = coloured.value;
 
-                if (aliveValue === true) {
+                if (colouredValue === true) {
                     context.fillStyle = "#DE3C4B"
                 } else {
                     context.fillStyle = "#FFFFFF"

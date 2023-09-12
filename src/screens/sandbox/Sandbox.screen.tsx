@@ -5,38 +5,12 @@ import {Button, InputField} from "@/src/components/Components.styles";
 import CodeEditor from "@/src/screens/sandbox/CodeEditor.component";
 import {Subscription} from "rxjs";
 import {Interpreter, InterpreterConfiguration} from "@/agent-lang-interpreter";
+import {Examples} from "@/src/lib/examples";
 
 export default function SandboxScreen() {
 
     const [agents, setAgents] = useState<any[]>([]);
-    const [code, setCode] = useState(`agent person 30 {
-        const speed = 3;
-        variable angle: random(0, 2 * pi()) = angle + choice(-0.1, 0.1);
-
-        dynamic shouldStay = prob(0.5);
-    
-        dynamic xNew = (x + speed * cos(angle)) % 600;
-        dynamic yNew = (y + speed * sin(angle)) % 600;
-    
-        variable x: random(50, 550) = if shouldStay then x else xNew;
-        variable y: random(50, 550) = if shouldStay then y else yNew;
-    
-        const distance = 20;
-    
-        dynamic people = agents(person);
-        dynamic closePeople = filter(people => p => sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y)) <= distance);
-        dynamic closeInfected = filter(closePeople => c => c.infected == true);
-    
-        const timespan = 200;
-        variable remaining: timespan = if infected then remaining - 1 else timespan;
-
-        dynamic shouldInfect = prob(0.4);
-    
-        variable infected: prob(0.5) = (infected and remaining > 0) or (count(closeInfected) > 0 and shouldInfect);
-    
-        variable alive: false = infected;
-}
-    `);
+    const [code, setCode] = useState("");
 
     const [running, setRunning] = useState(false);
     const [error, setError] = useState("");
@@ -57,7 +31,7 @@ export default function SandboxScreen() {
             setError("");
 
             const interpreter: Interpreter = new Interpreter();
-            const config: InterpreterConfiguration = { steps, delay };
+            const config: InterpreterConfiguration = { steps, delay, width: 550, height: 550 };
 
             subscription = interpreter.interpret(code, config).subscribe(output => {
                 if (output.status.code !== 0) {
@@ -89,11 +63,19 @@ export default function SandboxScreen() {
     return (
         <Container>
             <Left>
+                <Toolbar>
+                    <ToolbarHeading>Example programs:</ToolbarHeading>
+
+                    {Examples.ALL.map(example => <ToolbarItem onClick={() => setCode(example.code)}>{example.label}</ToolbarItem>)}
+                </Toolbar>
+
                 <CodeEditor code={code} setCode={setCode} />
             </Left>
 
             <Right>
                 <VisualisationView agents={agents} />
+
+                {!running && error !== "" && <Error>{error}</Error>}
 
                 <Status>
                     <Label>Step</Label>
@@ -126,6 +108,43 @@ const Left = styled.div`
   background-color: #0A1128;
 `;
 
+const Toolbar = styled.div`
+  width: 100%;
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  padding: 15px;
+  
+  background-color: rgba(255, 255, 255, 0.05);
+`;
+
+const ToolbarHeading = styled.h3`
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  
+  margin-right: 20px;
+`;
+
+const ToolbarItem = styled.div`
+  color: white;
+  font-size: 13px;
+  
+  padding: 10px 15px;
+  margin-right: 15px;
+  
+  background-color: rgba(255, 255, 255, 0.1);
+  
+  transition: all 100ms;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+`;
+
 const Right = styled.div`
   width: 550px;
   
@@ -134,6 +153,15 @@ const Right = styled.div`
   align-items: flex-start;
   
   background-color: black;
+`;
+
+const Error = styled.span`
+  color: #DE3C4B;
+  font-size: 16px;
+  font-weight: 400;
+  
+  margin: 20px;
+  margin-bottom: 0px;
 `;
 
 const Status = styled.div`
@@ -154,12 +182,4 @@ const Label = styled.p`
 
     margin: 0;
     padding: 0;
-`;
-
-const Error = styled.p`
-    color: #d04141;
-    font-size: 15px;
-    line-height: 100%;
-
-    margin-top: 20px;
 `;

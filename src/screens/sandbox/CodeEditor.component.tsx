@@ -1,54 +1,61 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { styled } from "styled-components"
 import $ from "jquery";
 
 export default function CodeEditor({ code, setCode }: { code: string; setCode: (code: string) => void }) {
 
+    const syntax = {
+        keywords: ["agent", "const", "variable", "dynamic", "if", "else", "then"],
+        functions: ["width", "height", "min", "max", "agents", "empty", "pi", "prob", "count", "filter", "step", "random", "choice", "sqrt", "abs", "floor", "ceil", "round", "sin", "cos", "tan"],
+        booleans: ["true", "false"],
+        logical: ["and", "or"],
+    };
+
     useEffect(() => {
+        provideCode(code);
         initializeSyntaxHighlighting();
+        highlight();
     }, []);
 
-    function initializeSyntaxHighlighting(): void {
-        let $backdrop = $('#backdrop');
+    useEffect(() => {
+        provideCode(code);
+        highlight();
+    }, [code]);
+
+    function getHighlightedCode(text: string) {
+        const keywordsRegex = new RegExp(`\\b(?:${syntax.keywords.join('|')})\\b`, 'g');
+        const functionsRegex = new RegExp(`\\b(?:${syntax.functions.join('|')})\\b`, 'g');
+        const booleansRegex = new RegExp(`\\b(?:${syntax.booleans.join('|')})\\b`, 'g');
+        const logicalRegex = new RegExp(`\\b(?:${syntax.logical.join('|')})\\b`, 'g');
+        const numbersRegex = /-?\d+(\.\d+)?/g;
+
+        text = text.replace(/\n$/g, '\n\n')
+            .replace(keywordsRegex, '<mark class="highlight-keyword">$&</mark>')
+            .replace(functionsRegex, '<mark class="highlight-function">$&</mark>')
+            .replace(booleansRegex, '<mark class="highlight-boolean">$&</mark>')
+            .replace(logicalRegex, '<mark class="highlight-logical">$&</mark>')
+            .replace(numbersRegex, '<mark class="highlight-number">$&</mark>');
+
+        return text;
+    }
+
+    function highlight(): void {
         let $highlights = $('#highlights');
         let $textarea = $('#textarea');
 
-        $textarea.val(code);
+        let text = $textarea.val();
+        let highlightedText = getHighlightedCode(text as string);
+        $highlights.html(highlightedText);
+    }
 
-        let ua = window.navigator.userAgent.toLowerCase();
-        let isIE = !!ua.match(/msie|trident\/7|edge/);
-        let isWinPhone = ua.indexOf('windows phone') !== -1;
-        let isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
+    function provideCode(source: string): void {
+        let $textarea = $('#textarea');
+        $textarea.val(source);
+    }
 
-        function applyHighlights(text: string) {
-            const keywords = ["agent", "const", "variable", "dynamic", "if", "else", "then"];
-            const functions = ["min", "max", "agents", "empty", "pi", "prob", "count", "filter", "step", "random", "choice", "sqrt", "abs", "floor", "ceil", "round", "sin", "cos", "tan"];
-            const booleans = ["true", "false"];
-            const logical = ["and", "or"];
-
-            const keywordsRegex = new RegExp(`\\b(?:${keywords.join('|')})\\b`, 'g');
-            const functionsRegex = new RegExp(`\\b(?:${functions.join('|')})\\b`, 'g');
-            const booleansRegex = new RegExp(`\\b(?:${booleans.join('|')})\\b`, 'g');
-            const logicalRegex = new RegExp(`\\b(?:${logical.join('|')})\\b`, 'g');
-            const numbersRegex = /-?\d+(\.\d+)?/g;
-
-            text = text.replace(/\n$/g, '\n\n')
-                .replace(keywordsRegex, '<mark class="highlight-keyword">$&</mark>')
-                .replace(functionsRegex, '<mark class="highlight-function">$&</mark>')
-                .replace(booleansRegex, '<mark class="highlight-boolean">$&</mark>')
-                .replace(logicalRegex, '<mark class="highlight-logical">$&</mark>')
-                .replace(numbersRegex, '<mark class="highlight-number">$&</mark>');
-            
-                if (isIE) text = text.replace(/ /g, ' <wbr>');
-
-            return text;
-        }
-
-        function handleInput() {
-            let text = $textarea.val();
-            let highlightedText = applyHighlights(text as string);
-            $highlights.html(highlightedText);
-        }
+    function initializeSyntaxHighlighting(): void {
+        let $backdrop = $('#backdrop');
+        let $textarea = $('#textarea');
     
         function handleScroll() {
             let scrollTop = $textarea.scrollTop();
@@ -57,19 +64,12 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
             let scrollLeft = $textarea.scrollLeft();
             $backdrop.scrollLeft(scrollLeft as number);  
         }
-
-        function fixIOS() {
-            $highlights.css({ 'padding-left': '+=3px', 'padding-right': '+=3px' });
-        }
     
         function bindEvents() {
-            $textarea.on({ 'input': handleInput, 'scroll': handleScroll });
+            $textarea.on({ 'input': highlight, 'scroll': handleScroll });
         }
-
-        if (isIOS) fixIOS();
     
         bindEvents();
-        handleInput();
     }
 
     function handleTabIdent(event: any): void {
@@ -94,6 +94,8 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
             event.target.value = updatedValue;
             event.target.setSelectionRange(newCursorPosition, newCursorPosition);
         }
+
+        highlight();
     }
 
     return (
