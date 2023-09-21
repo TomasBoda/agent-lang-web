@@ -62,7 +62,7 @@ export default function SandboxScreen() {
 
     return (
         <Container>
-            <Right>
+            <Panel style={{ padding: 30, backgroundColor: "black" }}>
                 <VisualisationView agents={agents} />
 
                 {!running && error !== "" && <Error>{error}</Error>}
@@ -75,9 +75,9 @@ export default function SandboxScreen() {
                 </Status>
 
                 <Button href="" onClick={() => setRunning(previous => !previous)}>{running ? "Stop" : "Run"}</Button>
-            </Right>
+            </Panel>
 
-            <Left>
+            <Panel>
                 <Toolbar>
                     <ToolbarHeading>Example programs:</ToolbarHeading>
 
@@ -85,7 +85,7 @@ export default function SandboxScreen() {
                 </Toolbar>
 
                 <CodeEditor code={code} setCode={setCode} />
-            </Left>
+            </Panel>
         </Container>
     )
 }
@@ -94,16 +94,17 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: 610px 1fr;
 `;
 
-const Left = styled.div`
-  flex: 1;
+const Panel = styled.div`
+  width: 100%;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
   
   background-color: #0A1128;
 `;
@@ -143,18 +144,6 @@ const ToolbarItem = styled.div`
   &:hover {
     background-color: rgba(255, 255, 255, 0.15);
   }
-`;
-
-const Right = styled.div`
-  width: 610px;
-  
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  
-  padding: 30px;
-  
-  background-color: black;
 `;
 
 const Error = styled.span`
