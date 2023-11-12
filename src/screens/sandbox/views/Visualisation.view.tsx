@@ -42,9 +42,16 @@ export default function VisualisationView({ agents }: { agents: any[] }) {
         }
     }
 
-    return <Canvas id="canvas" width="550" height="550"></Canvas>;
+    return (
+        <Container>
+            <Canvas id="canvas" width="500" height="500"></Canvas>;
+        </Container>
+    );
 }
 
+const Container = styled.div`
+    
+`;
 
 const Canvas = styled.canvas`
     background-color: rgba(255, 255, 255, 0.05);

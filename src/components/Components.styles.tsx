@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styled from "styled-components";
 
 export const PageContainer = styled.div`
@@ -12,31 +11,6 @@ export const PageContainer = styled.div`
 export const PageWrapper = styled.div`
     width: 100%;
     max-width: 1500px;
-`;
-
-export const Button = styled(Link)`
-  display: inline-block;
-
-  color: white;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 100%;
-
-  text-decoration: none;
-
-  padding: 15px 30px;
-
-  border-radius: 5px;
-
-  cursor: pointer;
-  transition: all 100ms;
-  border: 2px solid transparent;
-
-  background-color: #DE3C4B;
-
-  &:hover {
-    background-color: #b02c3a;
-  }
 `;
 
 export const InputField = styled.input`
@@ -56,4 +30,8 @@ export const InputField = styled.input`
     &:disabled {
         cursor: not-allowed;
     }
+`;
+
+export const Spacer = styled.div`
+    flex: 1;
 `;

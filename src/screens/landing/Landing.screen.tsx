@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {Button} from "@/src/components/Components.styles";
 import Link from "next/link";
+import Button from "@/src/components/Button.component";
 
 export default function LandingScreen() {
 
@@ -17,8 +17,8 @@ export default function LandingScreen() {
             <Right>
                 <Heading>Get started</Heading>
                 <ButtonPanel>
-                    <Button color="white" href="/sandbox">Try for free</Button>
-                    <Button color="white" href="/documentation">Documentation</Button>
+                    <Button size="large" href="/sandbox">Try for free</Button>
+                    <Button size="large" href="/documentation">Documentation</Button>
                 </ButtonPanel>
 
                 <Link href="https://github.com/TomasBoda/agent-lang-interpreter">
