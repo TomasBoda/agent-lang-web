@@ -5,9 +5,6 @@ import Toolbar from "./Toolbar.component";
 import CodeEditor from "../views/CodeEditor.view";
 import { useCodeService } from "../services/code.service";
 import Button from "@/src/components/Button.component";
-import { Subscription } from "rxjs";
-import { Interpreter, InterpreterConfiguration } from "@/agent-lang-interpreter/src";
-import { InputField } from "@/src/components/Components.styles";
 import Visualisation from "../views/Visualisation.view";
 
 export default function Editor() {
