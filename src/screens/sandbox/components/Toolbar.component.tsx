@@ -1,13 +1,26 @@
 import styled from "styled-components";
+import { useViewService } from "../services";
+import { useEffect, useState } from "react";
 
-export default function Toolbar({ view, setView }: { view: number, setView: (view: number) => void }) {
+export default function Toolbar() {
 
+    const [view, setView] = useState(0);
+    const viewService = useViewService();
     const views: string[] = [ "Code", "Spreadsheet", "Visualisation" ];
+
+    useEffect(() => {
+        console.log(viewService);
+        viewService?.getView().subscribe(data => setView(data));
+    }, [viewService]);
+
+    function changeView(view: number): void {
+        viewService?.setView(view);
+    }
 
     return (
         <Container>
             {views.map((item, index) =>
-                <Item $selected={index === view} onClick={() => setView(index)}>{item}</Item>
+                <Item $selected={index === view} onClick={() => changeView(index)}>{item}</Item>
             )}
         </Container>
     )

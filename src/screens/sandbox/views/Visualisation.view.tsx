@@ -4,17 +4,26 @@ import { InputField } from "@/src/components/Components.styles";
 import { useEffect, useState } from "react";
 import { Subscription } from "rxjs";
 import styled from "styled-components";
+import { useCodeService } from "../services";
 
 export default function Visualisation({ code }: { code: string }) {
+
+    const codeService = useCodeService();
 
     let subscription: Subscription;
 
     const [agents, setAgents] = useState<any[]>([]);
     const [running, setRunning] = useState(false);
+
     const [error, setError] = useState("");
+
     const [step, setStep] = useState(0);
     const [steps, setSteps] = useState(10000);
     const [delay, setDelay] = useState(20);
+
+    useEffect(() => {
+        subscribeToCodeService();
+    }, []);
 
     useEffect(() => {
         interpret();
@@ -24,6 +33,14 @@ export default function Visualisation({ code }: { code: string }) {
     useEffect(() => {
         render();
     }, [agents]);
+
+    function subscribeToCodeService(): void {
+        codeService?.getCode().subscribe(data => {
+            setAgents([]);
+            setSteps(data.steps);
+            setDelay(data.delay);
+        });
+    }
 
     function interpret(): void {
         if (running) {
@@ -91,33 +108,46 @@ export default function Visualisation({ code }: { code: string }) {
 
     return (
         <Container>
-            <CanvasContainer>
-                <Canvas id="canvas" width="500" height="500"></Canvas>;
-            </CanvasContainer>
+            <Panel>
+                <CanvasContainer>
+                    <Canvas id="canvas" width="500" height="500"></Canvas>;
+                </CanvasContainer>
 
-            {!running && error !== "" && <Error>{error}</Error>}
+                {!running && error !== "" && <Error>{error}</Error>}
+            </Panel>
 
-            <Status>
-                <Label>Step</Label>
-                <InputField type="text" disabled={running} value={running ? step + " / " + steps : steps} onChange={e => e.target.value.trim() === "" ? setSteps(0) : setSteps(parseInt(e.target.value))} pattern="[0-9]*" />
-                <Label>Delay</Label>
-                <InputField type="text" disabled={running} value={delay} onChange={e => e.target.value.trim() === "" ? setDelay(0) : setDelay(parseInt(e.target.value))} pattern="[0-9]*" />
-            </Status>
+            <Panel>
+                <Status>
+                    <Label>Step</Label>
+                    <InputField type="text" disabled={running} value={running ? step + " / " + steps : steps} onChange={e => e.target.value.trim() === "" ? setSteps(0) : setSteps(parseInt(e.target.value))} pattern="[0-9]*" />
+                    <Label>Delay</Label>
+                    <InputField type="text" disabled={running} value={delay} onChange={e => e.target.value.trim() === "" ? setDelay(0) : setDelay(parseInt(e.target.value))} pattern="[0-9]*" />
+                </Status>
 
-            <Button size="small" onClick={() => setRunning(previous => !previous)}>{running ? "Stop" : "Run"}</Button>
+                <Button size="small" onClick={() => setRunning(previous => !previous)}>{running ? "Stop" : "Run"}</Button>
+            </Panel>
         </Container>
     );
 }
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 500px 1fr;
+    gap: 30px;
     align-items: flex-start;
 
     padding: 20px;
 `;
 
-const CanvasContainer = styled.div``;
+const Panel = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+`;
+
+const CanvasContainer = styled.div`
+    
+`;
 
 const Canvas = styled.canvas`
     background-color: rgba(255, 255, 255, 0.05);
@@ -129,8 +159,6 @@ const Error = styled.span`
   color: #DE3C4B;
   font-size: 14px;
   font-weight: 400;
-
-  margin-top: 10px;
 `;
 
 const Status = styled.div`
@@ -139,8 +167,8 @@ const Status = styled.div`
     gap: 10px;
 
     align-items: center;
-  
-    margin: 20px 0px;
+
+    margin-bottom: 20px;
 `;
 
 const Label = styled.p`

@@ -18,15 +18,17 @@ export const useCodeService = () => {
 
 export class CodeService {
 
-    private codeSubject: BehaviorSubject<CodeItem> =  new BehaviorSubject({ label: "", code: "" });
+    private static DEFAULT: CodeItem = { label: "", code: "", steps: 10000, delay: 20 };
+
+    private codeSubject: BehaviorSubject<CodeItem> =  new BehaviorSubject(CodeService.DEFAULT);
     private codeObservable: Observable<CodeItem> = this.codeSubject.asObservable();
 
-    public setCode(label: string, code: string): void {
-        this.codeSubject.next({ label, code });
+    public setCode(label: string, code: string, steps: number, delay: number): void {
+        this.codeSubject.next({ label, code, steps, delay });
     }
 
     public setEmpty(): void {
-        this.codeSubject.next({ label: "", code: "" });
+        this.codeSubject.next(CodeService.DEFAULT);
     }
 
     public getCode(): Observable<CodeItem> {

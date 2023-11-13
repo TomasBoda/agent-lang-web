@@ -25,24 +25,29 @@ export class StorageService {
         this.next();
     }
     
-    public save(label: string, code: string): void {
-        localStorage.setItem("item-" + label, code);
+    public save(label: string, code: string, steps: number, delay: number): void {
+        const key = this.getKey(label);
+        const value: CodeItem = { label, code, steps, delay };
+
+        localStorage.setItem(key, JSON.stringify(value));
         this.next();
     }
 
     public remove(label: string) {
-        localStorage.removeItem("item-" + label);
+        const key = this.getKey(label);
+        localStorage.removeItem(key);
         this.next();
     }
 
     public get(label: string): CodeItem | undefined {
-        const code = localStorage.getItem("item-" + label);
+        const key = this.getKey(label);
+        const value = localStorage.getItem(key);
 
-        if (!code) {
+        if (!value) {
             return undefined;
         }
 
-        return { label: label.substring(5, label.length), code } as CodeItem;
+        return JSON.parse(value) as CodeItem;
     }
 
     public getAll(): Observable<CodeItem[]> {
@@ -55,10 +60,11 @@ export class StorageService {
 
         for (let i = 0; i < length; i++) {
             const label = localStorage.key(i) as string;
-            const code = localStorage.getItem(label) as string;
 
             if (label.includes("item-")) {
-                items.push({ label: label.substring(5, label.length), code });
+                const value = localStorage.getItem(label) as string;
+                console.log(value);
+                items.push(JSON.parse(value) as CodeItem);
             }
         }
 
@@ -67,5 +73,9 @@ export class StorageService {
 
     private next(): void {
         this.storageSubject.next(this.getAllItems());
+    }
+
+    private getKey(label: string): string {
+        return `item-${label}`;
     }
 }

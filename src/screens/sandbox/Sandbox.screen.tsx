@@ -1,13 +1,14 @@
 import { styled } from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar.component";
 import Editor from "./components/Editor.component";
-import { CodeProvider, CodeService, StorageProvider, StorageService } from "./services";
+import { CodeProvider, CodeService, StorageProvider, StorageService, ViewProvider, ViewService } from "./services";
 
 export default function SandboxScreen() {
 
     const storageService = new StorageService();
     const codeService = new CodeService();
+    const viewService = new ViewService();
 
     useEffect(() => {
         storageService.initialize();
@@ -16,10 +17,12 @@ export default function SandboxScreen() {
     return (
         <StorageProvider storageService={storageService}>
             <CodeProvider codeService={codeService}>
-                <Container>
-                    <Sidebar />
-                    <Editor />
-                </Container>
+                <ViewProvider viewService={viewService}>
+                    <Container>
+                        <Sidebar />
+                        <Editor />
+                    </Container>
+                </ViewProvider>
             </CodeProvider>
         </StorageProvider>
     )

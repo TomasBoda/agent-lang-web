@@ -6,26 +6,40 @@ import CodeEditor from "../views/CodeEditor.view";
 import { useCodeService } from "../services/code.service";
 import Button from "@/src/components/Button.component";
 import Visualisation from "../views/Visualisation.view";
+import { useViewService } from "../services";
 
 export default function Editor() {
 
     const storageService = useStorageService();
     const codeService = useCodeService();
+    const viewService = useViewService();
 
     const [label, setLabel] = useState("");
     const [code, setCode] = useState("");
+    const [steps, setSteps] = useState(0);
+    const [delay, setDelay] = useState(0);
+
     const [view, setView] = useState(0);
 
     useEffect(() => {
-        subscribe();
+        subscribeToCodeService();
     }, [codeService]);
 
-    function subscribe(): void {
+    useEffect(() => {
+        subscribeToViewService();
+    }, [viewService]);
+
+    function subscribeToCodeService(): void {
         codeService?.getCode().subscribe(data => {
             setLabel(data.label);
             setCode(data.code);
-            setView(0);
+            setSteps(data.steps);
+            setDelay(data.delay);
         });
+    }
+
+    function subscribeToViewService(): void {
+        viewService?.getView().subscribe(data => setView(data));
     }
 
     function save(): void {
@@ -33,7 +47,7 @@ export default function Editor() {
             return;
         }
 
-        storageService?.save(label, code);
+        storageService?.save(label, code, steps, delay);
     }
 
     function remove(): void {
@@ -49,7 +63,7 @@ export default function Editor() {
                 <Button size="small" onClick={() => remove()}>Remove</Button>
             </Edit>
 
-            <Toolbar view={view} setView={setView} />
+            <Toolbar />
             
             {view === 0 && <CodeEditor code={code} setCode={setCode} />}
             {view === 2 && <Visualisation code={code} />}
