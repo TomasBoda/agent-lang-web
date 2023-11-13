@@ -58,9 +58,9 @@ export default function Editor() {
     return (
         <Container>
             <Edit>
-                <LabelField type="text" value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Enter project label..." />
-                <Button size="small" onClick={() => save()}>Save</Button>
-                <Button size="small" onClick={() => remove()}>Remove</Button>
+                <LabelField className="step-3" type="text" value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Enter project label..." />
+                <Button className="step-5" size="small" onClick={() => save()}>Save</Button>
+                <Button className="step-6" size="small" onClick={() => remove()}>Remove</Button>
             </Edit>
 
             <Toolbar />

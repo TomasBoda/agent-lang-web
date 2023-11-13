@@ -16,7 +16,7 @@ export default function CodeEditor({ code, setCode }: { code: string; setCode: (
                     onValueChange={code => setCode(code)}
                     highlight={(code) => Language.highlightWithLineNumbers(code)}
                     tabSize={4}
-                    className="editor"
+                    className="editor step-4"
                     textareaClassName="editor-textarea"
                     style={editorStyle}
                 />

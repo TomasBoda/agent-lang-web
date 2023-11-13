@@ -3,13 +3,13 @@ import styled, { css } from "styled-components";
 
 type ButtonSizeType = "small" | "large";
 
-export default function Button({ children, size, href, onClick }: { children: any, size: ButtonSizeType, href?: string, onClick?: () => void }) {
+export default function Button({ children, size, href, onClick, className }: { children: any, size: ButtonSizeType, href?: string, onClick?: () => void, className?: string }) {
 
     if (href) {
-        return <LinkButton $size={size} href={href} onClick={onClick}>{children}</LinkButton>;
+        return <LinkButton className={className} $size={size} href={href} onClick={onClick}>{children}</LinkButton>;
     }
 
-    return <PlainButton $size={size} onClick={onClick}>{children}</PlainButton>;
+    return <PlainButton className={className} $size={size} onClick={onClick}>{children}</PlainButton>;
 }
 
 const PlainButton = styled.div<{ $size: ButtonSizeType }>`

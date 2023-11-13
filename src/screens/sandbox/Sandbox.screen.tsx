@@ -4,6 +4,12 @@ import Sidebar from "./components/Sidebar.component";
 import Editor from "./components/Editor.component";
 import { CodeProvider, CodeService, StorageProvider, StorageService, ViewProvider, ViewService } from "./services";
 
+import dynamic from "next/dynamic";
+const Tour = dynamic(
+  () => import("../../components/Tour.component"),
+  { ssr: false }
+);
+
 export default function SandboxScreen() {
 
     const storageService = new StorageService();
@@ -18,6 +24,7 @@ export default function SandboxScreen() {
         <StorageProvider storageService={storageService}>
             <CodeProvider codeService={codeService}>
                 <ViewProvider viewService={viewService}>
+                    <Tour />
                     <Container>
                         <Sidebar />
                         <Editor />
@@ -41,8 +48,6 @@ const Container = styled.div`
   grid-gap: 15px;
 
   padding: 15px;
-
-  background-color: rgb(240, 240, 240);
 
   background-color: black;
 `;

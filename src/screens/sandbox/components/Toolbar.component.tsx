@@ -20,7 +20,7 @@ export default function Toolbar() {
     return (
         <Container>
             {views.map((item, index) =>
-                <Item $selected={index === view} onClick={() => changeView(index)}>{item}</Item>
+                <Item className={index === 2 ? "step-7" : ""} $selected={index === view} onClick={() => changeView(index)}>{item}</Item>
             )}
         </Container>
     )

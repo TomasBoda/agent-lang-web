@@ -85,7 +85,7 @@ export default function Sidebar() {
             <Spacer />
 
             <Footer>
-                <Button size="small" onClick={() => reset()}>New simulation</Button>
+                <Button className="step-2" size="small" onClick={() => reset()}>New simulation</Button>
             </Footer>
         </Container>
     )
