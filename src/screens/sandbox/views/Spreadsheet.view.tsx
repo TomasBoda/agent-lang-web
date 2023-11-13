@@ -187,12 +187,14 @@ const Value = styled.div`
     align-items: center;
     justify-content: flex-start;
 
+    color: rgb(220, 220, 220);
     font-family: 'Menlo Regular', monospace !important;
-    font-size: 14px;
+    font-size: 13px;
 `;
 
 const Tag = styled.div`
-    font-size: 12px;
+    color: rgb(220, 220, 220);
+    font-size: 11px;
     font-weight: 600;
 
     padding: 4px 8px;
@@ -202,6 +204,7 @@ const Tag = styled.div`
 `;
 
 const Boolean = styled.div<{ $color: "green" | "red" }>`
+    color: white;
     font-family: 'Menlo Regular', monospace !important;
     font-size: 10px;
     font-weight: 700;
@@ -215,7 +218,7 @@ const Boolean = styled.div<{ $color: "green" | "red" }>`
 const Heading = styled.th`
     color: white;
     font-family: 'Menlo Regular', monospace !important;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
 
     white-space: nowrap;
