@@ -41,7 +41,7 @@ export default function Tour() {
 
     return (
         <Joyride
-            steps={steps}
+            steps={true ? [] : steps}
             continuous={true}
             showSkipButton={true}
             showProgress={false}
