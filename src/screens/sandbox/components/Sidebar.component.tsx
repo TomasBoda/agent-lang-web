@@ -5,12 +5,14 @@ import Button from "@/src/components/Button.component";
 import { useCodeService, useStorageService, useViewService } from "../services";
 import { CodeItem } from "../model";
 import Link from "next/link";
+import { useInterpreterService } from "../services/interpreter.service";
 
 export default function Sidebar() {
 
     const storageService = useStorageService();
     const codeService = useCodeService();
     const viewService = useViewService();
+    const interpreterService = useInterpreterService();
 
     const [items, setItems] = useState<CodeItem[]>([]);
 
@@ -30,12 +32,6 @@ export default function Sidebar() {
     function reset(): void {
         codeService?.setEmpty();
         viewService?.setView(0);
-    }
-
-    function start(item: CodeItem, event: any): void {
-        event.stopPropagation();
-        codeService?.setCode(item.label, item.code, item.steps, item.delay);
-        viewService?.setView(2);
     }
 
     function remove(item: CodeItem, event: any): void {
@@ -75,7 +71,6 @@ export default function Sidebar() {
                         {sort(items).map((item, index) =>
                             <Item key={index} onClick={() => select(item)}>
                                 {item.label}
-                                <Icon onClick={(e) => start(item, e)} src="/assets/icon-start.svg" />
                                 <Icon onClick={(e) => remove(item, e)} src="/assets/icon-remove.svg" />
                             </Item>
                         )}
@@ -144,7 +139,7 @@ const Item = styled.div`
     font-weight: 400;
 
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr auto;
     gap: 1px;
     align-items: center;
 

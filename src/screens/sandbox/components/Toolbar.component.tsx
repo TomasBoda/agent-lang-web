@@ -9,7 +9,6 @@ export default function Toolbar() {
     const views: string[] = [ "Code", "Spreadsheet", "Visualisation" ];
 
     useEffect(() => {
-        console.log(viewService);
         viewService?.getView().subscribe(data => setView(data));
     }, [viewService]);
 

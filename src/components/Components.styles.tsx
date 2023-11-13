@@ -19,6 +19,10 @@ export const InputField = styled.input`
     font-weight: 400;
     line-height: 100%;
 
+    font-family: 'Menlo Regular', monospace;
+
+    width: 120px;
+
     padding: 7px;
 
     background-color: rgba(255, 255, 255, 0.1);

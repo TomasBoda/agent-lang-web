@@ -1,34 +1,21 @@
-import { Interpreter, InterpreterConfiguration } from "@/agent-lang-interpreter/src";
-import Button from "@/src/components/Button.component";
-import { InputField } from "@/src/components/Components.styles";
 import { useEffect, useState } from "react";
-import { Subscription } from "rxjs";
 import styled from "styled-components";
 import { useCodeService } from "../services";
+import { useInterpreterService } from "../services/interpreter.service";
 
 export default function Visualisation({ code }: { code: string }) {
 
     const codeService = useCodeService();
-
-    let subscription: Subscription;
+    const interpreterService = useInterpreterService();
 
     const [agents, setAgents] = useState<any[]>([]);
     const [running, setRunning] = useState(false);
-
     const [error, setError] = useState("");
-
-    const [step, setStep] = useState(0);
-    const [steps, setSteps] = useState(10000);
-    const [delay, setDelay] = useState(20);
 
     useEffect(() => {
         subscribeToCodeService();
+        subscribeToInterpreterService();
     }, []);
-
-    useEffect(() => {
-        interpret();
-        return () => subscription?.unsubscribe();
-    }, [running]);
 
     useEffect(() => {
         render();
@@ -37,38 +24,19 @@ export default function Visualisation({ code }: { code: string }) {
     function subscribeToCodeService(): void {
         codeService?.getCode().subscribe(data => {
             setAgents([]);
-            setSteps(data.steps);
-            setDelay(data.delay);
         });
     }
 
-    function interpret(): void {
-        if (running) {
-            setAgents([]);
-            setError("");
+    function subscribeToInterpreterService(): void {
+        interpreterService?.getRunning().subscribe(running => setRunning(running));
 
-            const interpreter: Interpreter = new Interpreter();
-            const config: InterpreterConfiguration = { steps, delay, width: 500, height: 500 };
+        interpreterService?.getOutput().subscribe(output => {
+            if (output.status.code !== 0) {
+                setError(output.status.message ?? "Unknown error");
+            }
 
-            subscription = interpreter.interpret(code, config).subscribe(output => {
-                if (output.status.code !== 0) {
-                    const errorMessage = output.status.message ?? "Unknown error";
-
-                    setError(errorMessage);
-                    setRunning(false);
-                }
-
-                const currentAgents = output.output?.agents ?? [];
-                const currentStep = output.output?.step ?? 0;
-
-                setAgents(currentAgents);
-                setStep(currentStep);
-
-                if (currentStep === steps - 1) {
-                    setRunning(false);
-                }
-            });
-        }
+            setAgents(output.output?.agents ?? []);
+        });
     }
 
     function render(): void {
@@ -108,24 +76,11 @@ export default function Visualisation({ code }: { code: string }) {
 
     return (
         <Container>
-            <Panel>
-                <CanvasContainer>
-                    <Canvas id="canvas" width="500" height="500"></Canvas>;
-                </CanvasContainer>
+            <CanvasContainer>
+                <Canvas id="canvas" width="500" height="500"></Canvas>;
+            </CanvasContainer>
 
-                {!running && error !== "" && <Error>{error}</Error>}
-            </Panel>
-
-            <Panel>
-                <Status>
-                    <Label>Step</Label>
-                    <InputField type="text" disabled={running} value={running ? step + " / " + steps : steps} onChange={e => e.target.value.trim() === "" ? setSteps(0) : setSteps(parseInt(e.target.value))} pattern="[0-9]*" />
-                    <Label>Delay</Label>
-                    <InputField type="text" disabled={running} value={delay} onChange={e => e.target.value.trim() === "" ? setDelay(0) : setDelay(parseInt(e.target.value))} pattern="[0-9]*" />
-                </Status>
-
-                <Button size="small" onClick={() => setRunning(previous => !previous)}>{running ? "Stop" : "Run"}</Button>
-            </Panel>
+            {!running && error !== "" && <Error>{error}</Error>}
         </Container>
     );
 }
@@ -134,14 +89,6 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: 500px 1fr;
     gap: 30px;
-    align-items: flex-start;
-
-    padding: 20px;
-`;
-
-const Panel = styled.div`
-    display: flex;
-    flex-direction: column;
     align-items: flex-start;
 `;
 
@@ -159,24 +106,4 @@ const Error = styled.span`
   color: #DE3C4B;
   font-size: 14px;
   font-weight: 400;
-`;
-
-const Status = styled.div`
-    display: grid;
-    grid-template-columns: 60px auto;
-    gap: 10px;
-
-    align-items: center;
-
-    margin-bottom: 20px;
-`;
-
-const Label = styled.p`
-    color: white;
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 100%;
-
-    margin: 0;
-    padding: 0;
 `;

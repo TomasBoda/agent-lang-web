@@ -63,7 +63,6 @@ export class StorageService {
 
             if (label.includes("item-")) {
                 const value = localStorage.getItem(label) as string;
-                console.log(value);
                 items.push(JSON.parse(value) as CodeItem);
             }
         }

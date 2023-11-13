@@ -5,6 +5,7 @@ import Editor from "./components/Editor.component";
 import { CodeProvider, CodeService, StorageProvider, StorageService, ViewProvider, ViewService } from "./services";
 
 import dynamic from "next/dynamic";
+import { InterpreterProvider, InterpreterService } from "./services/interpreter.service";
 const Tour = dynamic(
   () => import("../../components/Tour.component"),
   { ssr: false }
@@ -12,23 +13,40 @@ const Tour = dynamic(
 
 export default function SandboxScreen() {
 
+    return (
+        <ServiceProvider>
+            <Tour />
+            <Container>
+                <Sidebar />
+                <Editor />
+            </Container>
+        </ServiceProvider>
+    )
+}
+
+const ServiceProvider = ({ children }: { children: any }) => {
     const storageService = new StorageService();
     const codeService = new CodeService();
     const viewService = new ViewService();
+    const interpreterService = new InterpreterService();
 
     useEffect(() => {
         storageService.initialize();
+
+        viewService?.getView().subscribe(view => {
+            if (view === 0) {
+                interpreterService?.stop();
+            }
+        });
     }, []);
 
     return (
         <StorageProvider storageService={storageService}>
             <CodeProvider codeService={codeService}>
                 <ViewProvider viewService={viewService}>
-                    <Tour />
-                    <Container>
-                        <Sidebar />
-                        <Editor />
-                    </Container>
+                    <InterpreterProvider interpreterService={interpreterService}>
+                        {children}
+                    </InterpreterProvider>
                 </ViewProvider>
             </CodeProvider>
         </StorageProvider>
