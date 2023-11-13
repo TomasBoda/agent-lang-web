@@ -7,7 +7,7 @@ export default function LandingScreen() {
     return (
         <Container>
             <Left>
-                <Header>
+                <Header href="/">
                     <span style={{ fontWeight: 700 }}>Agent</span>Lang
                 </Header>
 
@@ -51,7 +51,7 @@ const Left = styled.div`
   background-color: #0A1128;
 `;
 
-const Header = styled.div`
+const Header = styled(Link)`
   position: absolute;
   left: 0;
   top: 0;
@@ -62,6 +62,7 @@ const Header = styled.div`
   font-size: 20px;
   font-weight: 200;
   line-height: 100%;
+  text-decoration: none;
 `;
 
 const Title = styled.h1`

@@ -3,8 +3,39 @@ import SidePanel from "./Sidepanel.component";
 import Breadcrumbs from "@/src/components/Breadcrumbs.component";
 import {PageWrapper} from "@/src/components/Components.styles";
 import {Breadcrumb} from "@/src/lib/documentation";
+import { useEffect, useState } from "react";
+import Language from "@/src/language/language";
+import { useRouter } from "next/router";
 
 export default function DocumentationScreen({ html, breadcrumbs }: { html: string, breadcrumbs: Breadcrumb[] }) {
+
+    const [loaded, setLoaded] = useState(false);
+    const [content, setContent] = useState("");
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if (router.asPath === "/documentation/introduction/installation-and-usage") {
+            setContent(html);
+            setLoaded(true);
+            return;
+        }
+
+        Language.initialize();
+        
+        const container = document.createElement("div");
+        container.innerHTML = html;
+
+        const blocks = container.querySelectorAll("pre");
+
+        for (let i = 0; i < blocks.length; i++) {
+            const code = blocks[i].innerText;
+            blocks[i].innerHTML = Language.highlight(code);
+        }
+
+        setContent(container.innerHTML);
+        setLoaded(true);
+    }, [html]);
 
     return (
         <Container>
@@ -13,7 +44,7 @@ export default function DocumentationScreen({ html, breadcrumbs }: { html: strin
                     <SidePanel />
                     <DocsPage>
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
-                        <HTML className="markdown" dangerouslySetInnerHTML={{ __html: html }} />
+                        {loaded && <HTML className="markdown" dangerouslySetInnerHTML={{ __html: content }} />}
                     </DocsPage>
                 </Content>
             </PageWrapper>

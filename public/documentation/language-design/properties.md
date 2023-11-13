@@ -13,7 +13,7 @@ The `variable` property is the most commonly used property in AgentLang. It cons
 
 To define a `variable` property, use the `variable` keyword followed by the property's identifier, initial value and then the next value to be calculated.
 ```
-variable x : 0 = x + choice(-1, 1);
+property x: 0 = x + choice(-1, 1);
 ```
 This property is set to an initial value of `0` and in each next step, it is either incremented or decremented by `1`.
 
@@ -22,7 +22,7 @@ The `dynamic` property is almost the same as the `variable` property, however, i
 
 To define a `dynamic` property, use the `dynamic` keyword followed by the property's identifier and the next value to be calculated.
 ```
-dynamic isFar = x > 200;
+property isFar = x > 200;
 ```
 This property is directly dependent on the previously defined property `x` and contains a boolean value of `true` or `false`. If the property `x` is more than `200`, its value is `true`, otherise its `false`.
 
@@ -31,7 +31,7 @@ The `const` property is a special type of property which is **calculated only in
 
 To define a `const` property, use the `const` keyword followed by the property's identifier and the value to be calculated.
 ```
-const age = random(0, 21);
+property age = random(0, 21);
 ```
 This property calculates a random value between `0` and `21` in the first step of the simulation and does not change throughout the course of the simulation.
 

@@ -20,12 +20,12 @@ After the consequent expression has been defined, we use the `else` keyword foll
 ## Usage
 To use a conditional expression to calculate a property's value, we use the following syntax.
 ```
-dynamic isInfected = choice(true, false);
+property isInfected = choice(true, false);
 
-const forwardAngle = 0;
-const backwardAngle = pi();
+property forwardAngle = 0;
+property backwardAngle = pi();
 
-dynamic direction = if isInfected forwardAngle else backwardAngle;
+property direction = if isInfected forwardAngle else backwardAngle;
 ```
 In this example, we want the agent to move in a direction of `forwardAngle` if they are infected, otherwise in a direction of `backwardAngle`.
 

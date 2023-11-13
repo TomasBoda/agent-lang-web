@@ -4,6 +4,7 @@ import { Spacer } from "@/src/components/Components.styles";
 import Button from "@/src/components/Button.component";
 import { useCodeService, useStorageService, useViewService } from "../services";
 import { CodeItem } from "../model";
+import Link from "next/link";
 
 export default function Sidebar() {
 
@@ -62,7 +63,7 @@ export default function Sidebar() {
 
     return (
         <Container>
-            <Header>
+            <Header href="/">
                 <span style={{ fontWeight: 700 }}>Agent</span>Lang
             </Header>
 
@@ -106,11 +107,12 @@ const Container = styled.div`
     background-color: rgb(10, 10, 10);
 `;
 
-const Header = styled.div`
+const Header = styled(Link)`
   color: white;
   font-size: 20px;
   font-weight: 200;
   line-height: 100%;
+  text-decoration: none;
 
   padding: 20px;
 `;

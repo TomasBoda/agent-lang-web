@@ -6,6 +6,10 @@ export default function SidePanel() {
 
     return (
         <Container>
+            <Header href="/">
+                <span style={{ fontWeight: 700 }}>Agent</span>Lang
+            </Header>
+
             <Section>
                 <HeadingItem href="/documentation/introduction">Introduction</HeadingItem>
                 <Item href="/documentation/introduction/what-is-agent-lang">What is AgentLang</Item>
@@ -41,7 +45,7 @@ export default function SidePanel() {
 }
 
 const Container = styled.div`
-    width: 100%;
+    width: 260px;
 
     padding-right: 60px;
 
@@ -50,6 +54,16 @@ const Container = styled.div`
     gap: 15px;
 
     border-right: 1px solid rgba(255, 255, 255, 0.2);
+`;
+
+const Header = styled(Link)`
+  color: white;
+  font-size: 20px;
+  font-weight: 200;
+  line-height: 100%;
+  text-decoration: none;
+
+  padding-bottom: 20px;
 `;
 
 const Section = styled.div`
