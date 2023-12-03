@@ -1,0 +1,90 @@
+
+.markdown {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 5px;
+  
+    font-size: 15px;
+    line-height: 180%;
+  
+    color: white;
+}
+  
+.markdown p {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 300;
+    line-height: 210%;
+    margin-bottom: 25px;
+}
+  
+.markdown h1 {
+    font-size: 30px;
+    font-weight: 700;
+  
+    margin-bottom: 30px;
+}
+  
+.markdown h2 {
+    font-size: 20px;
+    font-weight: 700;
+}
+  
+.markdown h3 {
+    font-size: 17px;
+    font-weight: 700;
+}
+  
+.markdown ul, .markdown ol {
+    padding-left: 15px;
+    margin-bottom: 30px;
+  
+    display: grid;
+    grid-template-columns: auto;
+    gap: 5px;
+  
+    margin-top: -20px;
+}
+  
+.markdown pre {
+    padding: 20px !important;
+    margin-top: -15px;
+    margin-bottom: 10px;
+  
+    font-family: 'Menlo Regular', monospace;
+    font-size: 14px;
+  
+    background-color: rgba(255, 255, 255, 0.1);
+  
+    border: none !important;
+    border-radius: 5px;
+}
+  
+.markdown code {
+    padding: 3px 8px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+  
+.markdown pre code {
+    padding: 0;
+    border-radius: 0;
+    background-color: transparent;
+}
+  
+.markdown a {
+    color: white;
+    font-size: 13px;
+    font-weight: 400;
+    text-decoration: none;
+  
+    padding: 10px 15px;
+    border-radius: 5px;
+  
+    transition: all 150ms;
+  
+    background-color: rgba(255, 255, 255, 0.08);
+}
+  
+.markdown a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}

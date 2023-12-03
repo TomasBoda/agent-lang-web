@@ -63,7 +63,7 @@ export default function Editor() {
 
     function start(): void {
         interpreterService?.start(code);
-        viewService?.setView(1);
+        viewService?.setView(2);
     }
 
     function stop(): void {

@@ -1,0 +1,72 @@
+.editor {
+    counter-reset: line;
+
+    font-family: 'Menlo Regular', monospace;
+    font-size: 14px;
+}
+
+.editor .code-line-number {
+    position: absolute;
+    left: 0px;
+    text-align: right;
+    width: 20px;
+
+    color: rgb(200, 200, 200);
+    font-family: 'Menlo Regular', monospace;
+    font-size: 14px;
+    font-weight: 100;
+}
+
+.editor-textarea {
+    outline: 0;
+    padding-left: 40px !important;
+
+    font-family: 'Menlo Regular', monospace;
+    font-size: 14px;
+
+    white-space:nowrap;
+    overflow:scroll;
+}
+
+.editor pre {
+    padding-left: 40px !important;
+}
+
+.token {
+    font-family: 'Menlo Regular', monospace;
+    font-size: 14px;
+}
+
+.token.keyword {
+    color: #0000ff;
+    color: #569cd6;
+}
+
+.token.function {
+    color: #267f99;
+    color: #a78ee1;
+}
+
+.token.boolean {
+    color: #DE3C4B;
+    color: #e87d84;
+}
+
+.token.condition {
+    color: #DE3C4B;
+    color: #e87d84;
+}
+
+.token.logical {
+    color: #eeb04f;
+    color: #dcdcaa;
+}
+
+.token.number {
+    color: #3689de;
+    color: #86b9e3;
+}
+
+.token.operator {
+    color: #e87d84;
+}

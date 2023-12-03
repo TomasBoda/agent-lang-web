@@ -15,7 +15,7 @@ export default function Visualisation({ code }: { code: string }) {
     useEffect(() => {
         subscribeToCodeService();
         subscribeToInterpreterService();
-    }, []);
+    }, [codeService, interpreterService]);
 
     useEffect(() => {
         render();
@@ -33,6 +33,7 @@ export default function Visualisation({ code }: { code: string }) {
         interpreterService?.getOutput().subscribe(output => {
             if (output.status.code !== 0) {
                 setError(output.status.message ?? "Unknown error");
+                interpreterService?.stop();
             }
 
             setAgents(output.output?.agents ?? []);
