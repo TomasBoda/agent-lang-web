@@ -32,12 +32,6 @@ const ServiceProvider = ({ children }: { children: any }) => {
 
     useEffect(() => {
         storageService.initialize();
-
-        viewService?.getView().subscribe(view => {
-            if (view === 0) {
-                interpreterService?.reset();
-            }
-        });
     }, []);
 
     return (

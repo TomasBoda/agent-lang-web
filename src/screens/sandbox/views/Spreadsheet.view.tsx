@@ -1,31 +1,27 @@
 import styled from "styled-components";
-import { useInterpreterService } from "../services/interpreter.service";
+import { InterpreterStatus, useInterpreterService } from "../services/interpreter.service";
 import { useEffect, useState } from "react";
-import { Agent } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
+import { Agent, InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
 import { AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType } from "@/agent-lang-interpreter/src/runtime/runtime.types";
 
-export default function Spreadsheet() {
+export default function Spreadsheet({ output, status, error }: { output: InterpreterOutput, status: InterpreterStatus, error: string }) {
 
-    const interpreterService = useInterpreterService();
-
-    const [allAgents, setAllAgents] = useState<Agent[]>([]);
+    const [agents, setAgents] = useState<Agent[]>([]);
 
     useEffect(() => {
-        subscribeToInterpreterService();
-    }, []);
+        setAgents(output.output?.agents ?? []);
+    }, [output]);
 
-    function subscribeToInterpreterService(): void {
-        interpreterService?.get().subscribe(output => {
-            if (output.output) {
-                setAllAgents(output.output.agents);
-            }
-        });
-    }
+    useEffect(() => {
+        if (status !== InterpreterStatus.PAUSED) {
+            setAgents([]);
+        }
+    }, [status]);
 
     function getAgentTypes(): Agent[][] {
         const agentTypes: { [key: string]: Agent[] } = {};
 
-        allAgents.forEach((agent: Agent) => {
+        agents.forEach((agent: Agent) => {
             if (agentTypes.hasOwnProperty(agent.identifier)) {
                 agentTypes[agent.identifier].push(agent);
             } else {
@@ -101,6 +97,8 @@ export default function Spreadsheet() {
 
     return (
         <Container>
+            {getAgentTypes().length === 0 && <Message>No data to show</Message>}
+
             {getAgentTypes().map((agents: Agent[]) =>
                 <TableWrapper>
                     <Title>{agents[0].identifier}</Title>
@@ -144,6 +142,12 @@ const Container = styled.div`
     grid-template-columns: auto;
     gap: 20px;
     justify-content: flex-start;
+`;
+
+const Message = styled.p`
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    font-weight: 300;
 `;
 
 const TableWrapper = styled.div`

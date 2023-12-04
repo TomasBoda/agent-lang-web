@@ -2,53 +2,26 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useCodeService } from "../services";
 import { InterpreterStatus, useInterpreterService } from "../services/interpreter.service";
+import { InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
+import { Interpreter } from "@/agent-lang-interpreter/src";
 
-export default function Visualisation() {
+export default function Visualisation({ output, status, error }: { output: InterpreterOutput, status: InterpreterStatus, error: string }) {
 
-    const codeService = useCodeService();
-    const interpreterService = useInterpreterService();
-
-    const [code, setCode] = useState("");
     const [agents, setAgents] = useState<any[]>([]);
-    const [status, setStatus] = useState(InterpreterStatus.STOPPED);
-    const [error, setError] = useState("");
 
     useEffect(() => {
-        subscribeToCodeService();
-        subscribeToInterpreterService();
-    }, [codeService, interpreterService]);
+        setAgents(output.output?.agents ?? []);
+    }, [output]);
 
     useEffect(() => {
-        render();
-    }, [agents]);
-
-    useEffect(() => {
-        if (status === InterpreterStatus.STOPPED || status === InterpreterStatus.RUNNING) {
+        if (status !== InterpreterStatus.PAUSED) {
             setAgents([]);
         }
     }, [status]);
 
-    function subscribeToCodeService(): void {
-        codeService?.getCode().subscribe(data => {
-            setCode(data.code);
-            setAgents([]);
-        });
-    }
-
-    function subscribeToInterpreterService(): void {
-        interpreterService?.getStatus().subscribe(status => setStatus(status));
-
-        interpreterService?.get().subscribe(output => {
-            if (output.status.code !== 0) {
-                setError(output.status.message ?? "Unknown error");
-                interpreterService?.reset();
-            } else {
-                setError("");
-            }
-
-            setAgents(output.output?.agents ?? []);
-        });
-    }
+    useEffect(() => {
+        render();
+    }, [agents]);
 
     function render(): void {
         const canvas = document.getElementById("canvas") as HTMLCanvasElement;

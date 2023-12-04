@@ -3,35 +3,49 @@ import styled from "styled-components";
 import Navigation from "./Navigation.component";
 import CodeEditor from "../views/CodeEditor.view";
 import Visualisation from "../views/Visualisation.view";
-import { useViewService } from "../services";
+import { useCodeService, useViewService } from "../services";
 import Spreadsheet from "../views/Spreadsheet.view";
 import { Toolbar } from "./Toolbar.component";
 import { InterpreterStatus, useInterpreterService } from "../services/interpreter.service";
-import { Agent, InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
+import { InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
+import { Subscription } from "rxjs/internal/Subscription";
 
 export default function Editor() {
 
+    const codeService = useCodeService();
     const viewService = useViewService();
     const interpreterService = useInterpreterService();
 
+    let interpreterSubscription: Subscription | undefined;
+
+    const [output, setOutput] = useState<InterpreterOutput>({ status: { code: 0 } });
+    const [status, setStatus] = useState<InterpreterStatus>(InterpreterStatus.STOPPED);
+    const [error, setError] = useState("");
+
     const [view, setView] = useState(0);
 
-    const views: JSX.Element[] = [
-        <CodeEditor />,
-        <Spreadsheet />,
-        <Visualisation />
-    ];
+    useEffect(() => {
+        if (output.status.code !== 0) {
+            setError(output.status.message ?? "Unknown error");
+            interpreterService?.reset();
+        }
+    }, [output]);
 
     useEffect(() => {
         const viewSubscription = viewService?.getView().subscribe(data => setView(data));
+        const statusSubscription = interpreterService?.getStatus().subscribe(data => setStatus(data));
+        const codeSubscription = codeService?.getCode().subscribe(() => initInterpreterSubscription());
 
         return () => {
             viewSubscription?.unsubscribe();
+            statusSubscription?.unsubscribe();
+            codeSubscription?.unsubscribe();
+            interpreterSubscription?.unsubscribe();
         }
     }, []);
 
-    function CurrentView() {
-        return views[view];
+    function initInterpreterSubscription(): void {
+        interpreterSubscription = interpreterService?.get().subscribe(data => setOutput(data));
     }
 
     return (
@@ -39,7 +53,9 @@ export default function Editor() {
             <Toolbar />
             <Navigation />
             <Content>
-                <CurrentView />
+                {view === 0 && <CodeEditor />}
+                {view === 1 && <Spreadsheet status={status} error={error} output={output} />}
+                {view === 2 && <Visualisation status={status} error={error} output={output} />}
             </Content>
         </Container>
     )
