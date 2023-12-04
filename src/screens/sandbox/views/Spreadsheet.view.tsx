@@ -3,10 +3,31 @@ import { InterpreterStatus, useInterpreterService } from "../services/interprete
 import { useEffect, useState } from "react";
 import { Agent, InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
 import { AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType } from "@/agent-lang-interpreter/src/runtime/runtime.types";
+import { ParserUtil } from "@/agent-lang-interpreter/src/parser/parser-util";
+import { Program } from "@/agent-lang-interpreter/src/parser/parser.types";
+import Editor from 'react-simple-code-editor';
+import Language from "@/src/language/language";
+import Button from "@/src/components/Button.component";
+import { VariableDeclaration } from "typescript";
+import { useCodeService } from "../services";
 
 export default function Spreadsheet({ output, status, error }: { output: InterpreterOutput, status: InterpreterStatus, error: string }) {
 
+    const interpreterService = useInterpreterService();
+    const codeService = useCodeService();
+
     const [agents, setAgents] = useState<Agent[]>([]);
+
+    const [editing, setEditing] = useState(false);
+    const [agentIdentifier, setAgentIdentifier] = useState("");
+    const [variableIdentifier, setVariableIdentifier] = useState("");
+    const [variableCode, setVariableCode] = useState("");
+
+    // general code data
+    const [label, setLabel] = useState("");
+    const [code, setCode] = useState("");
+    const [steps, setSteps] = useState(0);
+    const [delay, setDelay] = useState(0);
 
     useEffect(() => {
         setAgents(output.output?.agents ?? []);
@@ -17,6 +38,44 @@ export default function Spreadsheet({ output, status, error }: { output: Interpr
             setAgents([]);
         }
     }, [status]);
+
+    useEffect(() => {
+        const codeSubscription = codeService?.getCode().subscribe(data => {
+            setLabel(data.label);
+            setCode(data.code);
+            setSteps(data.steps);
+            setDelay(data.delay);
+        });
+
+        return () => {
+            codeSubscription?.unsubscribe();
+        }
+    }, []);
+
+    function editProperty(agentIdentifier: string, variableIdentifier: string): void {
+        setEditing(true);
+        setAgentIdentifier(agentIdentifier);
+        setVariableIdentifier(variableIdentifier);
+        
+        const program = interpreterService?.getProgram() as Program;
+        const code = ParserUtil.getVariableCode(program, agentIdentifier, variableIdentifier);
+        setVariableCode(code!);
+    }
+
+    function saveEditDialog(): void {
+        const variableDeclaration = ParserUtil.codeToAst(variableCode);
+        const program = interpreterService?.getProgram() as Program;
+        const newProgram = ParserUtil.updateVariableInProgram(program, variableDeclaration, agentIdentifier, variableIdentifier);
+
+        interpreterService?.setProgram(newProgram);
+        interpreterService?.rebuild();
+
+        // TODO: update code in code editor
+    }
+
+    function cancelEditDialog(): void {
+        setEditing(false);
+    }
 
     function getAgentTypes(): Agent[][] {
         const agentTypes: { [key: string]: Agent[] } = {};
@@ -97,6 +156,25 @@ export default function Spreadsheet({ output, status, error }: { output: Interpr
 
     return (
         <Container>
+            {editing &&
+                <EditorContainer>
+                    <Editor
+                        value={variableCode}
+                        onValueChange={code => setVariableCode(code)}
+                        highlight={(code) => Language.highlightWithLineNumbers(code)}
+                        tabSize={4}
+                        className="editor"
+                        textareaClassName="editor-textarea"
+                        style={{ width: "100%", lineHeight: "150%", color: "white" }}
+                        placeholder="Edit property..."
+                    />
+                    <EditorControls>
+                        <Button size="small" onClick={() => saveEditDialog()}>Save</Button>
+                        <Button size="small" onClick={() => cancelEditDialog()}>Cancel</Button>
+                    </EditorControls>
+                </EditorContainer>
+            }
+
             {getAgentTypes().length === 0 && <Message>No data to show</Message>}
 
             {getAgentTypes().map((agents: Agent[]) =>
@@ -106,7 +184,7 @@ export default function Spreadsheet({ output, status, error }: { output: Interpr
                     <Table>
                         <thead>
                             <Row>
-                                {getAgentPropertyList(agents).map(property => <Heading>{property}</Heading>)}
+                                {getAgentPropertyList(agents).map(property => <Heading onClick={() => editProperty(agents[0].identifier, property)}>{property}</Heading>)}
                             </Row>
                         </thead>
 
@@ -138,10 +216,26 @@ export default function Spreadsheet({ output, status, error }: { output: Interpr
 }
 
 const Container = styled.div`
+    width: 100%;
+
     display: grid;
-    grid-template-columns: auto;
+    grid-template-columns: 100%;
     gap: 20px;
     justify-content: flex-start;
+    align-items: flex-start;
+`;
+
+const EditorContainer = styled.div`
+    width: 100%;
+`;
+
+const EditorControls = styled.div`
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 10px;
+    justify-content: flex-start;
+
+    margin: 30px 0px;
 `;
 
 const Message = styled.p`
@@ -230,4 +324,6 @@ const Heading = styled.th`
     border-radius: 10px;
 
     background-color: rgb(30, 30, 30);
+
+    cursor: pointer;
 `;

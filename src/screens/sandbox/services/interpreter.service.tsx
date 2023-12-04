@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 import { BehaviorSubject, Observable } from "rxjs";
 import { InterpreterConfiguration, InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
 import { Interpreter } from "@/agent-lang-interpreter/src";
+import { Program } from "@/agent-lang-interpreter/src/parser/parser.types";
 
 const InterpreterContext = createContext<InterpreterService | null>(null);
 
@@ -37,6 +38,14 @@ export class InterpreterService {
         this.sourceCode = sourceCode;
         this.config = { ...this.config, steps, delay };
         this.reset();
+    }
+
+    public setProgram(program: Program): void {
+        this.interpreter.setProgram(program);
+    }
+
+    public rebuild(): void {
+        this.interpreter.rebuild();
     }
 
     public start(): void {
@@ -86,6 +95,10 @@ export class InterpreterService {
 
     public getStatus(): Observable<InterpreterStatus> {
         return this.statusSubject.asObservable();
+    }
+
+    public getProgram(): Program {
+        return this.interpreter.getProgram();
     }
 
     private setStatus(status: InterpreterStatus): void {
