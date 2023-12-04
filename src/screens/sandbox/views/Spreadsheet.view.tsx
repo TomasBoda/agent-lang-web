@@ -15,7 +15,7 @@ export default function Spreadsheet() {
     }, []);
 
     function subscribeToInterpreterService(): void {
-        interpreterService?.getOutput().subscribe(output => {
+        interpreterService?.get().subscribe(output => {
             if (output.output) {
                 setAllAgents(output.output.agents);
             }
@@ -46,7 +46,6 @@ export default function Spreadsheet() {
     }
 
     function getAgentPropertyValues(agent: Agent): any[] {
-        console.log(agent);
         return Object.values(agent.variables);
     }
 

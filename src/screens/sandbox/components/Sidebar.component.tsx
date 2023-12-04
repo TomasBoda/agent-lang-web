@@ -17,15 +17,18 @@ export default function Sidebar() {
     const [items, setItems] = useState<CodeItem[]>([]);
 
     useEffect(() => {
-        subscribe();
-    }, [storageService]);
+        const storageSubscription = storageService?.getAll().subscribe(data => setItems(data));
 
-    function subscribe(): void {
-        storageService?.getAll().subscribe(data => setItems(data));
-    }
+        return () => {
+            storageSubscription?.unsubscribe();
+        }
+    }, []);
 
     function select(item: CodeItem): void {
-        codeService?.setCode(item.label, item.code, item.steps, item.delay);
+        const { label, code, steps, delay } = item;
+
+        codeService?.setCode(label, code, steps, delay);
+        interpreterService?.initialize(code, steps, delay);
         viewService?.setView(0);
     }
 
@@ -151,6 +154,12 @@ const Item = styled.div`
     background-color: rgba(255, 255, 255, 0.03);
 
     cursor: pointer;
+
+    transition: all 100ms;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+    }
 `;
 
 const Icon = styled.img`

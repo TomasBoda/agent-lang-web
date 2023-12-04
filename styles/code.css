@@ -5,6 +5,11 @@
     font-size: 14px;
 }
 
+.editor-textarea::placeholder {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
 .editor .code-line-number {
     position: absolute;
     left: 0px;

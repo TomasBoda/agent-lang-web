@@ -35,7 +35,7 @@ const ServiceProvider = ({ children }: { children: any }) => {
 
         viewService?.getView().subscribe(view => {
             if (view === 0) {
-                interpreterService?.stop();
+                interpreterService?.reset();
             }
         });
     }, []);

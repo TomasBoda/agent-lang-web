@@ -17,49 +17,79 @@ export const useInterpreterService = () => {
     return useContext(InterpreterContext);
 }
 
+export enum InterpreterStatus {
+    STOPPED = "Stopped",
+    RUNNING = "Running",
+    PAUSED = "Paused",
+}
+
 export class InterpreterService {
 
-    private subscription: any;
-
-    private interpreter: Interpreter = new Interpreter();
+    private sourceCode: string = "";
     private config: InterpreterConfiguration = { steps: 10000, delay: 20, width: 500, height: 500 };
 
-    private interpreterSubject: BehaviorSubject<InterpreterOutput> = new BehaviorSubject({ status: { code: 0 } });
-    private interpreterObservable: Observable<InterpreterOutput> = this.interpreterSubject.asObservable();
+    private interpreter: Interpreter = new Interpreter();
 
-    private runningSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
-    private runningObservable: Observable<boolean> = this.runningSubject.asObservable();
+    private status: InterpreterStatus = InterpreterStatus.STOPPED;
+    private statusSubject = new BehaviorSubject(InterpreterStatus.STOPPED);
 
-    public start(code: string): void {
-        this.interpret(code);
-        this.runningSubject.next(true);
+    public initialize(sourceCode: string, steps: number, delay: number): void {
+        this.sourceCode = sourceCode;
+        this.config = { ...this.config, steps, delay };
+        this.reset();
     }
 
-    public stop(): void {
-        this.unsubscribe();
-        this.runningSubject.next(false);
+    public start(): void {
+        if (this.status === InterpreterStatus.RUNNING) {
+            return;
+        }
+
+        this.interpreter.start();
+        this.setStatus(InterpreterStatus.RUNNING);
     }
 
-    public getRunning(): Observable<boolean> {
-        return this.runningObservable;
+    public reset(): void {
+        if (this.status === InterpreterStatus.STOPPED) {
+            return;
+        }
+
+        this.interpreter.reset();
+        this.setStatus(InterpreterStatus.STOPPED);
     }
 
-    public getOutput(): Observable<InterpreterOutput> {
-        return this.interpreterObservable;
+    public pause(): void {
+        if (this.status === InterpreterStatus.PAUSED || this.status === InterpreterStatus.STOPPED) {
+            return;
+        }
+
+        this.interpreter.pause();
+        this.setStatus(InterpreterStatus.PAUSED);
     }
 
-    private interpret(code: string) {
-        this.subscription = this.interpreter.interpret(code, this.config).subscribe(output => {
-            this.interpreterSubject.next(output);
+    public resume(): void {
+        if (this.status === InterpreterStatus.RUNNING || this.status === InterpreterStatus.STOPPED) {
+            return;
+        }
 
-            if (output.output?.step === this.config.steps - 1) {
-                this.stop();
-            }
-        });
+        this.interpreter.resume();
+        this.setStatus(InterpreterStatus.RUNNING);
     }
 
-    private unsubscribe(): void {
-        this.subscription?.unsubscribe();
-        this.subscription = undefined;
+    public step(): void {
+        this.setStatus(InterpreterStatus.PAUSED);
+        this.interpreter.step();
+    }
+
+    public get(): Observable<InterpreterOutput> {
+        return this.interpreter.get(this.sourceCode, this.config);
+    }
+
+    public getStatus(): Observable<InterpreterStatus> {
+        return this.statusSubject.asObservable();
+    }
+
+    private setStatus(status: InterpreterStatus): void {
+        this.status = status;
+        this.statusSubject.next(status);
     }
 }

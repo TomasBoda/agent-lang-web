@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useCodeService } from "../services";
-import { useInterpreterService } from "../services/interpreter.service";
+import { InterpreterStatus, useInterpreterService } from "../services/interpreter.service";
 
-export default function Visualisation({ code }: { code: string }) {
+export default function Visualisation() {
 
     const codeService = useCodeService();
     const interpreterService = useInterpreterService();
 
+    const [code, setCode] = useState("");
     const [agents, setAgents] = useState<any[]>([]);
-    const [running, setRunning] = useState(false);
+    const [status, setStatus] = useState(InterpreterStatus.STOPPED);
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -21,19 +22,28 @@ export default function Visualisation({ code }: { code: string }) {
         render();
     }, [agents]);
 
+    useEffect(() => {
+        if (status === InterpreterStatus.STOPPED || status === InterpreterStatus.RUNNING) {
+            setAgents([]);
+        }
+    }, [status]);
+
     function subscribeToCodeService(): void {
         codeService?.getCode().subscribe(data => {
+            setCode(data.code);
             setAgents([]);
         });
     }
 
     function subscribeToInterpreterService(): void {
-        interpreterService?.getRunning().subscribe(running => setRunning(running));
+        interpreterService?.getStatus().subscribe(status => setStatus(status));
 
-        interpreterService?.getOutput().subscribe(output => {
+        interpreterService?.get().subscribe(output => {
             if (output.status.code !== 0) {
                 setError(output.status.message ?? "Unknown error");
-                interpreterService?.stop();
+                interpreterService?.reset();
+            } else {
+                setError("");
             }
 
             setAgents(output.output?.agents ?? []);
@@ -81,7 +91,7 @@ export default function Visualisation({ code }: { code: string }) {
                 <Canvas id="canvas" width="500" height="500"></Canvas>;
             </CanvasContainer>
 
-            {!running && error !== "" && <Error>{error}</Error>}
+            {status !== InterpreterStatus.RUNNING && error !== "" && <Error>{error}</Error>}
         </Container>
     );
 }

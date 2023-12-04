@@ -1,24 +1,50 @@
 import { styled } from "styled-components"
 import Editor from 'react-simple-code-editor';
 import Language from "../../../language/language";
+import { useEffect, useState } from "react";
+import { useCodeService } from "../services";
 
-export default function CodeEditor({ code, setCode }: { code: string; setCode: (code: string) => void }) {
+export default function CodeEditor() {
+
+    const codeService = useCodeService();
+
+    const [label, setLabel] = useState("");
+    const [code, setCode] = useState("");
+    const [steps, setSteps] = useState(0);
+    const [delay, setDelay] = useState(0);
 
     Language.initialize();
-
     const editorStyle = { width: "100%", lineHeight: "150%", color: "white" };
+
+    useEffect(() => {
+        subscribeToCodeService();
+    }, [codeService]);
+
+    function subscribeToCodeService(): void {
+        codeService?.getCode().subscribe(data => {
+            setLabel(data.label);
+            setCode(data.code);
+            setSteps(data.steps);
+            setDelay(data.delay);
+        });
+    }
+
+    function updateCode(code: string): void {
+        codeService?.setCode(label, code, steps, delay);
+    }
 
     return (
         <Container>
             <Wrapper>
                 <Editor
                     value={code}
-                    onValueChange={code => setCode(code)}
+                    onValueChange={code => updateCode(code)}
                     highlight={(code) => Language.highlightWithLineNumbers(code)}
                     tabSize={4}
                     className="editor step-4"
                     textareaClassName="editor-textarea"
                     style={editorStyle}
+                    placeholder="Enter code here..."
                 />
             </Wrapper>
         </Container>
