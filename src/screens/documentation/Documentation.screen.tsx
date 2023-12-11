@@ -72,6 +72,8 @@ const Content = styled.div`
   align-items: start;
 
   padding: 50px 100px;
+
+  position: relative;
 `;
 
 const DocsPage = styled.div`
@@ -80,6 +82,8 @@ const DocsPage = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    padding-left: 310px;
 `;
 
 const HTML = styled.div`

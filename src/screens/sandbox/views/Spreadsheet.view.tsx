@@ -71,6 +71,7 @@ export default function Spreadsheet({ output, status, error }: { output: Interpr
         interpreterService?.rebuild();
 
         // TODO: update code in code editor
+        codeService?.setCode(label, ParserUtil.astToCode(newProgram), steps, delay);
     }
 
     function cancelEditDialog(): void {

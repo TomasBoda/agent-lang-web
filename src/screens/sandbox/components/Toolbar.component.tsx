@@ -5,6 +5,7 @@ import { useCodeService, useStorageService, useViewService } from "../services";
 import { InterpreterStatus, useInterpreterService } from "../services/interpreter.service";
 import { useEffect, useState } from "react";
 import { CodeItem } from "../model";
+import { MessageType, useMessageService } from "@/src/services/message.service";
 
 export function Toolbar() {
 
@@ -13,6 +14,7 @@ export function Toolbar() {
     const codeService = useCodeService();
     const viewService = useViewService();
     const interpreterService = useInterpreterService();
+    const messageService = useMessageService();
 
     // general code data
     const [label, setLabel] = useState("");
@@ -107,6 +109,7 @@ export function Toolbar() {
         }
 
         storageService?.save(label, code, steps, delay);
+        messageService?.showMessage(MessageType.Success, "Simulation " + label + " saved successfully");
     }
 
     function remove(): void {

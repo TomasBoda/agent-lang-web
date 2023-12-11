@@ -54,6 +54,19 @@ const Container = styled.div`
     gap: 15px;
 
     border-right: 1px solid rgba(255, 255, 255, 0.2);
+
+    position: fixed;
+    left: 100px;
+    top: 0px;
+
+    padding: 50px 0px 50px 0px;
+
+    height: calc(100vh);
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 const Header = styled(Link)`

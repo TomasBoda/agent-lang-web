@@ -9,12 +9,14 @@ import { Toolbar } from "./Toolbar.component";
 import { InterpreterStatus, useInterpreterService } from "../services/interpreter.service";
 import { InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
 import { Subscription } from "rxjs/internal/Subscription";
+import { MessageType, useMessageService } from "@/src/services/message.service";
 
 export default function Editor() {
 
     const codeService = useCodeService();
     const viewService = useViewService();
     const interpreterService = useInterpreterService();
+    const messageService = useMessageService();
 
     let interpreterSubscription: Subscription | undefined;
 
@@ -28,6 +30,8 @@ export default function Editor() {
         if (output.status.code !== 0) {
             setError(output.status.message ?? "Unknown error");
             interpreterService?.reset();
+        } else {
+            setError("");
         }
     }, [output]);
 

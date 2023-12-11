@@ -6,6 +6,7 @@ import { useCodeService, useStorageService, useViewService } from "../services";
 import { CodeItem } from "../model";
 import Link from "next/link";
 import { useInterpreterService } from "../services/interpreter.service";
+import { MessageType, useMessageService } from "@/src/services/message.service";
 
 export default function Sidebar() {
 
@@ -13,6 +14,7 @@ export default function Sidebar() {
     const codeService = useCodeService();
     const viewService = useViewService();
     const interpreterService = useInterpreterService();
+    const messageService = useMessageService();
 
     const [items, setItems] = useState<CodeItem[]>([]);
 
@@ -42,6 +44,8 @@ export default function Sidebar() {
         storageService?.remove(item.label);
         codeService?.setEmpty();
         viewService?.setView(0);
+
+        messageService?.showMessage(MessageType.Success, "Item was successfully deleted");
     }
 
     function sort(array: CodeItem[]): CodeItem[] {

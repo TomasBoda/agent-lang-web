@@ -1,22 +1,28 @@
 import styled, { keyframes } from "styled-components";
 import {useRouter} from "next/router";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 export default function Transition() {
 
     const router = useRouter();
+    let previousUrl = "";
 
     useEffect(() => {
-        router.events.on('routeChangeStart', handleRouteChangeStart);
-        router.events.on('routeChangeComplete', handleRouteChangeComplete);
+        router.events.on("routeChangeStart", handleRouteChangeStart);
+        router.events.on("routeChangeComplete", handleRouteChangeComplete);
 
         return () => {
-            router.events.off('routeChangeStart', handleRouteChangeStart);
-            router.events.off('routeChangeComplete', handleRouteChangeComplete);
+            router.events.off("routeChangeStart", handleRouteChangeStart);
+            router.events.off("routeChangeComplete", handleRouteChangeComplete);
         };
     }, []);
 
     const handleRouteChangeStart = (url: string): void => {
+        if (url === previousUrl) {
+            return;
+        }
+
+        previousUrl = url;
         showTransition();
     }
 

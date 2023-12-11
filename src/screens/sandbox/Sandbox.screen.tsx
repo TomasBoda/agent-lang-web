@@ -6,6 +6,8 @@ import { CodeProvider, CodeService, StorageProvider, StorageService, ViewProvide
 
 import dynamic from "next/dynamic";
 import { InterpreterProvider, InterpreterService } from "./services/interpreter.service";
+import { MessageProvider, MessageService } from "@/src/services/message.service";
+import Message from "@/src/components/Message.component";
 const Tour = dynamic(
   () => import("../../components/Tour.component"),
   { ssr: false }
@@ -20,6 +22,7 @@ export default function SandboxScreen() {
                 <Sidebar />
                 <Editor />
             </Container>
+            <Message />
         </ServiceProvider>
     )
 }
@@ -29,21 +32,24 @@ const ServiceProvider = ({ children }: { children: any }) => {
     const codeService = new CodeService();
     const viewService = new ViewService();
     const interpreterService = new InterpreterService();
+    const messageService = new MessageService();
 
     useEffect(() => {
         storageService.initialize();
     }, []);
 
     return (
-        <StorageProvider storageService={storageService}>
-            <CodeProvider codeService={codeService}>
-                <ViewProvider viewService={viewService}>
-                    <InterpreterProvider interpreterService={interpreterService}>
-                        {children}
-                    </InterpreterProvider>
-                </ViewProvider>
-            </CodeProvider>
-        </StorageProvider>
+        <MessageProvider messageService={messageService}>
+            <StorageProvider storageService={storageService}>
+                <CodeProvider codeService={codeService}>
+                    <ViewProvider viewService={viewService}>
+                        <InterpreterProvider interpreterService={interpreterService}>
+                            {children}
+                        </InterpreterProvider>
+                    </ViewProvider>
+                </CodeProvider>
+            </StorageProvider>
+        </MessageProvider>
     )
 }
 
