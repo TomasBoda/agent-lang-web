@@ -2,20 +2,6 @@ import { createContext, useContext } from 'react';
 import { Observable, Subject } from 'rxjs';
 import { CodeItem } from '../model';
 
-const StorageContext = createContext<StorageService | null>(null);
-
-export const StorageProvider = ({ children, storageService }: { children: any, storageService: StorageService }) => {
-    return (
-        <StorageContext.Provider value={storageService}>
-            {children}
-        </StorageContext.Provider>
-    )
-}
-
-export const useStorageService = () => {
-    return useContext(StorageContext);
-}
-
 export class StorageService {
 
     private storageSubject: Subject<CodeItem[]> =  new Subject();
@@ -77,4 +63,18 @@ export class StorageService {
     private getKey(label: string): string {
         return `item-${label}`;
     }
+}
+
+const StorageContext = createContext<StorageService>(new StorageService());
+
+export const StorageProvider = ({ children, storageService }: { children: any, storageService: StorageService }) => {
+    return (
+        <StorageContext.Provider value={storageService}>
+            {children}
+        </StorageContext.Provider>
+    )
+}
+
+export const useStorageService = () => {
+    return useContext(StorageContext);
 }

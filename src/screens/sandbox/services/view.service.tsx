@@ -1,20 +1,6 @@
 import { createContext, useContext } from "react";
 import { BehaviorSubject, Observable } from "rxjs";
 
-const ViewContext = createContext<ViewService | null>(null);
-
-export const ViewProvider = ({ children, viewService }: { children: any, viewService: ViewService }) => {
-    return (
-        <ViewContext.Provider value={viewService}>
-            {children}
-        </ViewContext.Provider>
-    )
-}
-
-export const useViewService = () => {
-    return useContext(ViewContext);
-}
-
 export class ViewService {
 
     private viewSubject: BehaviorSubject<number> =  new BehaviorSubject(0);
@@ -27,4 +13,18 @@ export class ViewService {
     public getView(): Observable<number> {
         return this.viewObservable;
     }
+}
+
+const ViewContext = createContext<ViewService>(new ViewService());
+
+export const ViewProvider = ({ children, viewService }: { children: any, viewService: ViewService }) => {
+    return (
+        <ViewContext.Provider value={viewService}>
+            {children}
+        </ViewContext.Provider>
+    )
+}
+
+export const useViewService = () => {
+    return useContext(ViewContext);
 }

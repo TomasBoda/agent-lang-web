@@ -21,7 +21,7 @@ export default function CodeEditor() {
     }, [codeService]);
 
     function subscribeToCodeService(): void {
-        codeService?.getCode().subscribe(data => {
+        codeService.getCode().subscribe(data => {
             setLabel(data.label);
             setCode(data.code);
             setSteps(data.steps);
@@ -30,7 +30,7 @@ export default function CodeEditor() {
     }
 
     function updateCode(code: string): void {
-        codeService?.setCode(label, code, steps, delay);
+        codeService.setCode(label, code, steps, delay);
     }
 
     return (

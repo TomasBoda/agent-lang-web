@@ -4,20 +4,6 @@ import { InterpreterConfiguration, InterpreterOutput } from "@/agent-lang-interp
 import { Interpreter } from "@/agent-lang-interpreter/src";
 import { Program } from "@/agent-lang-interpreter/src/parser/parser.types";
 
-const InterpreterContext = createContext<InterpreterService | null>(null);
-
-export const InterpreterProvider = ({ children, interpreterService }: { children: any, interpreterService: InterpreterService }) => {
-    return (
-        <InterpreterContext.Provider value={interpreterService}>
-            {children}
-        </InterpreterContext.Provider>
-    )
-}
-
-export const useInterpreterService = () => {
-    return useContext(InterpreterContext);
-}
-
 export enum InterpreterStatus {
     STOPPED = "Stopped",
     RUNNING = "Running",
@@ -105,4 +91,18 @@ export class InterpreterService {
         this.status = status;
         this.statusSubject.next(status);
     }
+}
+
+const InterpreterContext = createContext<InterpreterService>(new InterpreterService());
+
+export const InterpreterProvider = ({ children, interpreterService }: { children: any, interpreterService: InterpreterService }) => {
+    return (
+        <InterpreterContext.Provider value={interpreterService}>
+            {children}
+        </InterpreterContext.Provider>
+    )
+}
+
+export const useInterpreterService = () => {
+    return useContext(InterpreterContext);
 }

@@ -1,19 +1,5 @@
 import { createContext, useContext } from "react";
 
-const MessageContext = createContext<MessageService | null>(null);
-
-export const MessageProvider = ({ children, messageService }: { children: any, messageService: MessageService }) => {
-    return (
-        <MessageContext.Provider value={messageService}>
-            {children}
-        </MessageContext.Provider>
-    )
-}
-
-export const useMessageService = () => {
-    return useContext(MessageContext);
-}
-
 export enum MessageType {
     Success = "Success",
     Failure = "Failure"
@@ -76,4 +62,18 @@ export class MessageService {
             }
         }
     }
+}
+
+const MessageContext = createContext<MessageService>(new MessageService());
+
+export const MessageProvider = ({ children, messageService }: { children: any, messageService: MessageService }) => {
+    return (
+        <MessageContext.Provider value={messageService}>
+            {children}
+        </MessageContext.Provider>
+    )
+}
+
+export const useMessageService = () => {
+    return useContext(MessageContext);
 }

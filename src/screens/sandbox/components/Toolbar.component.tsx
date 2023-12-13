@@ -32,16 +32,16 @@ export function Toolbar() {
     const [view, setView] = useState(0);
 
     useEffect(() => {
-        const codeSubscription = codeService?.getCode().subscribe(data => { setCodeData(data); setInterpreterData(data); });
-        const statusSubscription = interpreterService?.getStatus().subscribe(status => setStatus(status));
-        const interpreterSubscription = interpreterService?.get().subscribe(output => setStep(output.output?.step ?? 0));
-        const viewSubscription = viewService?.getView().subscribe(view => setView(view));
+        const codeSubscription = codeService.getCode().subscribe(data => { setCodeData(data); setInterpreterData(data); });
+        const statusSubscription = interpreterService.getStatus().subscribe(status => setStatus(status));
+        const interpreterSubscription = interpreterService.get().subscribe(output => setStep(output.output?.step ?? 0));
+        const viewSubscription = viewService.getView().subscribe(view => setView(view));
 
         return () => {
-            codeSubscription?.unsubscribe();
-            statusSubscription?.unsubscribe();
-            interpreterSubscription?.unsubscribe();
-            viewSubscription?.unsubscribe();
+            codeSubscription.unsubscribe();
+            statusSubscription.unsubscribe();
+            interpreterSubscription.unsubscribe();
+            viewSubscription.unsubscribe();
         }
     }, []);
 
@@ -53,83 +53,83 @@ export function Toolbar() {
     }
 
     function setInterpreterData(item: CodeItem): void {
-        interpreterService?.initialize(item.code, item.steps, item.delay);
+        interpreterService.initialize(item.code, item.steps, item.delay);
     }
 
     function updateLabel(label: string): void {
-        codeService?.setCode(label, code, steps, delay);
+        codeService.setCode(label, code, steps, delay);
     }
 
     function updateSteps(steps: number): void {
-        codeService?.setCode(label, code, steps, delay);
+        codeService.setCode(label, code, steps, delay);
     }
 
     function updateDelay(delay: number): void {
-        codeService?.setCode(label, code, steps, delay);
+        codeService.setCode(label, code, steps, delay);
     }
 
     function start(): void {
         build();
-        interpreterService?.start();
-        viewService?.setView(2);
+        interpreterService.start();
+        viewService.setView(2);
     }
 
     function reset(): void {
-        interpreterService?.reset();
+        interpreterService.reset();
     }
 
     function pause(): void {
-        interpreterService?.pause();
+        interpreterService.pause();
     }
 
     function resume(): void {
-        interpreterService?.resume();
+        interpreterService.resume();
 
         if (view === 0) {
-            viewService?.setView(2);
+            viewService.setView(2);
         }
     }
 
     function next(): void {
-        interpreterService?.step();
+        interpreterService.step();
 
         if (view === 0) {
-            viewService?.setView(2);
+            viewService.setView(2);
         }
     }
 
     function save(): void {
         if (label.trim() === "") {
-            messageService?.showMessage(MessageType.Failure, "Label cannot be empty");
+            messageService.showMessage(MessageType.Failure, "Label cannot be empty");
             return;
         }
 
         if (code.trim() === "") {
-            messageService?.showMessage(MessageType.Failure, "Source code cannot be empty");
+            messageService.showMessage(MessageType.Failure, "Source code cannot be empty");
             return;
         }
 
-        storageService?.save(label, code, steps, delay);
-        messageService?.showMessage(MessageType.Success, "Simulation " + label + " saved successfully");
+        storageService.save(label, code, steps, delay);
+        messageService.showMessage(MessageType.Success, "Simulation " + label + " saved successfully");
     }
 
     function remove(): void {
-        storageService?.remove(label);
-        codeService?.setEmpty();
+        storageService.remove(label);
+        codeService.setEmpty();
     }
 
     function build(): void {
         if (code.trim() === "") {
-            messageService?.showMessage(MessageType.Failure, "Source code cannot be empty");
+            messageService.showMessage(MessageType.Failure, "Source code cannot be empty");
             return;
         }
 
         try {
             const formatted = Formatter.getFormatted(code);
-            codeService?.setCode(label, formatted, steps, delay);
-            messageService?.showMessage(MessageType.Success, "Build succeeded");
+            codeService.setCode(label, formatted, steps, delay);
+            messageService.showMessage(MessageType.Success, "Build succeeded");
         } catch (error) {
-            messageService?.showMessage(MessageType.Failure, (error as ErrorModel).toString());
+            messageService.showMessage(MessageType.Failure, (error as ErrorModel).toString());
         }
     }
 

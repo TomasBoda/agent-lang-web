@@ -39,7 +39,7 @@ export default function Spreadsheet({ output, status }: { output: InterpreterOut
     }, [status]);
 
     useEffect(() => {
-        const codeSubscription = codeService?.getCode().subscribe(data => {
+        const codeSubscription = codeService.getCode().subscribe(data => {
             setLabel(data.label);
             setCode(data.code);
             setSteps(data.steps);
@@ -47,7 +47,7 @@ export default function Spreadsheet({ output, status }: { output: InterpreterOut
         });
 
         return () => {
-            codeSubscription?.unsubscribe();
+            codeSubscription.unsubscribe();
         }
     }, []);
 
@@ -56,21 +56,21 @@ export default function Spreadsheet({ output, status }: { output: InterpreterOut
         setAgentIdentifier(agentIdentifier);
         setVariableIdentifier(variableIdentifier);
         
-        const program = interpreterService?.getProgram() as Program;
+        const program = interpreterService.getProgram() as Program;
         const code = ParserUtil.getVariableCode(program, agentIdentifier, variableIdentifier);
         setVariableCode(code!);
     }
 
     function saveEditDialog(): void {
         const variableDeclaration = ParserUtil.codeToAst(variableCode);
-        const program = interpreterService?.getProgram() as Program;
+        const program = interpreterService.getProgram() as Program;
         const newProgram = ParserUtil.updateVariableInProgram(program, variableDeclaration, agentIdentifier, variableIdentifier);
 
-        interpreterService?.setProgram(newProgram);
-        interpreterService?.rebuild();
+        interpreterService.setProgram(newProgram);
+        interpreterService.rebuild();
 
         // TODO: update code in code editor
-        codeService?.setCode(label, ParserUtil.astToCode(newProgram), steps, delay);
+        codeService.setCode(label, ParserUtil.astToCode(newProgram), steps, delay);
     }
 
     function cancelEditDialog(): void {

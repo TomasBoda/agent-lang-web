@@ -19,7 +19,7 @@ export default function Sidebar() {
     const [items, setItems] = useState<CodeItem[]>([]);
 
     useEffect(() => {
-        const storageSubscription = storageService?.getAll().subscribe(data => setItems(data));
+        const storageSubscription = storageService.getAll().subscribe(data => setItems(data));
 
         return () => {
             storageSubscription?.unsubscribe();
@@ -29,23 +29,23 @@ export default function Sidebar() {
     function select(item: CodeItem): void {
         const { label, code, steps, delay } = item;
 
-        codeService?.setCode(label, code, steps, delay);
-        interpreterService?.initialize(code, steps, delay);
-        viewService?.setView(0);
+        codeService.setCode(label, code, steps, delay);
+        interpreterService.initialize(code, steps, delay);
+        viewService.setView(0);
     }
 
     function reset(): void {
-        codeService?.setEmpty();
-        viewService?.setView(0);
+        codeService.setEmpty();
+        viewService.setView(0);
     }
 
     function remove(item: CodeItem, event: any): void {
         event.stopPropagation();
-        storageService?.remove(item.label);
-        codeService?.setEmpty();
-        viewService?.setView(0);
+        storageService.remove(item.label);
+        codeService.setEmpty();
+        viewService.setView(0);
 
-        messageService?.showMessage(MessageType.Success, "Item was successfully deleted");
+        messageService.showMessage(MessageType.Success, "Item was successfully deleted");
     }
 
     function sort(array: CodeItem[]): CodeItem[] {

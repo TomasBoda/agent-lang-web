@@ -28,17 +28,17 @@ export default function Editor() {
     useEffect(() => {
         if (output.status.code !== 0) {
             if (status === InterpreterStatus.RUNNING) {
-                messageService?.showMessage(MessageType.Failure, output.status.message ?? "Unkown error");
+                messageService.showMessage(MessageType.Failure, output.status.message ?? "Unkown error");
             }
 
-            interpreterService?.reset();
+            interpreterService.reset();
         }
     }, [output]);
 
     useEffect(() => {
-        const viewSubscription = viewService?.getView().subscribe(data => setView(data));
-        const statusSubscription = interpreterService?.getStatus().subscribe(data => setStatus(data));
-        const codeSubscription = codeService?.getCode().subscribe(() => initInterpreterSubscription());
+        const viewSubscription = viewService.getView().subscribe(data => setView(data));
+        const statusSubscription = interpreterService.getStatus().subscribe(data => setStatus(data));
+        const codeSubscription = codeService.getCode().subscribe(() => initInterpreterSubscription());
 
         return () => {
             viewSubscription?.unsubscribe();
@@ -49,7 +49,7 @@ export default function Editor() {
     }, []);
 
     function initInterpreterSubscription(): void {
-        interpreterSubscription = interpreterService?.get().subscribe(data => setOutput(data));
+        interpreterSubscription = interpreterService.get().subscribe(data => setOutput(data));
     }
 
     return (

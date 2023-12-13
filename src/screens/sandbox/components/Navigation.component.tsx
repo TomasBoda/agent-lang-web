@@ -9,11 +9,11 @@ export default function Navigation() {
     const views: string[] = [ "Code", "Spreadsheet", "Visualisation" ];
 
     useEffect(() => {
-        viewService?.getView().subscribe(data => setView(data));
+        viewService.getView().subscribe(data => setView(data));
     }, [viewService]);
 
     function changeView(view: number): void {
-        viewService?.setView(view);
+        viewService.setView(view);
     }
 
     return (

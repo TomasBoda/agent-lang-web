@@ -10,13 +10,13 @@ export default function Message() {
         <Container id="message">
             <Icon />
             <Text></Text>
-            <IconClose onClick={() => messageService?.hideMessage()} src="/assets/icon-close.svg" />
+            <IconClose onClick={() => messageService.hideMessage()} src="/assets/icon-close.svg" />
         </Container>
     )
 }
 
 const Container = styled.div`
-    position: absolute;
+    position: fixed;
     left: calc(50vw - 200px);
     bottom: 30px;
 
