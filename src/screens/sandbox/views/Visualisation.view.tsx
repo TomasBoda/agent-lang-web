@@ -5,7 +5,7 @@ import { InterpreterStatus, useInterpreterService } from "../services/interprete
 import { InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
 import { Interpreter } from "@/agent-lang-interpreter/src";
 
-export default function Visualisation({ output, status, error }: { output: InterpreterOutput, status: InterpreterStatus, error: string }) {
+export default function Visualisation({ output, status }: { output: InterpreterOutput, status: InterpreterStatus }) {
 
     const [agents, setAgents] = useState<any[]>([]);
 
@@ -63,8 +63,6 @@ export default function Visualisation({ output, status, error }: { output: Inter
             <CanvasContainer>
                 <Canvas id="canvas" width="500" height="500"></Canvas>;
             </CanvasContainer>
-
-            {status !== InterpreterStatus.RUNNING && error !== "" && <Error>{error}</Error>}
         </Container>
     );
 }
@@ -84,10 +82,4 @@ const Canvas = styled.canvas`
     background-color: rgba(255, 255, 255, 0.05);
 
     border-radius: 3px;
-`;
-
-const Error = styled.span`
-  color: #DE3C4B;
-  font-size: 14px;
-  font-weight: 400;
 `;

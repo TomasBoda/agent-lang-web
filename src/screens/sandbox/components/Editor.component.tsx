@@ -22,16 +22,16 @@ export default function Editor() {
 
     const [output, setOutput] = useState<InterpreterOutput>({ status: { code: 0 } });
     const [status, setStatus] = useState<InterpreterStatus>(InterpreterStatus.STOPPED);
-    const [error, setError] = useState("");
 
     const [view, setView] = useState(0);
 
     useEffect(() => {
         if (output.status.code !== 0) {
-            setError(output.status.message ?? "Unknown error");
+            if (status === InterpreterStatus.RUNNING) {
+                messageService?.showMessage(MessageType.Failure, output.status.message ?? "Unkown error");
+            }
+
             interpreterService?.reset();
-        } else {
-            setError("");
         }
     }, [output]);
 
@@ -58,8 +58,8 @@ export default function Editor() {
             <Navigation />
             <Content>
                 {view === 0 && <CodeEditor />}
-                {view === 1 && <Spreadsheet status={status} error={error} output={output} />}
-                {view === 2 && <Visualisation status={status} error={error} output={output} />}
+                {view === 1 && <Spreadsheet status={status} output={output} />}
+                {view === 2 && <Visualisation status={status} output={output} />}
             </Content>
         </Container>
     )

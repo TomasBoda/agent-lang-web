@@ -6,6 +6,8 @@ import { InterpreterStatus, useInterpreterService } from "../services/interprete
 import { useEffect, useState } from "react";
 import { CodeItem } from "../model";
 import { MessageType, useMessageService } from "@/src/services/message.service";
+import { Formatter } from "@/agent-lang-interpreter/src/utils/formatter";
+import { ErrorModel } from "@/agent-lang-interpreter/src/utils/errors";
 
 export function Toolbar() {
 
@@ -67,6 +69,7 @@ export function Toolbar() {
     }
 
     function start(): void {
+        build();
         interpreterService?.start();
         viewService?.setView(2);
     }
@@ -97,14 +100,12 @@ export function Toolbar() {
 
     function save(): void {
         if (label.trim() === "") {
-            // TODO: custom dialog
-            alert("Label cannot be empty");
+            messageService?.showMessage(MessageType.Failure, "Label cannot be empty");
             return;
         }
 
         if (code.trim() === "") {
-            // TODO: custom dialog
-            alert("Code cannot be empty");
+            messageService?.showMessage(MessageType.Failure, "Source code cannot be empty");
             return;
         }
 
@@ -117,11 +118,27 @@ export function Toolbar() {
         codeService?.setEmpty();
     }
 
+    function build(): void {
+        if (code.trim() === "") {
+            messageService?.showMessage(MessageType.Failure, "Source code cannot be empty");
+            return;
+        }
+
+        try {
+            const formatted = Formatter.getFormatted(code);
+            codeService?.setCode(label, formatted, steps, delay);
+            messageService?.showMessage(MessageType.Success, "Build succeeded");
+        } catch (error) {
+            messageService?.showMessage(MessageType.Failure, (error as ErrorModel).toString());
+        }
+    }
+
     const showStartButton = () => status === InterpreterStatus.STOPPED;
     const showResetButton = () => status === InterpreterStatus.RUNNING || status === InterpreterStatus.PAUSED;
     const showPauseButton = () => status === InterpreterStatus.RUNNING;
     const showResumeButton = () => status === InterpreterStatus.PAUSED;
     const showNextButton = () => status === InterpreterStatus.STOPPED || status === InterpreterStatus.PAUSED;
+    const showBuildButton = () => status === InterpreterStatus.STOPPED;
 
     return (
         <Edit>
@@ -155,6 +172,7 @@ export function Toolbar() {
                     {showResetButton() && <Icon onClick={() => reset()} src="/assets/icon-stop-red.svg" />}
                     {showResumeButton() && <Icon onClick={() => resume()} src="/assets/icon-start-green.svg" />}
                     {showNextButton() && <Icon onClick={() => next()} src="/assets/icon-step.svg" />}
+                    {showBuildButton() && <Icon onClick={() => build()} src="/assets/icon-build.svg" />}
                 </Buttons>
             </Controls>
 

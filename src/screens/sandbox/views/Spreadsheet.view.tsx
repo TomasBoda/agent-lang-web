@@ -8,10 +8,9 @@ import { Program } from "@/agent-lang-interpreter/src/parser/parser.types";
 import Editor from 'react-simple-code-editor';
 import Language from "@/src/language/language";
 import Button from "@/src/components/Button.component";
-import { VariableDeclaration } from "typescript";
 import { useCodeService } from "../services";
 
-export default function Spreadsheet({ output, status, error }: { output: InterpreterOutput, status: InterpreterStatus, error: string }) {
+export default function Spreadsheet({ output, status }: { output: InterpreterOutput, status: InterpreterStatus }) {
 
     const interpreterService = useInterpreterService();
     const codeService = useCodeService();
