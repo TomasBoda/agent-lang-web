@@ -1,20 +1,14 @@
 import { styled } from "styled-components";
-import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar.component";
 import Editor from "./components/Editor.component";
-import { CodeProvider, CodeService, StorageProvider, StorageService, ViewProvider, ViewService } from "./services";
-
-import dynamic from "next/dynamic";
-import { InterpreterProvider, InterpreterService } from "./services/interpreter.service";
-import { MessageProvider, MessageService } from "@/src/services/message.service";
 import Message from "@/src/components/Message.component";
-const Tour = dynamic(
-  () => import("../../components/Tour.component"),
-  { ssr: false }
-);
+import { ServiceProvider } from "./ServiceProvider";
+import dynamic from "next/dynamic";
+
+const Tour = dynamic(() => import("../../components/Tour.component"), { ssr: false });
 
 export default function SandboxScreen() {
-
+    
     return (
         <ServiceProvider>
             <Tour />
@@ -24,32 +18,6 @@ export default function SandboxScreen() {
             </Container>
             <Message />
         </ServiceProvider>
-    )
-}
-
-const ServiceProvider = ({ children }: { children: any }) => {
-    const storageService = new StorageService();
-    const codeService = new CodeService();
-    const viewService = new ViewService();
-    const interpreterService = new InterpreterService();
-    const messageService = new MessageService();
-
-    useEffect(() => {
-        storageService.initialize();
-    }, []);
-
-    return (
-        <MessageProvider messageService={messageService}>
-            <StorageProvider storageService={storageService}>
-                <CodeProvider codeService={codeService}>
-                    <ViewProvider viewService={viewService}>
-                        <InterpreterProvider interpreterService={interpreterService}>
-                            {children}
-                        </InterpreterProvider>
-                    </ViewProvider>
-                </CodeProvider>
-            </StorageProvider>
-        </MessageProvider>
     )
 }
 
