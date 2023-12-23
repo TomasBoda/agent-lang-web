@@ -167,12 +167,11 @@ export function Toolbar() {
                 />
 
                 <Buttons>
-                    {showStartButton() && <Icon onClick={() => start()} src="/assets/icon-start-green.svg" />}
-                    {showPauseButton() && <Icon onClick={() => pause()} src="/assets/icon-pause.svg" />}
-                    {showResetButton() && <Icon onClick={() => reset()} src="/assets/icon-stop-red.svg" />}
-                    {showResumeButton() && <Icon onClick={() => resume()} src="/assets/icon-start-green.svg" />}
-                    {showNextButton() && <Icon onClick={() => next()} src="/assets/icon-step.svg" />}
-                    {showBuildButton() && <Icon onClick={() => build()} src="/assets/icon-build.svg" />}
+                    <Icon onClick={() => showResumeButton() ? resume() : start()} src="/assets/icon-start-green.svg" $disabled={!showStartButton() && !showResumeButton()} />
+                    <Icon onClick={() => pause()} src="/assets/icon-pause.svg" $disabled={!showPauseButton()} />
+                    <Icon onClick={() => reset()} src="/assets/icon-stop-red.svg" $disabled={!showResetButton()} />
+                    <Icon onClick={() => next()} src="/assets/icon-step.svg" $disabled={!showNextButton()} />
+                    <Icon onClick={() => build()} src="/assets/icon-build.svg" $disabled={!showBuildButton()} />
                 </Buttons>
             </Controls>
 
@@ -216,11 +215,12 @@ const Buttons = styled.div`
     gap: 10px;
 `;
 
-const Icon = styled.img`
+const Icon = styled.img<{ $disabled: boolean }>`
     width: 20px;
     height: 18px;
 
     margin: 0px 5px;
 
-    cursor: pointer;
+    cursor: ${props => props.$disabled ? "not-allowed" : "pointer"};
+    filter: ${props => props.$disabled && "grayscale(100%)"};
 `;
