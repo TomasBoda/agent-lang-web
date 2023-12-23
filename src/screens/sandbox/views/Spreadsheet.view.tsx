@@ -8,12 +8,14 @@ import { Program } from "@/agent-lang-interpreter/src/parser/parser.types";
 import Editor from 'react-simple-code-editor';
 import Language from "@/src/language/language";
 import Button from "@/src/components/Button.component";
-import { useCodeService } from "../services";
+import { useCodeService, useViewService } from "../services";
+import { Formatter } from "@/agent-lang-interpreter/src/utils/formatter";
 
 export default function Spreadsheet({ output, status }: { output: InterpreterOutput, status: InterpreterStatus }) {
 
     const interpreterService = useInterpreterService();
     const codeService = useCodeService();
+    const viewService = useViewService();
 
     const [agents, setAgents] = useState<Agent[]>([]);
 
@@ -51,7 +53,7 @@ export default function Spreadsheet({ output, status }: { output: InterpreterOut
         }
     }, []);
 
-    function editProperty(agentIdentifier: string, variableIdentifier: string): void {
+    function openEditDialog(agentIdentifier: string, variableIdentifier: string): void {
         setEditing(true);
         setAgentIdentifier(agentIdentifier);
         setVariableIdentifier(variableIdentifier);
@@ -69,8 +71,13 @@ export default function Spreadsheet({ output, status }: { output: InterpreterOut
         interpreterService.setProgram(newProgram);
         interpreterService.rebuild();
 
-        // TODO: update code in code editor
-        codeService.setCode(label, ParserUtil.astToCode(newProgram), steps, delay);
+        const newCode = ParserUtil.astToCode(newProgram);
+        const formattedCode = Formatter.getFormatted(newCode);
+
+        codeService.setCode(label, formattedCode, steps, delay);
+        viewService.setView(0);
+
+        cancelEditDialog();
     }
 
     function cancelEditDialog(): void {
@@ -184,7 +191,9 @@ export default function Spreadsheet({ output, status }: { output: InterpreterOut
                     <Table>
                         <thead>
                             <Row>
-                                {getAgentPropertyList(agents).map(property => <Heading onClick={() => editProperty(agents[0].identifier, property)}>{property}</Heading>)}
+                                {getAgentPropertyList(agents).map(property =>
+                                    <Heading onClick={() => openEditDialog(agents[0].identifier, property)}>{property}</Heading>
+                                )}
                             </Row>
                         </thead>
 
