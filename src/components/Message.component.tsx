@@ -6,11 +6,18 @@ export default function Message() {
 
     const messageService = useMessageService();
 
+    function close(): void {
+        messageService.hideMessage();
+    }
+
     return (
         <Container id="message">
             <Icon />
-            <Text></Text>
-            <IconClose onClick={() => messageService.hideMessage()} src="/assets/icon-close.svg" />
+            <Text />
+            <IconClose
+                onClick={() => close()}
+                src="/assets/icon-close.svg"
+            />
         </Container>
     )
 }

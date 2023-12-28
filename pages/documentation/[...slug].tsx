@@ -8,17 +8,19 @@ import remarkParse from 'remark-parse';
 import remarkHtml from 'remark-html';
 import Head from "next/head";
 import DocumentationScreen from '@/src/screens/documentation/Documentation.screen';
-import {Breadcrumb, DocumentContent, Document, documents, findDocument, getBreadcrumbs} from "@/src/lib/documentation";
+import { Breadcrumb, DocumentContent, Document, documents, findDocument, getBreadcrumbs } from "@/src/lib/documentation";
 
 export default function DocumentationSubPage({ document }: { document: DocumentContent }) {
-
     return (
         <>
             <Head>
                 <title>{document.title} | Documentation</title>
             </Head>
 
-            <DocumentationScreen html={document.html} breadcrumbs={document.breadcrumbs}/>
+            <DocumentationScreen
+                html={document.html}
+                breadcrumbs={document.breadcrumbs}
+            />
         </>
     )
 }

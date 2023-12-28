@@ -11,9 +11,6 @@ import "@/styles/documentation.css";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <StyledComponentsRegistry>
-        <Head>
-          <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-        </Head>
         <Layout>
             <Component {...pageProps} />
         </Layout>
