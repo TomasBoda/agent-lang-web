@@ -1,25 +1,23 @@
 import styled from "styled-components";
 import { useViewService } from "../services";
 import { useEffect, useState } from "react";
+import { useServices, useView } from "../hooks";
 
 export default function Navigation() {
 
-    const [view, setView] = useState(0);
-    const viewService = useViewService();
+    const { viewService } = useServices();
+
+    const { view } = useView();
     const views: string[] = [ "Code", "Spreadsheet", "Visualisation" ];
 
-    useEffect(() => {
-        viewService.getView().subscribe(data => setView(data));
-    }, [viewService]);
-
     function changeView(view: number): void {
-        viewService.setView(view);
+        viewService.set(view);
     }
 
     return (
         <Container>
             {views.map((item, index) =>
-                <Item className={index === 2 ? "step-7" : ""} $selected={index === view} onClick={() => changeView(index)}>{item}</Item>
+                <Item $selected={index === view} key={index} onClick={() => changeView(index)}>{item}</Item>
             )}
         </Container>
     )

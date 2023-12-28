@@ -3,34 +3,23 @@ import Editor from 'react-simple-code-editor';
 import Language from "../../../language/language";
 import { useEffect, useState } from "react";
 import { useCodeService } from "../services";
+import { useCode, useServices } from "../hooks";
 
 export default function CodeEditor() {
 
-    const codeService = useCodeService();
-
-    const [label, setLabel] = useState("");
-    const [code, setCode] = useState("");
-    const [steps, setSteps] = useState(0);
-    const [delay, setDelay] = useState(0);
-
     Language.initialize();
-    const editorStyle = { width: "100%", lineHeight: "150%", color: "white" };
 
-    useEffect(() => {
-        subscribeToCodeService();
-    }, [codeService]);
+    const { codeService } = useServices();
 
-    function subscribeToCodeService(): void {
-        codeService.getCode().subscribe(data => {
-            setLabel(data.label);
-            setCode(data.code);
-            setSteps(data.steps);
-            setDelay(data.delay);
-        });
-    }
+    const { codeItem } = useCode();
+    const { code } = codeItem;
 
     function updateCode(code: string): void {
-        codeService.setCode(label, code, steps, delay);
+        codeService.set({ code });
+    }
+
+    function highlightCode(code: string): string {
+        return Language.highlightWithLineNumbers(code);
     }
 
     return (
@@ -38,12 +27,12 @@ export default function CodeEditor() {
             <Wrapper>
                 <Editor
                     value={code}
-                    onValueChange={code => updateCode(code)}
-                    highlight={(code) => Language.highlightWithLineNumbers(code)}
+                    onValueChange={updateCode}
+                    highlight={highlightCode}
                     tabSize={4}
-                    className="editor step-4"
+                    className="editor"
                     textareaClassName="editor-textarea"
-                    style={editorStyle}
+                    style={{ width: "100%", lineHeight: "150%", color: "white" }}
                     placeholder="Enter code here..."
                 />
             </Wrapper>

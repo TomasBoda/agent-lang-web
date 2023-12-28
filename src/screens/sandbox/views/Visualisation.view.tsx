@@ -1,27 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
-import { useCodeService } from "../services";
-import { InterpreterStatus, useInterpreterService } from "../services/interpreter.service";
-import { InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
-import { Interpreter } from "@/agent-lang-interpreter/src";
+import { InterpreterStatus } from "../services/interpreter.service";
+import { useInterpreter, useServices, useStatus } from "../hooks";
+import { MessageType } from "@/src/services/message.service";
 
-export default function Visualisation({ output, status }: { output: InterpreterOutput, status: InterpreterStatus }) {
+export default function Visualisation() {
 
-    const [agents, setAgents] = useState<any[]>([]);
+    const { interpreterService, messageService } = useServices();
+
+    const { status } = useStatus();
+    const { output } = useInterpreter();
+
+    let agents = output.output?.agents ?? [];
 
     useEffect(() => {
-        setAgents(output.output?.agents ?? []);
+        const { status } = output;
+
+        if (status.code !== 0) {
+            interpreterService.reset();
+            messageService.showMessage(MessageType.Failure, status.message ?? "Unknown error");
+            return;
+        }
+
+        render();
     }, [output]);
 
     useEffect(() => {
         if (status !== InterpreterStatus.PAUSED) {
-            setAgents([]);
+            agents = [];
         }
     }, [status]);
-
-    useEffect(() => {
-        render();
-    }, [agents]);
 
     function render(): void {
         const canvas = document.getElementById("canvas") as HTMLCanvasElement;

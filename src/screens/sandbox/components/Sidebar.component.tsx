@@ -1,49 +1,32 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { Spacer } from "@/src/components/Components.styles";
 import Button from "@/src/components/Button.component";
-import { useCodeService, useStorageService, useViewService } from "../services";
-import { CodeItem } from "../model";
 import Link from "next/link";
-import { useInterpreterService } from "../services/interpreter.service";
-import { MessageType, useMessageService } from "@/src/services/message.service";
+import { Spacer } from "@/src/components/Components.styles";
+import { CodeItem } from "../model";
+import { MessageType } from "@/src/services/message.service";
+import { useItems, useServices } from "../hooks";
 
 export default function Sidebar() {
 
-    const storageService = useStorageService();
-    const codeService = useCodeService();
-    const viewService = useViewService();
-    const interpreterService = useInterpreterService();
-    const messageService = useMessageService();
-
-    const [items, setItems] = useState<CodeItem[]>([]);
-
-    useEffect(() => {
-        const storageSubscription = storageService.getAll().subscribe(data => setItems(data));
-
-        return () => {
-            storageSubscription?.unsubscribe();
-        }
-    }, []);
+    const { storageService, codeService, viewService, messageService } = useServices();
+    const { items } = useItems();
 
     function select(item: CodeItem): void {
-        const { label, code, steps, delay } = item;
-
-        codeService.setCode(label, code, steps, delay);
-        interpreterService.initialize(code, steps, delay);
-        viewService.setView(0);
+        codeService.set(item);
+        viewService.set(0);
     }
 
     function reset(): void {
-        codeService.setEmpty();
-        viewService.setView(0);
+        codeService.reset();
+        viewService.set(0);
     }
 
     function remove(item: CodeItem, event: any): void {
         event.stopPropagation();
+
         storageService.remove(item.label);
-        codeService.setEmpty();
-        viewService.setView(0);
+        codeService.reset();
+        viewService.set(0);
 
         messageService.showMessage(MessageType.Success, "Item was successfully deleted");
     }
@@ -52,15 +35,13 @@ export default function Sidebar() {
         return array.sort((a, b) => a.label.localeCompare(b.label));
     }
 
-    function getMessage(): string {
+    function getItemCountLabel(): string {
         if (items.length === 0) {
             return "No projects"
-        } else {
-            if (items.length === 1) {
+        } else if (items.length === 1) {
                 return `${items.length} project`;
-            } else {
-                return `${items.length} projects`;
-            }
+        } else {
+            return `${items.length} projects`;
         }
     }
 
@@ -70,7 +51,7 @@ export default function Sidebar() {
                 <span style={{ fontWeight: 700 }}>Agent</span>Lang
             </Header>
 
-            <Message>{getMessage()}</Message>
+            <ItemCountLabel>{getItemCountLabel()}</ItemCountLabel>
 
             {items.length > 0 &&
                 <ListWrapper>
@@ -88,7 +69,7 @@ export default function Sidebar() {
             <Spacer />
 
             <Footer>
-                <Button className="step-2" size="small" onClick={() => reset()}>New simulation</Button>
+                <Button size="small" onClick={() => reset()}>New simulation</Button>
             </Footer>
         </Container>
     )
@@ -119,7 +100,7 @@ const Header = styled(Link)`
   padding: 20px;
 `;
 
-const Message = styled.span`
+const ItemCountLabel = styled.span`
     color: rgba(255, 255, 255, 0.7);
     font-size: 12px;
     font-weight: 300;

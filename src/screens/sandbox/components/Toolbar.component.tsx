@@ -1,77 +1,41 @@
 import Button from "@/src/components/Button.component";
 import { InputField } from "@/src/components/Components.styles";
 import styled from "styled-components";
-import { useCodeService, useStorageService, useViewService } from "../services";
-import { InterpreterStatus, useInterpreterService } from "../services/interpreter.service";
-import { useEffect, useState } from "react";
-import { CodeItem } from "../model";
-import { MessageType, useMessageService } from "@/src/services/message.service";
+import { InterpreterStatus } from "../services/interpreter.service";
+import { MessageType } from "@/src/services/message.service";
 import { Formatter } from "@/agent-lang-interpreter/src/utils/formatter";
 import { ErrorModel } from "@/agent-lang-interpreter/src/utils/errors";
+import { useCode, useInterpreter, useServices, useStatus, useView } from "../hooks";
 
 export function Toolbar() {
 
-    // services
-    const storageService = useStorageService();
-    const codeService = useCodeService();
-    const viewService = useViewService();
-    const interpreterService = useInterpreterService();
-    const messageService = useMessageService();
+    const { storageService, codeService, viewService, interpreterService, messageService } = useServices();
 
-    // general code data
-    const [label, setLabel] = useState("");
-    const [code, setCode] = useState("");
-    const [steps, setSteps] = useState(0);
-    const [delay, setDelay] = useState(0);
-
-    // current interpreter data
-    const [step, setStep] = useState(0);
-    const [status, setStatus] = useState(InterpreterStatus.STOPPED);
-
-    // current view
-    const [view, setView] = useState(0);
-
-    useEffect(() => {
-        const codeSubscription = codeService.getCode().subscribe(data => { setCodeData(data); setInterpreterData(data); });
-        const statusSubscription = interpreterService.getStatus().subscribe(status => setStatus(status));
-        const interpreterSubscription = interpreterService.get().subscribe(output => setStep(output.output?.step ?? 0));
-        const viewSubscription = viewService.getView().subscribe(view => setView(view));
-
-        return () => {
-            codeSubscription.unsubscribe();
-            statusSubscription.unsubscribe();
-            interpreterSubscription.unsubscribe();
-            viewSubscription.unsubscribe();
-        }
-    }, []);
-
-    function setCodeData(item: CodeItem): void {
-        setLabel(item.label);
-        setCode(item.code);
-        setSteps(item.steps);
-        setDelay(item.delay);
-    }
-
-    function setInterpreterData(item: CodeItem): void {
-        interpreterService.initialize(item.code, item.steps, item.delay);
-    }
+    const { codeItem } = useCode();
+    const { label, code, steps, delay } = codeItem;
+    const { view } = useView();
+    const { status } = useStatus();
+    const { output } = useInterpreter();
+    const step = output.output?.step ?? 0;
 
     function updateLabel(label: string): void {
-        codeService.setCode(label, code, steps, delay);
+        codeService.set({ label });
     }
 
     function updateSteps(steps: number): void {
-        codeService.setCode(label, code, steps, delay);
+        codeService.set({ steps });
     }
 
     function updateDelay(delay: number): void {
-        codeService.setCode(label, code, steps, delay);
+        codeService.set({ delay });
     }
 
     function start(): void {
-        build();
-        interpreterService.start();
-        viewService.setView(2);
+        build(() => {
+            interpreterService.initialize(code, steps, delay);
+            interpreterService.start();
+            viewService.set(2);
+        });
     }
 
     function reset(): void {
@@ -86,7 +50,7 @@ export function Toolbar() {
         interpreterService.resume();
 
         if (view === 0) {
-            viewService.setView(2);
+            viewService.set(2);
         }
     }
 
@@ -94,7 +58,7 @@ export function Toolbar() {
         interpreterService.step();
 
         if (view === 0) {
-            viewService.setView(2);
+            viewService.set(2);
         }
     }
 
@@ -110,35 +74,39 @@ export function Toolbar() {
         }
 
         storageService.save(label, code, steps, delay);
-        messageService.showMessage(MessageType.Success, "Simulation " + label + " saved successfully");
+        messageService.showMessage(MessageType.Success, `Simulation ${label} saved successfully`);
     }
 
     function remove(): void {
         storageService.remove(label);
-        codeService.setEmpty();
+        codeService.reset();
+        viewService.set(0);
+
+        messageService.showMessage(MessageType.Success, "Item was successfully deleted");
     }
 
-    function build(): void {
+    function build(callback?: () => void): void {
         if (code.trim() === "") {
             messageService.showMessage(MessageType.Failure, "Source code cannot be empty");
             return;
         }
 
         try {
-            const formatted = Formatter.getFormatted(code);
-            codeService.setCode(label, formatted, steps, delay);
+            const formattedCode = Formatter.getFormatted(code);
+            codeService.set({ code: formattedCode });
             messageService.showMessage(MessageType.Success, "Build succeeded");
+            callback?.();
         } catch (error) {
             messageService.showMessage(MessageType.Failure, (error as ErrorModel).toString());
         }
     }
 
-    const showStartButton = () => status === InterpreterStatus.STOPPED;
-    const showResetButton = () => status === InterpreterStatus.RUNNING || status === InterpreterStatus.PAUSED;
-    const showPauseButton = () => status === InterpreterStatus.RUNNING;
-    const showResumeButton = () => status === InterpreterStatus.PAUSED;
-    const showNextButton = () => status === InterpreterStatus.STOPPED || status === InterpreterStatus.PAUSED;
-    const showBuildButton = () => status === InterpreterStatus.STOPPED;
+    const showStartButton = status === InterpreterStatus.STOPPED;
+    const showResetButton = status === InterpreterStatus.RUNNING || status === InterpreterStatus.PAUSED;
+    const showPauseButton = status === InterpreterStatus.RUNNING;
+    const showResumeButton = status === InterpreterStatus.PAUSED;
+    const showNextButton = status === InterpreterStatus.STOPPED || status === InterpreterStatus.PAUSED;
+    const showBuildButton = status === InterpreterStatus.STOPPED;
 
     return (
         <Edit>
@@ -147,7 +115,6 @@ export function Toolbar() {
                 value={label}
                 onChange={(e) => updateLabel(e.target.value)}
                 placeholder="Enter project label..."
-                className="step-3"
             />
 
             <Controls>
@@ -167,16 +134,16 @@ export function Toolbar() {
                 />
 
                 <Buttons>
-                    <Icon onClick={() => showResumeButton() ? resume() : start()} src="/assets/icon-start-green.svg" $disabled={!showStartButton() && !showResumeButton()} />
-                    <Icon onClick={() => pause()} src="/assets/icon-pause.svg" $disabled={!showPauseButton()} />
-                    <Icon onClick={() => reset()} src="/assets/icon-stop-red.svg" $disabled={!showResetButton()} />
-                    <Icon onClick={() => next()} src="/assets/icon-step.svg" $disabled={!showNextButton()} />
-                    <Icon onClick={() => build()} src="/assets/icon-build.svg" $disabled={!showBuildButton()} />
+                    <Icon onClick={() => showResumeButton ? resume() : start()} src="/assets/icon-start-green.svg" $disabled={!showStartButton && !showResumeButton} />
+                    <Icon onClick={() => pause()} src="/assets/icon-pause.svg" $disabled={!showPauseButton} />
+                    <Icon onClick={() => reset()} src="/assets/icon-stop-red.svg" $disabled={!showResetButton} />
+                    <Icon onClick={() => next()} src="/assets/icon-step.svg" $disabled={!showNextButton} />
+                    <Icon onClick={() => build()} src="/assets/icon-build.svg" $disabled={!showBuildButton} />
                 </Buttons>
             </Controls>
 
-            <Button className="step-5" size="small" onClick={() => save()}>Save</Button>
-            <Button className="step-6" size="small" onClick={() => remove()}>Remove</Button>
+            <Button size="small" onClick={() => save()}>Save</Button>
+            <Button size="small" onClick={() => remove()}>Remove</Button>
         </Edit>
     )
 }

@@ -6,11 +6,11 @@ export class ViewService {
     private viewSubject: BehaviorSubject<number> =  new BehaviorSubject(0);
     private viewObservable: Observable<number> = this.viewSubject.asObservable();
 
-    public setView(view: number): void {
+    public set(view: number): void {
         this.viewSubject.next(view);
     }
 
-    public getView(): Observable<number> {
+    public get(): Observable<number> {
         return this.viewObservable;
     }
 }

@@ -1,55 +1,17 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navigation from "./Navigation.component";
 import CodeEditor from "../views/CodeEditor.view";
 import Visualisation from "../views/Visualisation.view";
-import { useCodeService, useViewService } from "../services";
 import Spreadsheet from "../views/Spreadsheet.view";
 import { Toolbar } from "./Toolbar.component";
-import { InterpreterStatus, useInterpreterService } from "../services/interpreter.service";
-import { InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
-import { Subscription } from "rxjs/internal/Subscription";
-import { MessageType, useMessageService } from "@/src/services/message.service";
+import { useInterpreter, useView } from "../hooks";
 
 export default function Editor() {
 
-    const codeService = useCodeService();
-    const viewService = useViewService();
-    const interpreterService = useInterpreterService();
-    const messageService = useMessageService();
+    const { view } = useView();
 
-    let interpreterSubscription: Subscription | undefined;
-
-    const [output, setOutput] = useState<InterpreterOutput>({ status: { code: 0 } });
-    const [status, setStatus] = useState<InterpreterStatus>(InterpreterStatus.STOPPED);
-
-    const [view, setView] = useState(0);
-
-    useEffect(() => {
-        if (output.status.code !== 0) {
-            if (status === InterpreterStatus.RUNNING) {
-                messageService.showMessage(MessageType.Failure, output.status.message ?? "Unkown error");
-            }
-
-            interpreterService.reset();
-        }
-    }, [output]);
-
-    useEffect(() => {
-        const viewSubscription = viewService.getView().subscribe(data => setView(data));
-        const statusSubscription = interpreterService.getStatus().subscribe(data => setStatus(data));
-        const codeSubscription = codeService.getCode().subscribe(() => initInterpreterSubscription());
-
-        return () => {
-            viewSubscription?.unsubscribe();
-            statusSubscription?.unsubscribe();
-            codeSubscription?.unsubscribe();
-            interpreterSubscription?.unsubscribe();
-        }
-    }, []);
-
-    function initInterpreterSubscription(): void {
-        interpreterSubscription = interpreterService.get().subscribe(data => setOutput(data));
+    const Router = ({ children }: { children: any }) => {
+        return children[view];
     }
 
     return (
@@ -57,9 +19,11 @@ export default function Editor() {
             <Toolbar />
             <Navigation />
             <Content>
-                {view === 0 && <CodeEditor />}
-                {view === 1 && <Spreadsheet status={status} output={output} />}
-                {view === 2 && <Visualisation status={status} output={output} />}
+                <Router>
+                    <CodeEditor />
+                    <Spreadsheet />
+                    <Visualisation />
+                </Router>
             </Content>
         </Container>
     )

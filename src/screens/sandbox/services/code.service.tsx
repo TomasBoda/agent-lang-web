@@ -1,24 +1,27 @@
 import { createContext, useContext } from "react";
 import { BehaviorSubject, Observable } from "rxjs";
-import { CodeItem } from "../model";
+import { CodeItem, CodeItemPartial } from "../model";
 
 export class CodeService {
 
     private static DEFAULT: CodeItem = { label: "", code: "", steps: 10000, delay: 20 };
+    private static CURRENT: CodeItem = CodeService.DEFAULT;
 
     private codeSubject: BehaviorSubject<CodeItem> =  new BehaviorSubject(CodeService.DEFAULT);
-    private codeObservable: Observable<CodeItem> = this.codeSubject.asObservable();
 
-    public setCode(label: string, code: string, steps: number, delay: number): void {
-        this.codeSubject.next({ label, code, steps, delay });
+    public set(codeItemPartial: CodeItemPartial): void {
+        const codeItem: CodeItem = { ...CodeService.CURRENT, ...codeItemPartial };
+        this.codeSubject.next(codeItem);
+        CodeService.CURRENT = codeItem;
     }
 
-    public setEmpty(): void {
+    public get(): Observable<CodeItem> {
+        return this.codeSubject.asObservable();
+    }
+
+    public reset(): void {
         this.codeSubject.next(CodeService.DEFAULT);
-    }
-
-    public getCode(): Observable<CodeItem> {
-        return this.codeObservable;
+        CodeService.CURRENT = CodeService.DEFAULT;
     }
 }
 

@@ -1,57 +1,26 @@
 import styled from "styled-components";
-import { InterpreterStatus, useInterpreterService } from "../services/interpreter.service";
-import { useEffect, useState } from "react";
-import { Agent, InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
+import { useState } from "react";
+import { Agent } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
 import { AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType } from "@/agent-lang-interpreter/src/runtime/runtime.types";
 import { ParserUtil } from "@/agent-lang-interpreter/src/parser/parser-util";
 import { Program } from "@/agent-lang-interpreter/src/parser/parser.types";
 import Editor from 'react-simple-code-editor';
 import Language from "@/src/language/language";
 import Button from "@/src/components/Button.component";
-import { useCodeService, useViewService } from "../services";
 import { Formatter } from "@/agent-lang-interpreter/src/utils/formatter";
+import { useInterpreter, useServices } from "../hooks";
 
-export default function Spreadsheet({ output, status }: { output: InterpreterOutput, status: InterpreterStatus }) {
+export default function Spreadsheet() {
 
-    const interpreterService = useInterpreterService();
-    const codeService = useCodeService();
-    const viewService = useViewService();
+    const { codeService, viewService, interpreterService } = useServices();
 
-    const [agents, setAgents] = useState<Agent[]>([]);
+    const { output } = useInterpreter();
+    let agents = output.output?.agents ?? [];
 
     const [editing, setEditing] = useState(false);
     const [agentIdentifier, setAgentIdentifier] = useState("");
     const [variableIdentifier, setVariableIdentifier] = useState("");
     const [variableCode, setVariableCode] = useState("");
-
-    // general code data
-    const [label, setLabel] = useState("");
-    const [code, setCode] = useState("");
-    const [steps, setSteps] = useState(0);
-    const [delay, setDelay] = useState(0);
-
-    useEffect(() => {
-        setAgents(output.output?.agents ?? []);
-    }, [output]);
-
-    useEffect(() => {
-        if (status !== InterpreterStatus.PAUSED) {
-            setAgents([]);
-        }
-    }, [status]);
-
-    useEffect(() => {
-        const codeSubscription = codeService.getCode().subscribe(data => {
-            setLabel(data.label);
-            setCode(data.code);
-            setSteps(data.steps);
-            setDelay(data.delay);
-        });
-
-        return () => {
-            codeSubscription.unsubscribe();
-        }
-    }, []);
 
     function openEditDialog(agentIdentifier: string, variableIdentifier: string): void {
         setEditing(true);
@@ -74,8 +43,8 @@ export default function Spreadsheet({ output, status }: { output: InterpreterOut
         const newCode = ParserUtil.astToCode(newProgram);
         const formattedCode = Formatter.getFormatted(newCode);
 
-        codeService.setCode(label, formattedCode, steps, delay);
-        viewService.setView(0);
+        codeService.set({ code: formattedCode });
+        viewService.set(0);
 
         cancelEditDialog();
     }
