@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { Agent } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
+import { Agent, InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
 import { AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType } from "@/agent-lang-interpreter/src/runtime/runtime.types";
 import { ParserUtil } from "@/agent-lang-interpreter/src/parser/parser-util";
 import { Program } from "@/agent-lang-interpreter/src/parser/parser.types";
@@ -10,11 +10,10 @@ import Button from "@/src/components/Button.component";
 import { Formatter } from "@/agent-lang-interpreter/src/utils/formatter";
 import { useInterpreter, useServices } from "../hooks";
 
-export default function Spreadsheet() {
+export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
 
     const { codeService, viewService, interpreterService } = useServices();
 
-    const { output } = useInterpreter();
     let agents = output.output?.agents ?? [];
 
     const [editing, setEditing] = useState(false);

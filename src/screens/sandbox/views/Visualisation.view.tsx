@@ -1,17 +1,19 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { InterpreterStatus } from "../services/interpreter.service";
-import { useInterpreter, useServices, useStatus } from "../hooks";
+import { useCode, useInterpreter, useServices, useStatus } from "../hooks";
 import { MessageType } from "@/src/services/message.service";
+import { InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
 
-export default function Visualisation() {
+export default function Visualisation({ output }: { output: InterpreterOutput }) {
 
     const { interpreterService, messageService } = useServices();
 
     const { status } = useStatus();
-    const { output } = useInterpreter();
 
     let agents = output.output?.agents ?? [];
+
+    const { codeItem } = useCode();
 
     useEffect(() => {
         const { status } = output;
@@ -22,6 +24,7 @@ export default function Visualisation() {
             return;
         }
 
+        agents = output.output?.agents ?? [];
         render();
     }, [output]);
 

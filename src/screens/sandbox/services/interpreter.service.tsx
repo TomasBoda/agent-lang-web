@@ -23,11 +23,7 @@ export class InterpreterService {
     public initialize(sourceCode: string, steps: number, delay: number): void {
         this.sourceCode = sourceCode;
         this.config = { ...this.config, steps, delay };
-        this.reset();
-    }
-
-    public setProgram(program: Program): void {
-        this.interpreter.setProgram(program);
+        this.interpreter.build(this.sourceCode, this.config);
     }
 
     public rebuild(): void {
@@ -83,13 +79,17 @@ export class InterpreterService {
         return this.statusSubject.asObservable();
     }
 
+    private setStatus(status: InterpreterStatus): void {
+        this.status = status;
+        this.statusSubject.next(status);
+    }
+
     public getProgram(): Program {
         return this.interpreter.getProgram();
     }
 
-    private setStatus(status: InterpreterStatus): void {
-        this.status = status;
-        this.statusSubject.next(status);
+    public setProgram(program: Program): void {
+        this.interpreter.setProgram(program);
     }
 }
 

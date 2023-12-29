@@ -34,7 +34,10 @@ export function Toolbar() {
         build(() => {
             interpreterService.initialize(code, steps, delay);
             interpreterService.start();
-            viewService.set(2);
+
+            if (view === 0) {
+                viewService.set(2);
+            }
         });
     }
 

@@ -5,10 +5,12 @@ import Visualisation from "../views/Visualisation.view";
 import Spreadsheet from "../views/Spreadsheet.view";
 import { Toolbar } from "./Toolbar.component";
 import { useInterpreter, useView } from "../hooks";
+import { useEffect } from "react";
 
 export default function Editor() {
 
     const { view } = useView();
+    const { output } = useInterpreter();
 
     const Router = ({ children }: { children: any }) => {
         return children[view];
@@ -21,8 +23,8 @@ export default function Editor() {
             <Content>
                 <Router>
                     <CodeEditor />
-                    <Spreadsheet />
-                    <Visualisation />
+                    <Spreadsheet output={output} />
+                    <Visualisation output={output} />
                 </Router>
             </Content>
         </Container>

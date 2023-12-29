@@ -8,12 +8,13 @@ import { useItems, useServices } from "../hooks";
 
 export default function Sidebar() {
 
-    const { storageService, codeService, viewService, messageService } = useServices();
+    const { storageService, codeService, viewService, interpreterService, messageService } = useServices();
     const { items } = useItems();
 
     function select(item: CodeItem): void {
         codeService.set(item);
         viewService.set(0);
+        interpreterService.reset();
     }
 
     function reset(): void {
