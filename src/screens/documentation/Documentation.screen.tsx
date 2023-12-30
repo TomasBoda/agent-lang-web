@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import SidePanel from "./Sidepanel.component";
 import Breadcrumbs from "@/src/components/Breadcrumbs.component";
 import {PageWrapper} from "@/src/components/Components.styles";
-import {Breadcrumb} from "@/src/lib/documentation";
+import {Breadcrumb} from "@/src/utils/documentation";
 import { useEffect, useState } from "react";
 import Language from "@/src/language/language";
 import { useRouter } from "next/router";
@@ -58,8 +58,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
-  background-color: black;
 `;
 
 const Content = styled.div`

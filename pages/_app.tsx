@@ -1,5 +1,5 @@
 import Layout from "@/src/components/Layout.component";
-import StyledComponentsRegistry from "@/src/lib/registry";
+import StyledComponentsRegistry from "@/src/utils/registry";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 

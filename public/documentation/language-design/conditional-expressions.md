@@ -25,7 +25,7 @@ property isInfected = choice(true, false);
 property forwardAngle = 0;
 property backwardAngle = pi();
 
-property direction = if isInfected forwardAngle else backwardAngle;
+property direction = if isInfected then forwardAngle else backwardAngle;
 ```
 In this example, we want the agent to move in a direction of `forwardAngle` if they are infected, otherwise in a direction of `backwardAngle`.
 

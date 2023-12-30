@@ -1,7 +1,7 @@
 
 import Link from "next/link";
 import styled from "styled-components";
-import {Breadcrumb} from "@/src/lib/documentation";
+import {Breadcrumb} from "@/src/utils/documentation";
 
 export default function Breadcrumbs({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) {
 

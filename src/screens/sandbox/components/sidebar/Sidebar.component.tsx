@@ -7,15 +7,29 @@ import { MessageType } from "@/src/services/message.service";
 import { useItems, useServices } from "../../hooks";
 import { useEffect, useState } from "react";
 import ItemList from "./ItemList.component";
+import { Examples } from "@/src/utils/examples";
 
 export default function Sidebar() {
 
-    const { codeService, viewService } = useServices();
+    const { storageService, codeService, viewService } = useServices();
     const { items } = useItems();
+
+    useEffect(() => {
+        initializeExamples();
+    }, []);
 
     function reset(): void {
         codeService.reset();
         viewService.set(0);
+    }
+
+    function initializeExamples(): void {
+        for (const example of Examples.ALL) {
+            if (!storageService.get(example.label)) {
+                const { label, code, steps, delay } = example;
+                storageService.save(label, code, steps, delay);
+            }
+        }
     }
 
     function getItemCountLabel(): string {

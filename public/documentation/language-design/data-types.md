@@ -10,6 +10,7 @@ In AgentLang, there are six primary data types:
 4. the `lambda` value
 5. the `agent` value
 6. the `agents` value
+7. the `null` value
 
 ### Number
 The `number` value represents a plain numeric value. Numeric values can be integers, decimal numbers as well as negative numbers. Numeric values can be defined plainly, such as `12.5` or calculated using expressions, such as `5 * (3 - 6) - 10 / 2`.
@@ -34,5 +35,8 @@ The `agent` value represents one agent with all their current properties. To und
 
 ### Agents
 the `agents` value represents a list of agents with all their current properties. To understand the `agents` value in context, let's again look at the previously explained `filter(...)` function. The `filter(agents(person) => p => p.infected == true)` function returns a value of type `agents`, where all the returned agents satisfy the condition in the `lambda` expression.
+
+### Null
+The `null` value is not defined explicitely, however, when a property of type `Agent` is not found, it is defined as a `null` value. This value cannot be used explicitely and needs special treatment (using the `otherwise` keyword).
 
 [**Next:** Properties](/documentation/language-design/properties)

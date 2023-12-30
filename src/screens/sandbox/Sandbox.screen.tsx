@@ -4,6 +4,8 @@ import Editor from "./components/Editor.component";
 import Message from "@/src/components/Message.component";
 import { ServiceProvider } from "./ServiceProvider";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import { useServices } from "./hooks";
 
 // TODO: import
 // const Tour = dynamic(() => import("../../components/Tour.component"), { ssr: false });
