@@ -2,10 +2,8 @@ import styled from "styled-components";
 import Button from "@/src/components/Button.component";
 import Link from "next/link";
 import { Spacer } from "@/src/components/Components.styles";
-import { CodeItem } from "../../model";
-import { MessageType } from "@/src/services/message.service";
 import { useItems, useServices } from "../../hooks";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ItemList from "./ItemList.component";
 import { Examples } from "@/src/utils/examples";
 
