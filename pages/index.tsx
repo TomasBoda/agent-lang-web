@@ -7,7 +7,7 @@ export default function MainPage() {
   return (
     <>
       <Head>
-        <title>AgentLang Hub</title>
+        <title>AgentLang</title>
       </Head>
       
       <LandingScreen />

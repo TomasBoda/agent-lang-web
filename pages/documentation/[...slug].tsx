@@ -14,7 +14,7 @@ export default function DocumentationSubPage({ document }: { document: DocumentC
     return (
         <>
             <Head>
-                <title>{document.title} | Documentation</title>
+                <title>{document.title} | AgentLang</title>
             </Head>
 
             <DocumentationScreen

@@ -7,7 +7,7 @@ export default function SandboxPage() {
   return (
     <>
       <Head>
-        <title>Sandbox | AgentLang Hub</title>
+        <title>Sandbox | AgentLang</title>
       </Head>
       
       <SandboxScreen />

@@ -6,7 +6,7 @@ export default function DocumentationPage() {
   return (
     <>
       <Head>
-        <title>Documentation | AgentLang Hub</title>
+        <title>Documentation | AgentLang</title>
       </Head>
     </>
   )
