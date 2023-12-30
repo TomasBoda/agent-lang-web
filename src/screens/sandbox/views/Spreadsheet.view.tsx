@@ -8,7 +8,7 @@ import Editor from 'react-simple-code-editor';
 import Language from "@/src/language/language";
 import Button from "@/src/components/Button.component";
 import { Formatter } from "@/agent-lang-interpreter/src/utils/formatter";
-import { useInterpreter, useServices } from "../hooks";
+import { useServices } from "../hooks";
 
 export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
 
@@ -21,6 +21,7 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
     const [variableIdentifier, setVariableIdentifier] = useState("");
     const [variableCode, setVariableCode] = useState("");
 
+    // TODO: finish
     function openEditDialog(agentIdentifier: string, variableIdentifier: string): void {
         setEditing(true);
         setAgentIdentifier(agentIdentifier);
@@ -31,6 +32,7 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
         setVariableCode(code!);
     }
 
+    // TODO: finish
     function saveEditDialog(): void {
         const variableDeclaration = ParserUtil.codeToAst(variableCode);
         const program = interpreterService.getProgram() as Program;

@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import Sidebar from "./components/Sidebar.component";
+import Sidebar from "./components/sidebar/Sidebar.component";
 import Editor from "./components/Editor.component";
 import Message from "@/src/components/Message.component";
 import { ServiceProvider } from "./ServiceProvider";
