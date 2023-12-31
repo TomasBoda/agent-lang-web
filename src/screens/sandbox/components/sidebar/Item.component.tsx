@@ -2,10 +2,12 @@ import styled from "styled-components";
 import { MessageType } from "@/src/services/message.service";
 import { useServices } from "../../hooks";
 import { CodeItem } from "../../model";
+import { getFormattedDate } from "@/src/utils/datetime";
+import { Spacer } from "@/src/components/Components.styles";
 
 export default function Item({ item }: { item: CodeItem }) {
 
-    const { label } = item;
+    const { label, updatedAt } = item;
 
     const { storageService, codeService, viewService, interpreterService, messageService } = useServices();
 
@@ -27,7 +29,8 @@ export default function Item({ item }: { item: CodeItem }) {
 
     return (
         <Container onClick={() => select()}>
-            {label}
+            <Label>{label}</Label>
+            <Date>{getFormattedDate(updatedAt as unknown as string)}</Date>
             <Icon onClick={(e) => remove(e)} src="/assets/icon-remove.svg" />
         </Container>
     )
@@ -39,8 +42,8 @@ const Container = styled.div`
     font-weight: 400;
 
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 1px;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
     align-items: center;
 
     padding: 15px;
@@ -57,6 +60,14 @@ const Container = styled.div`
     &:hover {
         background-color: rgba(255, 255, 255, 0.08);
     }
+`;
+
+const Label = styled.span``;
+
+const Date = styled.span`
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 10px;
+    font-weight: 400;
 `;
 
 const Icon = styled.img`

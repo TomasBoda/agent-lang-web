@@ -13,7 +13,7 @@ export class StorageService {
     
     public save(label: string, code: string, steps: number, delay: number): void {
         const key = this.getKey(label);
-        const value: CodeItem = { label, code, steps, delay };
+        const value: CodeItem = { label, code, steps, delay, updatedAt: new Date() };
 
         localStorage.setItem(key, JSON.stringify(value));
         this.next();
