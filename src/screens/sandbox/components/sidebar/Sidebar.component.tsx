@@ -6,6 +6,7 @@ import { useItems, useServices } from "../../hooks";
 import { useEffect } from "react";
 import ItemList from "./ItemList.component";
 import { Examples } from "@/src/utils/examples";
+import Logo from "@/src/components/Logo.component";
 
 export default function Sidebar() {
 
@@ -42,9 +43,9 @@ export default function Sidebar() {
 
     return (
         <Container>
-            <Header href="/">
-                <span style={{ fontWeight: 700 }}>Agent</span>Lang
-            </Header>
+            <LogoContainer>
+                <Logo />
+            </LogoContainer>
 
             <ItemCountLabel>{getItemCountLabel()}</ItemCountLabel>
             <ItemList items={items} />
@@ -73,14 +74,8 @@ const Container = styled.div`
     background-color: rgb(10, 10, 10);
 `;
 
-const Header = styled(Link)`
-  color: white;
-  font-size: 20px;
-  font-weight: 200;
-  line-height: 100%;
-  text-decoration: none;
-
-  padding: 20px;
+const LogoContainer = styled.div`
+    margin: 20px;
 `;
 
 const ItemCountLabel = styled.span`

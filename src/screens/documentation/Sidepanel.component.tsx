@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import Link from "next/link";
 import Head from "next/head";
+import Logo from "@/src/components/Logo.component";
 
 export default function SidePanel() {
 
     return (
         <Container>
-            <Header href="/">
-                <span style={{ fontWeight: 700 }}>Agent</span>Lang
-            </Header>
+            <LogoContainer>
+                <Logo />
+            </LogoContainer>
 
             <Section>
                 <HeadingItem href="/documentation/introduction">Introduction</HeadingItem>
@@ -69,14 +70,8 @@ const Container = styled.div`
     }
 `;
 
-const Header = styled(Link)`
-  color: white;
-  font-size: 20px;
-  font-weight: 200;
-  line-height: 100%;
-  text-decoration: none;
-
-  padding-bottom: 20px;
+const LogoContainer = styled.div`
+    margin-bottom: 15px;
 `;
 
 const Section = styled.div`

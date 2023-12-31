@@ -1,17 +1,22 @@
 import styled from "styled-components";
 import Link from "next/link";
 import Button from "@/src/components/Button.component";
+import Logo from "@/src/components/Logo.component";
 
 export default function LandingScreen() {
 
     return (
         <Container>
             <Left>
-                <Header href="/">
-                    <span style={{ fontWeight: 700 }}>Agent</span>Lang
-                </Header>
+                <LogoContainer>
+                  <Logo />
+                </LogoContainer>
 
                 <Title>Agent-based<br /><span style={{ color: "#034078", fontWeight: 700 }}>modeling</span> <span style={{ color: "#034078", fontWeight: 300 }}>from<br />a new</span> perspective</Title>
+            
+                <Credits>
+                  Made by <Redirect href="https://tomasboda.dev">Tomas Boda</Redirect>
+                </Credits>
             </Left>
 
             <Right>
@@ -51,18 +56,30 @@ const Left = styled.div`
   background-color: #0A1128;
 `;
 
-const Header = styled(Link)`
+const LogoContainer = styled.div`
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    margin: 30px 50px;
+`;
+
+const Credits = styled.div`
   position: absolute;
   left: 0;
-  top: 0;
-  
-  padding: 30px 50px;
-  
+  bottom: 0;
+
+  margin: 30px 50px;
+
   color: white;
-  font-size: 20px;
-  font-weight: 200;
-  line-height: 100%;
-  text-decoration: none;
+  font-size: 12px;
+  font-weight: 400;
+
+  opacity: 0.8;
+`;
+
+const Redirect = styled(Link)`
+  color: white;
 `;
 
 const Title = styled.h1`
