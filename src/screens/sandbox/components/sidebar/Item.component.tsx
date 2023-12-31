@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { MessageType } from "@/src/services/message.service";
-import { useServices } from "../../hooks";
+import { useCode, useServices } from "../../hooks";
 import { CodeItem } from "../../model";
 import { getFormattedDate } from "@/src/utils/datetime";
 import { Spacer } from "@/src/components/Components.styles";
@@ -27,8 +27,13 @@ export default function Item({ item }: { item: CodeItem }) {
         messageService.showMessage(MessageType.Success, "Item was successfully deleted");
     }
 
+    function isSelected(): boolean {
+        const { codeItem } = useCode();
+        return codeItem.label === label;
+    }
+
     return (
-        <Container onClick={() => select()}>
+        <Container onClick={() => select()} $selected={isSelected()}>
             <Label>{label}</Label>
             <Date>{getFormattedDate(updatedAt as unknown as string)}</Date>
             <Icon onClick={(e) => remove(e)} src="/assets/icon-remove.svg" />
@@ -36,7 +41,7 @@ export default function Item({ item }: { item: CodeItem }) {
     )
 }
 
-const Container = styled.div`
+const Container = styled.div<{ $selected: boolean }>`
     color: white;
     font-size: 12px;
     font-weight: 400;
@@ -51,7 +56,7 @@ const Container = styled.div`
 
     border-radius: 3px;
 
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: ${props => props.$selected ? "rgba(255, 255, 255, 0.08)" : "rgba(255, 255, 255, 0.03)"};
 
     cursor: pointer;
 
