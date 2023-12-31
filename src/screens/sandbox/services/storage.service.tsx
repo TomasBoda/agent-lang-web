@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
 import { Observable, Subject } from 'rxjs';
 import { CodeItem } from '../model';
+import { getDateString } from '@/src/utils/datetime';
 
 export class StorageService {
 
@@ -13,7 +14,7 @@ export class StorageService {
     
     public save(label: string, code: string, steps: number, delay: number): void {
         const key = this.getKey(label);
-        const value: CodeItem = { label, code, steps, delay, updatedAt: new Date() };
+        const value: CodeItem = { label, code, steps, delay, updatedAt: getDateString(new Date()) };
 
         localStorage.setItem(key, JSON.stringify(value));
         this.next();

@@ -4,7 +4,7 @@ export interface CodeItem {
     code: string;
     steps: number;
     delay: number;
-    updatedAt?: Date;
+    updatedAt?: string;
 }
 
 export interface CodeItemPartial {
