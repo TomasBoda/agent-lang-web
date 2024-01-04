@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { InterpreterStatus } from "../services/interpreter.service";
-import { useCode, useServices, useStatus } from "../hooks";
+import { useServices, useStatus } from "../hooks";
 import { MessageType } from "@/src/services/message.service";
-import { InterpreterOutput } from "@/agent-lang-interpreter/src";
+import { BooleanValue, InterpreterOutput, NumberValue } from "@/agent-lang-interpreter/src";
 
 export default function Visualisation({ output }: { output: InterpreterOutput }) {
 
@@ -12,8 +12,6 @@ export default function Visualisation({ output }: { output: InterpreterOutput })
     const { status } = useStatus();
 
     let agents = output.output?.agents ?? [];
-
-    const { codeItem } = useCode();
 
     useEffect(() => {
         const { status } = output;
@@ -43,21 +41,16 @@ export default function Visualisation({ output }: { output: InterpreterOutput })
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         for (const agent of agents) {
-            const variables = agent.variables;
+            const variables = agent.variables as unknown as { x: number, y: number, coloured: boolean };
 
             if (variables["x"] && variables["y"]) {
-                interface RuntimeValue {
-                    type: any;
-                    value: any;
-                }
-                
-                const x: RuntimeValue = variables["x"] as unknown as RuntimeValue;
-                const y: RuntimeValue = variables["y"] as unknown as RuntimeValue;
-                const coloured: RuntimeValue = variables["coloured"] as unknown as RuntimeValue;
+                const x: NumberValue = variables["x"] as unknown as NumberValue;
+                const y: NumberValue = variables["y"] as unknown as NumberValue;
+                const coloured: BooleanValue = variables["coloured"] as unknown as BooleanValue;
 
-                const xValue = x?.value;
-                const yValue = y?.value;
-                const colouredValue = coloured?.value ?? false;
+                const xValue = x.value;
+                const yValue = y.value;
+                const colouredValue = coloured.value ?? false;
 
                 if (!xValue || !yValue) {
                     continue;
