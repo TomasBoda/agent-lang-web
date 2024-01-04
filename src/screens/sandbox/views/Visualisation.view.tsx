@@ -44,9 +44,9 @@ export default function Visualisation({ output }: { output: InterpreterOutput })
             const variables = agent.variables as unknown as { x: number, y: number, coloured: boolean };
 
             if (variables["x"] && variables["y"]) {
-                const x: NumberValue = variables["x"] as unknown as NumberValue;
-                const y: NumberValue = variables["y"] as unknown as NumberValue;
-                const coloured: BooleanValue = variables["coloured"] as unknown as BooleanValue;
+                const x: NumberValue = variables["x"] as unknown as NumberValue ?? 0;
+                const y: NumberValue = variables["y"] as unknown as NumberValue ?? 0;
+                const coloured: BooleanValue = variables["coloured"] as unknown as BooleanValue ?? false;
 
                 const xValue = x.value;
                 const yValue = y.value;

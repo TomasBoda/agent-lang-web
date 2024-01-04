@@ -4,7 +4,7 @@ import CodeEditor from "../views/CodeEditor.view";
 import Visualisation from "../views/Visualisation.view";
 import Spreadsheet from "../views/Spreadsheet.view";
 import { Toolbar } from "./Toolbar.component";
-import { useInterpreter, useView } from "../hooks";
+import { useCode, useInterpreter, useServices, useView } from "../hooks";
 import { useEffect } from "react";
 
 export default function Editor() {

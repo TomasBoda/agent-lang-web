@@ -2,18 +2,29 @@ import { styled } from "styled-components"
 import Editor from 'react-simple-code-editor';
 import Language from "../../../language/language";
 import { useCode, useServices } from "../hooks";
+import { useEffect } from "react";
 
 export default function CodeEditor() {
 
     Language.initialize();
 
-    const { codeService } = useServices();
+    const { codeService, storageService } = useServices();
 
     const { codeItem } = useCode();
     const { code } = codeItem;
 
-    function updateCode(code: string): void {
-        codeService.set({ code });
+    function updateCode(newCode: string): void {
+        codeService.set({ code: newCode });
+        save(newCode);
+    }
+
+    function save(code: string): void {
+        if (code.trim() === "") {
+            return;
+        }
+
+        const { label, steps, delay } = codeItem;
+            storageService.save(label, code, steps, delay);
     }
 
     function highlightCode(code: string): string {

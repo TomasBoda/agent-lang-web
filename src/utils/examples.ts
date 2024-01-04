@@ -63,9 +63,43 @@ export class Examples {
     property coloured: index() == 0 = if coloured then true else shouldColour;
 }`;
 
+    public static FLOCKING = `agent bird 50 {
+    const sr = 50;
+    const ar = 500;
+    const cr = 500;
+
+    const maxTurnAngle = 10;
+    const maxSpeed = 5;
+
+    const xSpawn = random(50, width() - 50);
+    const ySpawn = random(50, height() - 50);
+
+    property birds: empty() = agents(bird);
+
+    property xSeparation: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < sr then x - b.x else 0);
+    property ySeparation: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < sr then y - b.y else 0);
+
+    property xAlignment: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < ar then cos(b.angle) else 0);
+    property yAlignment: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < ar then sin(b.angle) else 0);
+
+    property xCohesion: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < cr then b.x else 0);
+    property yCohesion: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < cr then b.y else 0);
+
+    property xTotal: 0 = (xSeparation + xAlignment + xCohesion) / 500;
+    property yTotal: 0 = (ySeparation + yAlignment + yCohesion) / 500;
+
+    property angle: random(0, 2 * pi()) = atan(yAlignment, xAlignment);
+
+    property x: xSpawn = (x + xTotal) % width();
+    property y: ySpawn = (y + yTotal) % height();
+
+    const coloured = false;
+}`;
+
     public static ALL: CodeItem[] = [
         { label: "Epidemic", code: Examples.EPIDEMIC, steps: 10000, delay: 20 },
         { label: "Snowfall", code: Examples.SNOWFALL, steps: 10000, delay: 20 },
         { label: "Forest Fire", code: Examples.FOREST_FIRE, steps: 100, delay: 1000 },
+        { label: "Flocking", code: Examples.FLOCKING, steps: 10000, delay: 20 },
     ]
 }
