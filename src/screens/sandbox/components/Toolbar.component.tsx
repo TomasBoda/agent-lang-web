@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { InterpreterStatus } from "../services/interpreter.service";
 import { MessageType } from "@/src/services/message.service";
 import { Formatter } from "@/agent-lang-interpreter/src/utils/formatter";
-import { ErrorModel } from "@/agent-lang-interpreter/src/utils/errors";
+import { ErrorModel } from "@/agent-lang-interpreter/src";
 import { useCode, useInterpreter, useServices, useStatus, useView } from "../hooks";
 
 export function Toolbar() {
