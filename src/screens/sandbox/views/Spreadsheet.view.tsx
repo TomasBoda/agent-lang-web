@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { Agent, InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
-import { AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType } from "@/agent-lang-interpreter/src/runtime/runtime.types";
+import { Agent, InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter";
+import { AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType } from "@/agent-lang-interpreter/src/runtime";
 import { ParserUtil } from "@/agent-lang-interpreter/src/parser/parser-util";
-import { Program } from "@/agent-lang-interpreter/src/parser/parser.types";
+import { Program } from "@/agent-lang-interpreter/src/parser";
 import Editor from 'react-simple-code-editor';
 import Language from "@/src/language/language";
 import Button from "@/src/components/Button.component";
