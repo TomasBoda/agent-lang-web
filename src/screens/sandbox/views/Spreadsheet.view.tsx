@@ -1,13 +1,9 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { Agent, InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter";
-import { AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType } from "@/agent-lang-interpreter/src/runtime";
-import { ParserUtil } from "@/agent-lang-interpreter/src/parser/parser-util";
-import { Program } from "@/agent-lang-interpreter/src/parser";
+import { Formatter, Program, ParserUtil, Agent, InterpreterOutput, AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType } from "@/agent-lang-interpreter/src";
 import Editor from 'react-simple-code-editor';
 import Language from "@/src/language/language";
 import Button from "@/src/components/Button.component";
-import { Formatter } from "@/agent-lang-interpreter/src/utils/formatter";
 import { useServices } from "../hooks";
 
 export default function Spreadsheet({ output }: { output: InterpreterOutput }) {

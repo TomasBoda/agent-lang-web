@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { CodeItem } from "../model";
-import { useStorageService } from "../services";
 import { useServices } from ".";
 
 export const useItems = () => {

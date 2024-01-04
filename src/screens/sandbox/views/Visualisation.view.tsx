@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { InterpreterStatus } from "../services/interpreter.service";
-import { useCode, useInterpreter, useServices, useStatus } from "../hooks";
+import { useCode, useServices, useStatus } from "../hooks";
 import { MessageType } from "@/src/services/message.service";
-import { InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
+import { InterpreterOutput } from "@/agent-lang-interpreter/src";
 
 export default function Visualisation({ output }: { output: InterpreterOutput }) {
 

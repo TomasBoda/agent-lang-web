@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useServices } from ".";
-import { InterpreterOutput } from "@/agent-lang-interpreter/src/interpreter/interpreter.types";
+import { InterpreterOutput } from "@/agent-lang-interpreter/src";
 
 export const useInterpreter = () => {
 
