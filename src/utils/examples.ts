@@ -17,7 +17,7 @@ export class Examples {
     const distance = 20;
 
     property people = agents(person);
-    property closePeople = filter(people => p => sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y)) <= distance);
+    property closePeople = filter(people => p => dist(x, y, p.x, p.y) <= distance);
     property closeInfected = filter(closePeople => c => c.infected == true);
 
     const timespan = 200;
@@ -36,32 +36,32 @@ export class Examples {
     property y: random(0, height()) = (y + speed) % height();
 }`;
 
-    public static FOREST_FIRE = `agent tree 225 {
-    const x = 100 + floor(index() % 15) * 10;
-    const y = 100 + floor(index() / 15) * 10;
-    
+    public static FOREST_FIRE = `agent tree 64 {
+    const offset = 100;
+    const size = width() - 2 * offset;
+    const spacing = size / 8;
+
+    const x = offset + floor(index() % 8) * spacing;
+    const y = offset + floor(index() / 8) * spacing;
+
     property trees = agents(tree);
+    property inProximity = filter(trees => t => dist(x, y, t.x, t.y) <= spacing);
 
-    property top = filter(trees => n => n.y == y - 10 and n.x == x);
-    property bot = filter(trees => n => n.y == y + 10 and n.x == x);
-    property lef = filter(trees => n => n.y == y and n.x == x - 10);
-    property rig = filter(trees => n => n.y == y and n.x == x + 10);
-
-    property topTree = min(top => t => t.x);
-    property botTree = min(bot => t => t.x);
-    property lefTree = min(lef => t => t.x);
-    property rigTree = min(rig => t => t.x);
+    property topTree = min(inProximity => t => t.y);
+    property botTree = max(inProximity => t => t.y);
+    property lefTree = min(inProximity => t => t.x);
+    property rigTree = max(inProximity => t => t.x);
 
     property topCol = topTree.coloured otherwise false;
     property botCol = botTree.coloured otherwise false;
     property lefCol = lefTree.coloured otherwise false;
     property rigCol = rigTree.coloured otherwise false;
 
-    const probability = prob(0.7);
+    const probability = prob(0.9);
     property shouldColour: false = topCol or botCol or lefCol or rigCol and probability;
 
     property coloured: index() == 0 = if coloured then true else shouldColour;
-}`
+}`;
 
     public static ALL: CodeItem[] = [
         { label: "Epidemic", code: Examples.EPIDEMIC, steps: 10000, delay: 20 },

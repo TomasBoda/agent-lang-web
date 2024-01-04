@@ -26,7 +26,7 @@ export default function LandingScreen() {
                     <Button size="large" href="/documentation">Documentation</Button>
                 </ButtonPanel>
 
-                <Link href="https://github.com/TomasBoda/agent-lang-interpreter">
+                <Link href="https://github.com/TomasBoda/agent-lang">
                     <Icon src="/assets/logo-github-white.svg" />
                 </Link>
             </Right>
@@ -80,6 +80,10 @@ const Credits = styled.div`
 
 const Redirect = styled(Link)`
   color: white;
+
+  &:hover {
+    text-decoration-style: wavy;
+  }
 `;
 
 const Title = styled.h1`

@@ -9,8 +9,6 @@ export default function ItemList({ items }: { items: CodeItem[] }) {
 
     function sort(array: CodeItem[]): CodeItem[] {
         return array.sort((a, b) => new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime());
-
-        //return array.sort((a, b) => a.label.localeCompare(b.label));
     }
 
     return (
