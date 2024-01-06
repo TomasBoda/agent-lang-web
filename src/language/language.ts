@@ -5,7 +5,7 @@ export default class Language {
     private static languageCode = "agentlang";
     
     private static syntax = {
-        keywords: ["agent", "property", "const", "otherwise"],
+        keywords: ["agent", "property", "const", "otherwise", "define"],
         condition: ["if", "then", "else"],
         function: ["sum", "width", "height", "min", "max", "agents", "empty", "pi", "prob", "count", "filter", "step", "random", "choice", "sqrt", "abs", "floor", "ceil", "round", "sin", "cos", "tan", "atan", "index", "dist"],
         booleans: ["true", "false"],
