@@ -24,6 +24,15 @@ export class InterpreterService {
         this.interpreter.build(this.sourceCode, this.config);
     }
 
+    public setDimensions(width: number, height: number) {
+        this.config.width = width;
+        this.config.height = height;
+    }
+
+    public getDimensions(): { width: number, height: number } {
+        return { width: this.config.width, height: this.config.height };
+    }
+
     public rebuild(): void {
         this.interpreter.rebuild();
     }

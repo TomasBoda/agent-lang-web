@@ -13,6 +13,21 @@ export default function Visualisation({ output }: { output: InterpreterOutput })
 
     let agents = output.output?.agents ?? [];
 
+    useEffect(() => setCanvasDimensions(), []);
+
+    function setCanvasDimensions(): void {
+        const canvas = document.getElementById("canvas");
+
+        if (!canvas) {
+            return;
+        }
+
+        const { width, height } = interpreterService.getDimensions();
+
+        canvas?.setAttribute("width", `${width}px`);
+        canvas?.setAttribute("height", `${height}px`);
+    }
+
     useEffect(() => {
         const { status } = output;
 
@@ -65,21 +80,20 @@ export default function Visualisation({ output }: { output: InterpreterOutput })
     return (
         <Container>
             <CanvasContainer>
-                <Canvas id="canvas" width="500" height="500"></Canvas>;
+                <Canvas id="canvas"></Canvas>;
             </CanvasContainer>
         </Container>
     );
 }
 
 const Container = styled.div`
-    display: grid;
-    grid-template-columns: 500px 1fr;
-    gap: 30px;
-    align-items: flex-start;
+    width: 100%;
+    height: 100%;
 `;
 
 const CanvasContainer = styled.div`
-    
+    width: 100%;
+    height: 100%;
 `;
 
 const Canvas = styled.canvas`

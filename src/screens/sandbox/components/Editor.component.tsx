@@ -9,6 +9,8 @@ import { useEffect } from "react";
 
 export default function Editor() {
 
+    const { interpreterService } = useServices();
+
     const { view } = useView();
     const { output } = useInterpreter();
 
@@ -16,11 +18,37 @@ export default function Editor() {
         return children[view];
     }
 
+    useEffect(() => {
+        setVisualisationDimensions();
+        window.addEventListener("resize", onWindowResize);
+
+        return () => {
+            window.removeEventListener("resize", onWindowResize);
+        }
+    }, []);
+
+    function onWindowResize(event: any): void {
+        interpreterService.reset();
+    }
+
+    function setVisualisationDimensions(): void {
+        const content = document.getElementById("content");
+
+        if (!content) {
+            return;
+        }
+
+        const width = content.clientWidth - 40;
+        const height = content.clientHeight - 40;
+
+        interpreterService.setDimensions(width, height);
+    }
+
     return (
         <Container>
             <Toolbar />
             <Navigation />
-            <Content>
+            <Content id="content">
                 <Router>
                     <CodeEditor />
                     <Spreadsheet output={output} />
