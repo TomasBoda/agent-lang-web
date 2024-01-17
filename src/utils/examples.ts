@@ -6,28 +6,28 @@ export class Examples {
     const speed = 2;
     property angle: random(0, 2 * pi()) = angle + choice(-0.1, 0.1);
 
-    property shouldStay = prob(0.5);
+    property should_stay = prob(0.5);
 
     property xNew: 0 = (x + speed * cos(angle)) % width();
     property yNew: 0 = (y + speed * sin(angle)) % height();
 
-    property x: random(50, width() - 50) = if shouldStay then x else xNew;
-    property y: random(50, height() - 50) = if shouldStay then y else yNew;
+    property x: random(50, width() - 50) = if should_stay then x else xNew;
+    property y: random(50, height() - 50) = if should_stay then y else yNew;
 
     const distance = 20;
 
     property people = agents(person);
-    property closePeople = filter(people => p => dist(x, y, p.x, p.y) <= distance);
-    property closeInfected = filter(closePeople => c => c.infected == true);
+    property close_people = filter(people => p => dist(x, y, p.x, p.y) <= distance);
+    property close_infected = filter(close_people => c => c.infected == true);
 
     const timespan = 200;
     property remaining: timespan = if infected then remaining - 1 else timespan;
 
-    property shouldInfect = prob(0.4);
-    property infected: prob(0.5) = (infected and remaining > 0) or (count(closeInfected) > 0 and shouldInfect);
+    property should_infect = prob(0.4);
+    property infected: prob(0.5) = (infected and remaining > 0) or (count(close_infected) > 0 and should_infect);
 
     property coloured: false = infected;
-}`;
+    }`;
 
     public static SNOWFALL = `agent snowflake 200 {
     const speed = random(10, 20);
@@ -38,62 +38,87 @@ export class Examples {
 
     public static FOREST_FIRE = `agent tree 64 {
     const offset = 100;
-    const size = width() - 2 * offset;
+    const size = height() - 2 * offset;
     const spacing = size / 8;
 
     const x = offset + floor(index() % 8) * spacing;
     const y = offset + floor(index() / 8) * spacing;
 
     property trees = agents(tree);
-    property inProximity = filter(trees => t => dist(x, y, t.x, t.y) <= spacing);
+    property in_proximity = filter(trees => t => dist(x, y, t.x, t.y) <= spacing);
 
-    property topTree = min(inProximity => t => t.y);
-    property botTree = max(inProximity => t => t.y);
-    property lefTree = min(inProximity => t => t.x);
-    property rigTree = max(inProximity => t => t.x);
+    property top_tree = min(in_proximity => t => t.y);
+    property bot_tree = max(in_proximity => t => t.y);
+    property lef_tree = min(in_proximity => t => t.x);
+    property rig_tree = max(in_proximity => t => t.x);
 
-    property topCol = topTree.coloured otherwise false;
-    property botCol = botTree.coloured otherwise false;
-    property lefCol = lefTree.coloured otherwise false;
-    property rigCol = rigTree.coloured otherwise false;
+    property top_col = top_tree.coloured otherwise false;
+    property bot_col = bot_tree.coloured otherwise false;
+    property lef_col = lef_tree.coloured otherwise false;
+    property rig_col = rig_tree.coloured otherwise false;
 
     const probability = prob(0.9);
-    property shouldColour: false = topCol or botCol or lefCol or rigCol and probability;
+    property should_color: false = top_col or bot_col or lef_col or rig_col and probability;
 
-    property coloured: index() == 0 = if coloured then true else shouldColour;
+    property coloured: index() == 0 = if coloured then true else should_color;
 }`;
 
-    public static FLOCKING = `agent bird 50 {
-    const sr = 50;
-    const ar = 500;
-    const cr = 500;
+    public static FLOCKING = `define center_factor = 0.005;
 
-    const maxTurnAngle = 10;
-    const maxSpeed = 5;
+define visual_range = 20;
 
-    const xSpawn = random(50, width() - 50);
-    const ySpawn = random(50, height() - 50);
+define avoid_distance = 50;
+define avoid_factor = 0.05;
+
+define match_factor = 0.05;
+
+define speed_limit = 10;
+
+define margin = 100;
+define turn_factor = 1;
+
+agent bird 50 {
+
+    const x_spawn = random(100, width() - 100);
+    const y_spawn = random(100, height() - 100);
+    const x_velocity_spawn = random(-1, 1) * 10;
+    const y_velocity_spawn = random(-1, 1) * 10;
 
     property birds: empty() = agents(bird);
 
-    property xSeparation: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < sr then x - b.x else 0);
-    property ySeparation: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < sr then y - b.y else 0);
+    property neighbours: empty() = filter(birds => b => dist(b.x, b.y, x, y) < visual_range);
+    property neighbour_count: 1 = if count(neighbours) == 0 then 1 else count(neighbours);
 
-    property xAlignment: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < ar then cos(b.angle) else 0);
-    property yAlignment: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < ar then sin(b.angle) else 0);
+    property x_fly_to_center: width() / 2 = if count(neighbours) == 0 then width() / 2 else sum(neighbours => n => n.x) / neighbour_count;
+    property y_fly_to_center: height() / 2 = if count(neighbours) == 0 then height() / 2 else sum(neighbours => n => n.y) / neighbour_count;
 
-    property xCohesion: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < cr then b.x else 0);
-    property yCohesion: 0 = sum(birds => b => if dist(x, y, b.x, b.y) < cr then b.y else 0);
+    property x_center: width() / 2 = (x_fly_to_center - x) * center_factor;
+    property y_center: height() / 2 = (y_fly_to_center - y) * center_factor;
 
-    property xTotal: 0 = (xSeparation + xAlignment + xCohesion) / 500;
-    property yTotal: 0 = (ySeparation + yAlignment + yCohesion) / 500;
+    property avoid_neighbours: empty() = filter(birds => b => dist(b.x, b.y, x, y) < avoid_distance);
 
-    property angle: random(0, 2 * pi()) = atan(yAlignment, xAlignment);
+    property x_avoid: 0 = sum(avoid_neighbours => n => x - n.x) * avoid_factor;
+    property y_avoid: 0 = sum(avoid_neighbours => n => y - n.y) * avoid_factor;
 
-    property x: xSpawn = (x + xTotal) % width();
-    property y: ySpawn = (y + yTotal) % height();
+    property x_do_match: 0 = sum(neighbours => n => n.x_velocity) / neighbour_count;
+    property y_do_match: 0 = sum(neighbours => n => n.y_velocity) / neighbour_count;
 
-    const coloured = false;
+    property x_match: 0 = (x_do_match - x) * match_factor;
+    property y_match: 0 = (y_do_match - y) * match_factor;
+
+    property x_velocity: y_velocity_spawn = x_center + x_avoid + x_match;
+    property y_velocity: y_velocity_spawn = y_center + y_avoid + y_match;
+
+    property speed: 0 = sqrt(x_velocity * x_velocity + y_velocity * y_velocity);
+
+    property x_speed: 0 = if speed > speed_limit then x_velocity / speed * speed_limit else x_velocity;
+    property y_speed: 0 = if speed > speed_limit then y_velocity / speed * speed_limit else y_velocity;
+
+    property x_move: 0 = if x < margin then x_move + turn_factor else if x > width() - margin then x_move - turn_factor else x_speed;
+    property y_move: 0 = if y < margin then y_move + turn_factor else if y > height() - margin then y_move - turn_factor else y_speed;
+
+    property x: x_spawn = x + x_move;
+    property y: y_spawn = y + y_move;
 }`;
 
     public static ALL: CodeItem[] = [

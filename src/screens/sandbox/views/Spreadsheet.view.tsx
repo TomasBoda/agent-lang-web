@@ -1,25 +1,82 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { Formatter, Program, ParserUtil, Agent, InterpreterOutput, AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType } from "@/agent-lang-interpreter/src";
+import { Formatter, Program, ParserUtil, Agent, InterpreterOutput, AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType, VariableType } from "@/agent-lang-interpreter/src";
 import Editor from 'react-simple-code-editor';
 import Language from "@/src/language/language";
 import Button from "@/src/components/Button.component";
 import { useServices } from "../hooks";
+import { MessageType } from "@/src/services/message.service";
+import { InputField } from "@/src/components/Components.styles";
 
 export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
 
-    const { codeService, viewService, interpreterService } = useServices();
+    const { codeService, interpreterService, messageService } = useServices();
 
     let agents = output.output?.agents ?? [];
 
-    const [editing, setEditing] = useState(false);
+    const [variableEditing, setVariableEditing] = useState(false);
     const [agentIdentifier, setAgentIdentifier] = useState("");
     const [variableIdentifier, setVariableIdentifier] = useState("");
     const [variableCode, setVariableCode] = useState("");
 
-    // TODO: finish
-    function openEditDialog(agentIdentifier: string, variableIdentifier: string): void {
-        setEditing(true);
+    const [valueEditing, setValueEditing] = useState(false);
+    const [valueAgentIndex, setValueAgentIndex] = useState(0);
+    const [valuePropertyIndex, setValuePropertyIndex] = useState(0);
+    const [valueAgentIdentifier, setValueAgentIdentifier] = useState("");
+    const [value, setValue] = useState<any>({});
+
+    function openValueEditDialog(agent: Agent, property: any, agentIndex: number, propertyIndex: number): void {
+        // TODO: handle other datatypes (not only numbers)
+        if (property.type !== ValueType.Number) {
+            setValueEditing(false);
+            messageService.showMessage(MessageType.Failure, "Only numeric values can be updated");
+            return;
+        }
+        
+        setValueEditing(true);
+        setValueAgentIndex(agentIndex);
+        setValuePropertyIndex(propertyIndex);
+        setValueAgentIdentifier(agent.identifier);
+        setValue(property.value);
+    }
+    
+    function saveValueEditDialog(): void {
+        let numericValue;
+
+        try {
+            numericValue = parseFloat(value.trim());
+        } catch (error) {
+            messageService.showMessage(MessageType.Failure, "Value is not in numeric format");
+            return;
+        }
+
+        if ((value as string).includes(".")) {
+            if ((value as string).split(".").length > 2) {
+                messageService.showMessage(MessageType.Failure, "Value is not in numeric format");
+                return;
+            }
+
+            if ((value as string).split(".")[1].length > 2) {
+                messageService.showMessage(MessageType.Failure, "Value must have maximum of two decimal places");
+                return;
+            }
+        }
+
+        const propertyIdentifier = getAgentPropertyList(agents)[valuePropertyIndex];
+
+        interpreterService.updateAgentValue(valueAgentIndex, propertyIdentifier, numericValue);
+        interpreterService.rebuild();
+    
+        closeValueEditDialog();
+    }
+
+    function closeValueEditDialog(): void {
+        setValueEditing(false);
+    }
+
+    function openVariableEditDialog(agentIdentifier: string, variableIdentifier: string): void {
+        setVariableEditing(true);
+
         setAgentIdentifier(agentIdentifier);
         setVariableIdentifier(variableIdentifier);
         
@@ -28,9 +85,14 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
         setVariableCode(code!);
     }
 
-    // TODO: finish
-    function saveEditDialog(): void {
+    function saveVariableEditDialog(): void {
         const variableDeclaration = ParserUtil.codeToAst(variableCode);
+
+        if (variableDeclaration.variableType === VariableType.Const) {
+            messageService.showMessage(MessageType.Failure, `Constant property cannot be updated during simulation runtime`);
+            return;
+        }
+
         const program = interpreterService.getProgram() as Program;
         const newProgram = ParserUtil.updateVariableInProgram(program, variableDeclaration, agentIdentifier, variableIdentifier);
 
@@ -41,13 +103,14 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
         const formattedCode = Formatter.getFormatted(newCode);
 
         codeService.set({ code: formattedCode });
-        viewService.set(0);
 
-        cancelEditDialog();
+        messageService.showMessage(MessageType.Success, `Property '${variableIdentifier}' successfuly updated`);
+
+        cancelVariableEditDialog();
     }
 
-    function cancelEditDialog(): void {
-        setEditing(false);
+    function cancelVariableEditDialog(): void {
+        setVariableEditing(false);
     }
 
     function getAgentTypes(): Agent[][] {
@@ -129,8 +192,9 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
 
     return (
         <Container>
-            {editing &&
+            {variableEditing &&
                 <EditorContainer>
+                    <EditorTitle>Update Property</EditorTitle>
                     <Editor
                         value={variableCode}
                         onValueChange={code => setVariableCode(code)}
@@ -142,33 +206,41 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
                         placeholder="Edit property..."
                     />
                     <EditorControls>
-                        <Button size="small" onClick={() => saveEditDialog()}>Save</Button>
-                        <Button size="small" onClick={() => cancelEditDialog()}>Cancel</Button>
+                        <Button size="small" onClick={() => saveVariableEditDialog()}>Save</Button>
+                        <Button size="small" onClick={() => cancelVariableEditDialog()}>Cancel</Button>
                     </EditorControls>
                 </EditorContainer>
             }
 
             {getAgentTypes().length === 0 && <Message>No data to show</Message>}
 
-            {getAgentTypes().map((agents: Agent[]) =>
-                <TableWrapper>
+            {getAgentTypes().map((agents: Agent[], agentsIndex: number) =>
+                <TableWrapper key={agentsIndex}>
                     <Title>{agents[0].identifier}</Title>
 
                     <Table>
                         <thead>
                             <Row>
-                                {getAgentPropertyList(agents).map(property =>
-                                    <Heading onClick={() => openEditDialog(agents[0].identifier, property)}>{property}</Heading>
+                                {getAgentPropertyList(agents).map((property: string, propertyIndex: number) =>
+                                    <Heading key={propertyIndex} onClick={() => openVariableEditDialog(agents[0].identifier, property)}>{property}</Heading>
                                 )}
                             </Row>
                         </thead>
 
                         <tbody>
-                            {agents.map((agent: Agent) =>
-                                <Row>
-                                    {getAgentPropertyValues(agent).map((property: RuntimeValue) =>
-                                        <Column>
+                            {agents.map((agent: Agent, agentIndex: number) =>
+                                <Row key={agentIndex}>
+                                    {getAgentPropertyValues(agent).map((property: RuntimeValue, propertyIndex: number) =>
+                                        valueEditing && valueAgentIndex === agentIndex && valuePropertyIndex === propertyIndex ?
+                                        <Column key={propertyIndex}>
                                             <Value>
+                                                <InputField type="text" value={value.toString()} onChange={(e) => setValue(e.target.value)} />
+                                                <Button size="small" onClick={() => saveValueEditDialog()}>Save</Button>
+                                            </Value>
+                                        </Column>
+                                        :
+                                        <Column key={propertyIndex}>
+                                            <Value onClick={() => openValueEditDialog(agent, property, agentIndex, propertyIndex)}>
                                                 <Tag>{getPropertyType(property)}</Tag>        
                                                 {isBoolean(property) ?
                                                     <Boolean $color={getBooleanValue(property) ? "green" : "red"}>
@@ -178,7 +250,7 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
                                                     getPropertyValue(property)
                                                 }            
                                             </Value>
-                                        </Column>    
+                                        </Column>  
                                     )}
                                 </Row>
                             )}
@@ -202,6 +274,14 @@ const Container = styled.div`
 
 const EditorContainer = styled.div`
     width: 100%;
+`;
+
+const EditorTitle = styled.p`
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+
+    margin-bottom: 20px;
 `;
 
 const EditorControls = styled.div`
@@ -250,6 +330,16 @@ const Column = styled.td`
     width: auto;
     padding: 10px 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 5px;
+    transition: all 50ms;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid transparent;
+    }
 `;
 
 const Value = styled.div`
@@ -301,4 +391,9 @@ const Heading = styled.th`
     background-color: rgb(30, 30, 30);
 
     cursor: pointer;
+    transition: all 50ms;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
 `;

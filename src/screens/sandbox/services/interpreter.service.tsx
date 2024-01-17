@@ -98,6 +98,11 @@ export class InterpreterService {
     public setProgram(program: Program): void {
         this.interpreter.setProgram(program);
     }
+
+    public updateAgentValue(agentIndex: number, propertyIdentifier: string, value: number): void {
+        this.interpreter.updateAgentValue(agentIndex, propertyIdentifier, value);
+        console.log("YAY");
+    }
 }
 
 const InterpreterContext = createContext<InterpreterService>(new InterpreterService());
