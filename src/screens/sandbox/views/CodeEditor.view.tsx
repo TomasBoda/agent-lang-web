@@ -24,7 +24,7 @@ export default function CodeEditor() {
         }
 
         const { label, steps, delay } = codeItem;
-            storageService.save(label, code, steps, delay);
+        storageService.save(label, code, steps, delay);
     }
 
     function highlightCode(code: string): string {

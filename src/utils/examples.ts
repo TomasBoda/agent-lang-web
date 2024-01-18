@@ -27,7 +27,7 @@ export class Examples {
     property infected: prob(0.5) = (infected and remaining > 0) or (count(close_infected) > 0 and should_infect);
 
     property coloured: false = infected;
-    }`;
+}`;
 
     public static SNOWFALL = `agent snowflake 200 {
     const speed = random(10, 20);

@@ -23,10 +23,12 @@ export function Toolbar() {
 
     function updateSteps(steps: number): void {
         codeService.set({ steps });
+        storageService.save(label, code, steps, delay);
     }
 
     function updateDelay(delay: number): void {
         codeService.set({ delay });
+        storageService.save(label, code, steps, delay);
     }
 
     function start(): void {
