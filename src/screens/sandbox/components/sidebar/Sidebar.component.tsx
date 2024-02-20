@@ -3,12 +3,14 @@ import Button from "@/src/components/Button.component";
 import Link from "next/link";
 import { Spacer } from "@/src/components/Components.styles";
 import { useItems, useServices } from "../../hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ItemList from "./ItemList.component";
 import { Examples } from "@/src/utils/examples";
 import Logo from "@/src/components/Logo.component";
 
 export default function Sidebar() {
+
+    const [timestamp, setTimestamp] = useState("");
 
     const { storageService, codeService, viewService } = useServices();
     const { items } = useItems();
@@ -16,6 +18,14 @@ export default function Sidebar() {
     useEffect(() => {
         initializeExamples();
     }, []);
+
+    useEffect(() => {
+        const timestamp = process.env.COMMIT_TIMESTAMP;
+        console.log(timestamp);
+        if (timestamp) {
+            setTimestamp(timestamp);
+        }
+      }, []);
 
     function reset(): void {
         codeService.reset();
