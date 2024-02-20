@@ -10,22 +10,12 @@ import Logo from "@/src/components/Logo.component";
 
 export default function Sidebar() {
 
-    const [timestamp, setTimestamp] = useState("");
-
     const { storageService, codeService, viewService } = useServices();
     const { items } = useItems();
 
     useEffect(() => {
         initializeExamples();
     }, []);
-
-    useEffect(() => {
-        const timestamp = process.env.COMMIT_TIMESTAMP;
-        console.log(timestamp);
-        if (timestamp) {
-            setTimestamp(timestamp);
-        }
-      }, []);
 
     function reset(): void {
         codeService.reset();
@@ -86,6 +76,7 @@ const Container = styled.div`
 
 const LogoContainer = styled.div`
     margin: 20px;
+    margin-bottom: 0px;
 `;
 
 const ItemCountLabel = styled.span`
