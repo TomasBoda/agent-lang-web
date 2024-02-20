@@ -1,0 +1,26 @@
+name: Update Timestamp
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-timestamp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Extract Commit Timestamp
+        run: echo "$(git log -1 --format=%ci)" > commit_timestamp.txt
+
+      - name: Store Timestamp as Environment Variable
+        run: echo "TIMESTAMP=$(cat commit_timestamp.txt)" >> $GITHUB_ENV
+
+      - name: Upload Timestamp as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: commit-timestamp
+          path: commit_timestamp.txt
