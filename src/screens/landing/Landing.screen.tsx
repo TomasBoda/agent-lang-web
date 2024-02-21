@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { Button } from "@/src/components/button";
-import Logo from "@/src/components/logo/Logo.component";
+import { Logo } from "@/src/components/logo";
 
 export default function LandingScreen() {
 

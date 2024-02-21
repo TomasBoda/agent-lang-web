@@ -1,8 +1,8 @@
 import { styled } from "styled-components";
 import SidePanel from "./Sidepanel.component";
 import { Breadcrumbs } from "@/src/components/breadcrumbs";
-import {PageWrapper} from "@/src/components/Components.styles";
-import {Breadcrumb} from "@/src/utils/documentation";
+import { PageWrapper } from "@/src/components/Components.styles";
+import { Breadcrumb } from "@/src/components/breadcrumbs";
 import { useEffect, useState } from "react";
 import Language from "@/src/language/language";
 import { useRouter } from "next/router";
@@ -81,7 +81,7 @@ const DocsPage = styled.div`
     flex-direction: column;
     align-items: flex-start;
 
-    padding-left: 310px;
+    padding-left: 100px;
 `;
 
 const HTML = styled.div`

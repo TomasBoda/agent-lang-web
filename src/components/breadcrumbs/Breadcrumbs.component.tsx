@@ -1,6 +1,6 @@
 
-import { Breadcrumb } from "@/src/utils/documentation";
 import { Container, Item, Label, Slash } from "./Breadcrumbs.styles";
+import { Breadcrumb } from "./breadcrumb";
 
 export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) {
 

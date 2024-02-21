@@ -8,19 +8,20 @@ import remarkParse from 'remark-parse';
 import remarkHtml from 'remark-html';
 import Head from "next/head";
 import DocumentationScreen from '@/src/screens/documentation/Documentation.screen';
-import { Breadcrumb, DocumentContent, Document, documents, findDocument, getBreadcrumbs } from "@/src/utils/documentation";
+import { DocumentContent, Document, documents, findDocument, getBreadcrumbs } from "@/src/documentation";
+import { Breadcrumb } from '@/src/components/breadcrumbs';
 
 export default function DocumentationSubPage({ document }: { document: DocumentContent }) {
+
+    const { title, html, breadcrumbs } = document;
+
     return (
         <>
             <Head>
-                <title>{document.title} | AgentLang</title>
+                <title>{title} | AgentLang</title>
             </Head>
 
-            <DocumentationScreen
-                html={document.html}
-                breadcrumbs={document.breadcrumbs}
-            />
+            <DocumentationScreen html={html} breadcrumbs={breadcrumbs} />
         </>
     )
 }
@@ -29,8 +30,8 @@ export async function getServerSideProps({ params }: { params: any }) {
     const slugs = params.slug;
     const slugPath = slugs.join("/");
 
-    const document: Document = findDocument(slugPath) ?? documents[0];
-    const breadcrumbs: Breadcrumb[] = getBreadcrumbs(slugs);
+    const document: Document = findDocument(documents, slugPath) ?? documents[0];
+    const breadcrumbs: Breadcrumb[] = getBreadcrumbs(documents, slugs);
 
     try {
         const documentPath = path.join(process.cwd(), "public", document.document);
@@ -44,11 +45,7 @@ export async function getServerSideProps({ params }: { params: any }) {
             breadcrumbs
         };
 
-        return {
-            props: {
-                document: documentContent,
-            },
-        };
+        return { props: { document: documentContent } };
     } catch (error) {
         return { redirect: { permanent: false, destination: "/" }, props: {} };
     }

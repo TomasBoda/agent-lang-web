@@ -1,48 +1,4 @@
-
-export interface DocumentContent {
-    title: string;
-    html: string;
-    breadcrumbs: Breadcrumb[];
-}
-
-export interface Document {
-    title: string;
-    slug: string;
-    document: string;
-}
-
-export interface Breadcrumb {
-    title: string;
-    path: string;
-}
-
-export function findDocument(slugPath: string): Document | undefined {
-    for (const document of documents) {
-        if (document.slug === slugPath) {
-            return document;
-        }
-    }
-
-    return undefined;
-}
-
-export function getBreadcrumbs(slugs: string[]): Breadcrumb[] {
-    const breadcrumbs: Breadcrumb[] = [];
-
-    for (let i = 0; i < slugs.length; i++) {
-        const path = slugs.slice(0, i + 1).join("/");
-        const doc = findDocument(path);
-
-        if (doc !== undefined) {
-            breadcrumbs.push({
-                title: doc.title,
-                path: "/documentation/" + doc.slug
-            });
-        }
-    }
-
-    return breadcrumbs;
-}
+import { Document } from "./document"
 
 export const documents: Document[] = [
     {
