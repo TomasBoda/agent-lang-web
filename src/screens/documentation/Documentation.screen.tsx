@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@/src/components/breadcrumbs";
 import { PageWrapper } from "@/src/components/Components.styles";
 import { Breadcrumb } from "@/src/components/breadcrumbs";
 import { useEffect, useState } from "react";
-import Language from "@/src/language/language";
+import { Language } from "@/src/language";
 import { useRouter } from "next/router";
 
 export default function DocumentationScreen({ html, breadcrumbs }: { html: string, breadcrumbs: Breadcrumb[] }) {

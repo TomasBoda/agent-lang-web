@@ -1,8 +1,7 @@
 import { styled } from "styled-components"
 import Editor from 'react-simple-code-editor';
-import Language from "../../../language/language";
+import { Language } from "@/src/language";
 import { useCode, useServices } from "../hooks";
-import { useEffect } from "react";
 
 export default function CodeEditor() {
 

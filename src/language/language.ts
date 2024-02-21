@@ -1,7 +1,7 @@
 import Prism from "prismjs";
 import { keywords } from "./keywords";
 
-export default class Language {
+export class Language {
 
     private static languageCode = "agentlang";
 

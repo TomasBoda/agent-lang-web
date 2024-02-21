@@ -4,7 +4,7 @@ import { Spacer } from "@/src/components/Components.styles";
 import { useItems, useServices } from "../../hooks";
 import { useEffect } from "react";
 import ItemList from "./ItemList.component";
-import { Examples } from "@/src/utils/examples";
+import { Examples } from "@/src/language";
 import { Logo } from "@/src/components/logo";
 
 export default function Sidebar() {
