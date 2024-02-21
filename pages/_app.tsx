@@ -1,4 +1,4 @@
-import Layout from "@/src/components/Layout.component";
+import { Layout } from "@/src/components/layout";
 import StyledComponentsRegistry from "@/src/utils/registry";
 import type { AppProps } from "next/app";
 

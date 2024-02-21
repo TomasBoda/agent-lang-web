@@ -1,18 +1,8 @@
+import styled from "styled-components";
+import { ButtonSizeType } from "./Button.component";
 import Link from "next/link";
-import styled, { css } from "styled-components";
 
-type ButtonSizeType = "small" | "large";
-
-export default function Button({ children, size, href, onClick, className }: { children: any, size: ButtonSizeType, href?: string, onClick?: () => void, className?: string }) {
-
-    if (href) {
-        return <LinkButton className={className} $size={size} href={href} onClick={onClick}>{children}</LinkButton>;
-    }
-
-    return <PlainButton className={className} $size={size} onClick={onClick}>{children}</PlainButton>;
-}
-
-const PlainButton = styled.div<{ $size: ButtonSizeType }>`
+export const PlainButton = styled.div<{ $size: ButtonSizeType }>`
     display: inline-block;
 
     color: white;
@@ -38,7 +28,7 @@ const PlainButton = styled.div<{ $size: ButtonSizeType }>`
     }
 `;
 
-const LinkButton = styled(Link)<{ $size: ButtonSizeType }>`
+export const LinkButton = styled(Link)<{ $size: ButtonSizeType }>`
     display: inline-block;
 
     color: white;

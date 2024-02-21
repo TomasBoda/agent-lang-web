@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import SidePanel from "./Sidepanel.component";
-import Breadcrumbs from "@/src/components/Breadcrumbs.component";
+import { Breadcrumbs } from "@/src/components/breadcrumbs";
 import {PageWrapper} from "@/src/components/Components.styles";
 import {Breadcrumb} from "@/src/utils/documentation";
 import { useEffect, useState } from "react";

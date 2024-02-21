@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 import Head from "next/head";
-import Logo from "@/src/components/Logo.component";
+import { Logo } from "@/src/components/logo";
 
 export default function SidePanel() {
 

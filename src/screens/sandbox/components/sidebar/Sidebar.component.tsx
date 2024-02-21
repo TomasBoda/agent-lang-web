@@ -1,12 +1,11 @@
 import styled from "styled-components";
-import Button from "@/src/components/Button.component";
-import Link from "next/link";
+import { Button } from "@/src/components/button";
 import { Spacer } from "@/src/components/Components.styles";
 import { useItems, useServices } from "../../hooks";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ItemList from "./ItemList.component";
 import { Examples } from "@/src/utils/examples";
-import Logo from "@/src/components/Logo.component";
+import { Logo } from "@/src/components/logo";
 
 export default function Sidebar() {
 

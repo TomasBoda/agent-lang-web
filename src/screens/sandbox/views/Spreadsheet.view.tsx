@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Formatter, Program, ParserUtil, Agent, InterpreterOutput, AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType, VariableType } from "@/agent-lang-interpreter/src";
 import Editor from 'react-simple-code-editor';
 import Language from "@/src/language/language";
-import Button from "@/src/components/Button.component";
+import { Button } from "@/src/components/button";
 import { useServices } from "../hooks";
 import { MessageType } from "@/src/services/message.service";
 import { InputField } from "@/src/components/Components.styles";

@@ -1,26 +1,19 @@
 import Prism from "prismjs";
+import { keywords } from "./keywords";
 
 export default class Language {
 
     private static languageCode = "agentlang";
-    
-    private static syntax = {
-        keywords: ["agent", "property", "const", "otherwise", "define"],
-        condition: ["if", "then", "else"],
-        function: ["sum", "width", "height", "min", "max", "agents", "empty", "pi", "prob", "count", "filter", "step", "random", "choice", "sqrt", "abs", "floor", "ceil", "round", "sin", "cos", "tan", "atan", "index", "dist"],
-        booleans: ["true", "false"],
-        logical: ["and", "or"],
-    };
 
     public static initialize(): void {
         Prism.languages[Language.languageCode] = {
-            "keyword": new RegExp(`\\b(?:${Language.syntax.keywords.join('|')})\\b`, 'g'),
-            "condition": new RegExp(`\\b(?:${Language.syntax.condition.join('|')})\\b`, 'g'),
-            "function": new RegExp(`\\b(?:${Language.syntax.function.join('|')})\\b`, 'g'),
-            "boolean": new RegExp(`\\b(?:${Language.syntax.booleans.join('|')})\\b`, 'g'),
-            "logical": new RegExp(`\\b(?:${Language.syntax.logical.join('|')})\\b`, 'g'),
-            "number": /-?\d+(\.\d+)?/g,
-            "operator": /\+|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\=\>/g,
+            "keyword": keywords.keywords,
+            "condition": keywords.conditions,
+            "function": keywords.functions,
+            "boolean": keywords.booleans,
+            "logical": keywords.logical,
+            "number": keywords.numbers,
+            "operator": keywords.operators,
         };
     }
 

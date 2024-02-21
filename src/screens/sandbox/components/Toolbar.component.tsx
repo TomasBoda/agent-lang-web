@@ -1,4 +1,4 @@
-import Button from "@/src/components/Button.component";
+import { Button } from "@/src/components/button";
 import { InputField } from "@/src/components/Components.styles";
 import styled from "styled-components";
 import { InterpreterStatus } from "../services/interpreter.service";
