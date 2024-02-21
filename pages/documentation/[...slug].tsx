@@ -6,10 +6,10 @@ import matter from 'gray-matter';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkHtml from 'remark-html';
-import Head from "next/head";
 import DocumentationScreen from '@/src/screens/documentation/Documentation.screen';
 import { DocumentContent, Document, documents, findDocument, getBreadcrumbs } from "@/src/documentation";
 import { Breadcrumb } from '@/src/components/breadcrumbs';
+import { Header } from '@/src/components/header';
 
 export default function DocumentationSubPage({ document }: { document: DocumentContent }) {
 
@@ -17,10 +17,7 @@ export default function DocumentationSubPage({ document }: { document: DocumentC
 
     return (
         <>
-            <Head>
-                <title>{title} | AgentLang</title>
-            </Head>
-
+            <Header title={title + " | AgentLang"} />
             <DocumentationScreen html={html} breadcrumbs={breadcrumbs} />
         </>
     )

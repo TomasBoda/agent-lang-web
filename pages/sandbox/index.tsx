@@ -1,15 +1,12 @@
 'use client'
 
+import { Header } from "@/src/components/header"
 import SandboxScreen from "@/src/screens/sandbox/Sandbox.screen"
-import Head from "next/head"
 
 export default function SandboxPage() {
   return (
     <>
-      <Head>
-        <title>Sandbox | AgentLang</title>
-      </Head>
-      
+      <Header title="Sandbox | AgentLang" />
       <SandboxScreen />
     </>
   )

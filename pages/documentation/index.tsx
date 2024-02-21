@@ -1,13 +1,11 @@
 'use client'
 
-import Head from "next/head"
+import { Header } from "@/src/components/header"
 
 export default function DocumentationPage() {
   return (
     <>
-      <Head>
-        <title>Documentation | AgentLang</title>
-      </Head>
+      <Header title="Documentation | AgentLang" />
     </>
   )
 }

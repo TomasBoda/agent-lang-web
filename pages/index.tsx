@@ -1,15 +1,12 @@
 'use client'
 
+import { Header } from "@/src/components/header"
 import LandingScreen from "@/src/screens/landing/Landing.screen"
-import Head from "next/head"
 
 export default function MainPage() {
   return (
     <>
-      <Head>
-        <title>AgentLang</title>
-      </Head>
-      
+      <Header title="AgentLang" />
       <LandingScreen />
     </>
   )
