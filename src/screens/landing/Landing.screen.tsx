@@ -12,7 +12,9 @@ export default function LandingScreen() {
                   <Logo />
                 </LogoContainer>
 
-                <Title>Agent-based<br /><span style={{ color: "#034078", fontWeight: 700 }}>modeling</span> <span style={{ color: "#034078", fontWeight: 300 }}>from<br />a new</span> perspective</Title>
+                <Title>
+                  Agent-based<br /><span style={{ color: "#034078", fontWeight: 700 }}>modeling</span> <span style={{ color: "#034078", fontWeight: 300 }}>from<br />a new</span> perspective
+                </Title>
             
                 <Credits>
                   Made by <Redirect href="https://tomasboda.dev">Tomas Boda</Redirect>
@@ -21,6 +23,7 @@ export default function LandingScreen() {
 
             <Right>
                 <Heading>Get started</Heading>
+                
                 <ButtonPanel>
                     <Button size="large" href="/sandbox">Try for free</Button>
                     <Button size="large" href="/documentation">Documentation</Button>
