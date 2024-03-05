@@ -96,7 +96,8 @@ export function Toolbar() {
         }
 
         try {
-            const formattedCode = Formatter.getFormatted(code);
+            //const formattedCode = Formatter.getFormatted(code);
+            const formattedCode = code;
             codeService.set({ code: formattedCode });
             messageService.showMessage(MessageType.Success, "Build succeeded");
             callback?.();

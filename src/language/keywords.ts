@@ -1,5 +1,6 @@
 
 export const keywords = {
+    comments: /#([^#]*)#/g,
     keywords: new RegExp(`\\b(?:${[
         "agent",
         "property",

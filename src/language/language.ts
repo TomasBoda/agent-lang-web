@@ -7,6 +7,7 @@ export class Language {
 
     public static initialize(): void {
         Prism.languages[Language.languageCode] = {
+            "comment": keywords.comments,
             "keyword": keywords.keywords,
             "condition": keywords.conditions,
             "function": keywords.functions,

@@ -2,38 +2,41 @@ import { CodeItem } from "../screens/sandbox/model";
 
 export class Examples {
 
-    public static EPIDEMIC = `agent person 50 {
-    const speed = 2;
+    public static EPIDEMIC = `define speed = 1.5;
+# infectivity distance #
+define distance = 20;
+# time to heal #
+define timespan = 200;
+
+agent person 50 {
+    const w = 12;
+    const h = 12;
+    
     property angle: random(0, 2 * pi()) = angle + choice(-0.1, 0.1);
+    
+    property x: random(50, width() - 50) = (x + speed * cos(angle)) % width();
+    property y: random(50, height() - 50) = (y + speed * sin(angle)) % height();
 
-    property should_stay = prob(0.5);
+    # people in proximity #
+    property infected_in_proximity = filter(agents(person) => p => dist(x, y, p.x, p.y) <= distance and p.infected == true);
 
-    property xNew: 0 = (x + speed * cos(angle)) % width();
-    property yNew: 0 = (y + speed * sin(angle)) % height();
-
-    property x: random(50, width() - 50) = if should_stay then x else xNew;
-    property y: random(50, height() - 50) = if should_stay then y else yNew;
-
-    const distance = 20;
-
-    property people = agents(person);
-    property close_people = filter(people => p => dist(x, y, p.x, p.y) <= distance);
-    property close_infected = filter(close_people => c => c.infected == true);
-
-    const timespan = 200;
+    # remaining days to heal #
     property remaining: timespan = if infected then remaining - 1 else timespan;
 
     property should_infect = prob(0.4);
-    property infected: prob(0.5) = (infected and remaining > 0) or (count(close_infected) > 0 and should_infect);
+    property infected: prob(0.5) = (infected and remaining > 0) or (count(infected_in_proximity) > 0 and should_infect);
 
-    property coloured: false = infected;
+    property coloured = infected;
 }`;
 
     public static SNOWFALL = `agent snowflake 200 {
-    const speed = random(10, 20);
+    const speed = random(8, 15);
 
     property x: random(0, width()) = x;
     property y: random(0, height()) = (y + speed) % height();
+    
+    const w = 10;
+    const h = 10;
 }`;
 
     public static FOREST_FIRE = `agent tree 64 {
@@ -63,66 +66,63 @@ export class Examples {
     property coloured: index() == 0 = if coloured then true else should_color;
 }`;
 
-    public static FLOCKING = `define turn_factor = 0.2;
-define visual_range = 100;
-define protected_range = 40;
+    public static BOIDS = `define visual_range = 100;
+define avoid_range = 20;
 define centering_factor = 0.0005;
-define avoid_factor = 0.0005;
+define avoid_factor = 0.005;
 define matching_factor = 0.05;
 
-define max_s = 6;
-define min_s = 4;
-
-define margin = 50;
+# min and max speed #
+define s_max = 6;
+define s_min = 4;
 
 agent boid 50 {
 
+    # width and height #
     const w = 12;
     const h = 12;
 
-    const sx = random(100, width() - 100);
-    const sy = random(100, height() - 100);
+    const x_init = random(100, width() - 100);
+    const y_init = random(100, height() - 100);
 
-    property x: sx = (x + vx_s) % width();
-    property y: sy = (y + vy_s) % height();
+    property x: x_init = (x + x_vel_limit) % width();
+    property y: y_init = (y + y_vel_limit) % height();
 
-    property vx: choice(-2, 2) = vx + close_dx * avoid_factor + xvel_avg_s + xpos_avg_s;
-    property vy: choice(-2, 2) = vy + close_dy * avoid_factor + yvel_avg_s + ypos_avg_s;
+    property x_vel: choice(-2, 2) = x_vel + x_sep + x_align + x_coh;
+    property y_vel: choice(-2, 2) = y_vel + y_sep + y_align + y_coh;
 
-    property xvel_avg_s: 0 = if xvel_avg == 0 then 0 else (xvel_avg - vx) * matching_factor;
-    property yvel_avg_s: 0 = if yvel_avg == 0 then 0 else (yvel_avg - vy) * matching_factor;
+    # speed #
+    property s_sqrt = sqrt(x_vel * x_vel + y_vel * y_vel);
+    property s = if s_sqrt == 0 then 1 else s_sqrt;
 
-    property xpos_avg_s: 0 = if xpos_avg == 0 then 0 else (xpos_avg - x) * centering_factor;
-    property ypos_avg_s: 0 = if ypos_avg == 0 then 0 else (ypos_avg - y) * centering_factor;
+    # limit the velocity to min and max speed #
+    property x_vel_limit = if s > s_max then x_vel / s * s_max else if s < s_min then x_vel / s * s_min else x_vel;
+    property y_vel_limit = if s > s_max then y_vel / s * s_max else if s < s_min then y_vel / s * s_min else y_vel;
 
-    property speed_p: 0 = sqrt(vx * vx + vy * vy);
-    property s: 1 = if speed_p == 0 then 1 else speed_p;
+    # boids in close proximity #
+    property boids_ar: empty() = filter(agents(boid) => b => dist(b.x, b.y, x, y) < avoid_range);
+    # boids in visual range #
+    property boids_vr: empty() = filter(agents(boid) => b => dist(b.x, b.y, x, y) < visual_range);
+    # number of boids in visual range #
+    property bvrc = count(boids_vr);
 
-    property vx_s: 0 = if s > max_s then vx / s * max_s else if s < min_s then vx / s * min_s else vx;
-    property vy_s: 0 = if s > max_s then vy / s * max_s else if s < min_s then vy / s * min_s else vy;
+    # separation #
+    property x_sep = sum(boids_ar => b => x - b.x) * avoid_factor;
+    property y_sep = sum(boids_ar => b => y - b.y) * avoid_factor;
 
-    property boids: empty() = agents(boid);
-    property boids_pr: empty() = filter(boids => b => dist(b.x, b.y, x, y) < protected_range);
-    property boids_vr: empty() = filter(boids => b => dist(b.x, b.y, x, y) < visual_range);
+    # alignment #
+    property x_align = if bvrc > 0 then (sum(boids_vr => b => b.x_vel) / bvrc - x_vel) * matching_factor else 0;
+    property y_align = if bvrc > 0 then (sum(boids_vr => b => b.y_vel) / bvrc - y_vel) * matching_factor else 0;
 
-    property close_dx: 0 = sum(boids_pr => b => x - b.x);
-    property close_dy: 0 = sum(boids_pr => b => y - b.y);
-
-    property xvel_avg_p: 0 = sum(boids_vr => b => b.vx);
-    property yvel_avg_p: 0 = sum(boids_vr => b => b.vy);
-    property xvel_avg: 0 = if count(boids_vr) > 0 then xvel_avg_p / count(boids_vr) else 0;
-    property yvel_avg: 0 = if count(boids_vr) > 0 then yvel_avg_p / count(boids_vr) else 0;
-
-    property xpos_avg_p: 0 = sum(boids_vr => b => b.x);
-    property ypos_avg_p: 0 = sum(boids_vr => b => b.y);
-    property xpos_avg: 0 = if count(boids_vr) > 0 then xpos_avg_p / count(boids_vr) else 0;
-    property ypos_avg: 0 = if count(boids_vr) > 0 then ypos_avg_p / count(boids_vr) else 0;
+    # cohesion #
+    property x_coh = if bvrc > 0 then (sum(boids_vr => b => b.x) / bvrc - x) * centering_factor else 0;
+    property y_coh = if bvrc > 0 then (sum(boids_vr => b => b.y) / bvrc - y) * centering_factor else 0;
 }`;
 
     public static ALL: CodeItem[] = [
         { label: "Epidemic", code: Examples.EPIDEMIC, steps: 10000, delay: 20 },
         { label: "Snowfall", code: Examples.SNOWFALL, steps: 10000, delay: 20 },
         { label: "Forest Fire", code: Examples.FOREST_FIRE, steps: 100, delay: 1000 },
-        { label: "Boid's Flocking Algorithm", code: Examples.FLOCKING, steps: 10000, delay: 20 },
+        { label: "Boid's Algorithm", code: Examples.BOIDS, steps: 10000, delay: 20 },
     ]
 }

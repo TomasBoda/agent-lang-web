@@ -100,7 +100,8 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
         interpreterService.rebuild();
 
         const newCode = ParserUtil.astToCode(newProgram);
-        const formattedCode = Formatter.getFormatted(newCode);
+        //const formattedCode = Formatter.getFormatted(newCode);
+        const formattedCode = newCode;
 
         codeService.set({ code: formattedCode });
 

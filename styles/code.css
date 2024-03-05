@@ -42,36 +42,11 @@
     font-size: 14px;
 }
 
-.token.keyword {
-    color: #0000ff;
-    color: #569cd6;
-}
-
-.token.function {
-    color: #267f99;
-    color: #a78ee1;
-}
-
-.token.boolean {
-    color: #DE3C4B;
-    color: #e87d84;
-}
-
-.token.condition {
-    color: #DE3C4B;
-    color: #e87d84;
-}
-
-.token.logical {
-    color: #eeb04f;
-    color: #dcdcaa;
-}
-
-.token.number {
-    color: #3689de;
-    color: #86b9e3;
-}
-
-.token.operator {
-    color: #e87d84;
-}
+.token.comment { color: rgba(255, 255, 255, 0.4); }
+.token.keyword { color: #569cd6; }
+.token.function { color: #a78ee1; }
+.token.boolean { color: #e87d84; }
+.token.condition { color: #e87d84; }
+.token.logical { color: #dcdcaa; }
+.token.number { color: #86b9e3; }
+.token.operator { color: #e87d84; }
