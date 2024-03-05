@@ -63,68 +63,66 @@ export class Examples {
     property coloured: index() == 0 = if coloured then true else should_color;
 }`;
 
-    public static FLOCKING = `define center_factor = 0.005;
+    public static FLOCKING = `define turn_factor = 0.2;
+define visual_range = 100;
+define protected_range = 40;
+define centering_factor = 0.0005;
+define avoid_factor = 0.0005;
+define matching_factor = 0.05;
 
-define visual_range = 20;
+define max_s = 6;
+define min_s = 4;
 
-define avoid_distance = 50;
-define avoid_factor = 0.05;
+define margin = 50;
 
-define match_factor = 0.05;
+agent boid 50 {
 
-define speed_limit = 10;
+    const w = 12;
+    const h = 12;
 
-define margin = 100;
-define turn_factor = 1;
+    const sx = random(100, width() - 100);
+    const sy = random(100, height() - 100);
 
-agent bird 50 {
+    property x: sx = (x + vx_s) % width();
+    property y: sy = (y + vy_s) % height();
 
-    const x_spawn = random(100, width() - 100);
-    const y_spawn = random(100, height() - 100);
-    const x_velocity_spawn = random(-1, 1) * 10;
-    const y_velocity_spawn = random(-1, 1) * 10;
+    property vx: choice(-2, 2) = vx + close_dx * avoid_factor + xvel_avg_s + xpos_avg_s;
+    property vy: choice(-2, 2) = vy + close_dy * avoid_factor + yvel_avg_s + ypos_avg_s;
 
-    property birds: empty() = agents(bird);
+    property xvel_avg_s: 0 = if xvel_avg == 0 then 0 else (xvel_avg - vx) * matching_factor;
+    property yvel_avg_s: 0 = if yvel_avg == 0 then 0 else (yvel_avg - vy) * matching_factor;
 
-    property neighbours: empty() = filter(birds => b => dist(b.x, b.y, x, y) < visual_range);
-    property neighbour_count: 1 = if count(neighbours) == 0 then 1 else count(neighbours);
+    property xpos_avg_s: 0 = if xpos_avg == 0 then 0 else (xpos_avg - x) * centering_factor;
+    property ypos_avg_s: 0 = if ypos_avg == 0 then 0 else (ypos_avg - y) * centering_factor;
 
-    property x_fly_to_center: width() / 2 = if count(neighbours) == 0 then width() / 2 else sum(neighbours => n => n.x) / neighbour_count;
-    property y_fly_to_center: height() / 2 = if count(neighbours) == 0 then height() / 2 else sum(neighbours => n => n.y) / neighbour_count;
+    property speed_p: 0 = sqrt(vx * vx + vy * vy);
+    property s: 1 = if speed_p == 0 then 1 else speed_p;
 
-    property x_center: width() / 2 = (x_fly_to_center - x) * center_factor;
-    property y_center: height() / 2 = (y_fly_to_center - y) * center_factor;
+    property vx_s: 0 = if s > max_s then vx / s * max_s else if s < min_s then vx / s * min_s else vx;
+    property vy_s: 0 = if s > max_s then vy / s * max_s else if s < min_s then vy / s * min_s else vy;
 
-    property avoid_neighbours: empty() = filter(birds => b => dist(b.x, b.y, x, y) < avoid_distance);
+    property boids: empty() = agents(boid);
+    property boids_pr: empty() = filter(boids => b => dist(b.x, b.y, x, y) < protected_range);
+    property boids_vr: empty() = filter(boids => b => dist(b.x, b.y, x, y) < visual_range);
 
-    property x_avoid: 0 = sum(avoid_neighbours => n => x - n.x) * avoid_factor;
-    property y_avoid: 0 = sum(avoid_neighbours => n => y - n.y) * avoid_factor;
+    property close_dx: 0 = sum(boids_pr => b => x - b.x);
+    property close_dy: 0 = sum(boids_pr => b => y - b.y);
 
-    property x_do_match: 0 = sum(neighbours => n => n.x_velocity) / neighbour_count;
-    property y_do_match: 0 = sum(neighbours => n => n.y_velocity) / neighbour_count;
+    property xvel_avg_p: 0 = sum(boids_vr => b => b.vx);
+    property yvel_avg_p: 0 = sum(boids_vr => b => b.vy);
+    property xvel_avg: 0 = if count(boids_vr) > 0 then xvel_avg_p / count(boids_vr) else 0;
+    property yvel_avg: 0 = if count(boids_vr) > 0 then yvel_avg_p / count(boids_vr) else 0;
 
-    property x_match: 0 = (x_do_match - x) * match_factor;
-    property y_match: 0 = (y_do_match - y) * match_factor;
-
-    property x_velocity: y_velocity_spawn = x_center + x_avoid + x_match;
-    property y_velocity: y_velocity_spawn = y_center + y_avoid + y_match;
-
-    property speed: 0 = sqrt(x_velocity * x_velocity + y_velocity * y_velocity);
-
-    property x_speed: 0 = if speed > speed_limit then x_velocity / speed * speed_limit else x_velocity;
-    property y_speed: 0 = if speed > speed_limit then y_velocity / speed * speed_limit else y_velocity;
-
-    property x_move: 0 = if x < margin then x_move + turn_factor else if x > width() - margin then x_move - turn_factor else x_speed;
-    property y_move: 0 = if y < margin then y_move + turn_factor else if y > height() - margin then y_move - turn_factor else y_speed;
-
-    property x: x_spawn = x + x_move;
-    property y: y_spawn = y + y_move;
+    property xpos_avg_p: 0 = sum(boids_vr => b => b.x);
+    property ypos_avg_p: 0 = sum(boids_vr => b => b.y);
+    property xpos_avg: 0 = if count(boids_vr) > 0 then xpos_avg_p / count(boids_vr) else 0;
+    property ypos_avg: 0 = if count(boids_vr) > 0 then ypos_avg_p / count(boids_vr) else 0;
 }`;
 
     public static ALL: CodeItem[] = [
         { label: "Epidemic", code: Examples.EPIDEMIC, steps: 10000, delay: 20 },
         { label: "Snowfall", code: Examples.SNOWFALL, steps: 10000, delay: 20 },
         { label: "Forest Fire", code: Examples.FOREST_FIRE, steps: 100, delay: 1000 },
-        { label: "Flocking", code: Examples.FLOCKING, steps: 10000, delay: 20 },
+        { label: "Boid's Flocking Algorithm", code: Examples.FLOCKING, steps: 10000, delay: 20 },
     ]
 }

@@ -56,24 +56,28 @@ export default function Visualisation({ output }: { output: InterpreterOutput })
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         for (const agent of agents) {
-            const variables = agent.variables as unknown as { x: number, y: number, coloured: boolean };
+            const variables = agent.variables as unknown as {
+                x?: NumberValue,
+                y?: NumberValue,
+                w?: NumberValue,
+                h?: NumberValue,
+                coloured: BooleanValue
+            };
 
-            if (variables["x"] && variables["y"]) {
-                const x: NumberValue = variables["x"] as unknown as NumberValue ?? 0;
-                const y: NumberValue = variables["y"] as unknown as NumberValue ?? 0;
-                const coloured: BooleanValue = variables["coloured"] as unknown as BooleanValue ?? false;
-
-                const xValue = x.value;
-                const yValue = y.value;
-                const colouredValue = coloured.value ?? false;
-
-                if (!xValue || !yValue) {
-                    continue;
-                }
-
-                context.fillStyle = colouredValue ? "#DE3C4B" : "#FFFFFF";
-                context.fillRect(xValue, yValue, 10, 10);
+            if (variables.x === undefined || variables.y === undefined) {
+                continue;
             }
+
+            const { x, y, w, h, coloured } = variables;
+            
+            const xValue = x.value;
+            const yValue = y.value;
+            const wValue = w?.value ?? 7;
+            const hValue = h?.value ?? 7;
+            const cValue = coloured?.value ?? false;
+
+            context.fillStyle = cValue ? "#DE3C4B" : "#FFFFFF";
+            context.fillRect(xValue, yValue, wValue, hValue);
         }
     }
 

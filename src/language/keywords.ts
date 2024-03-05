@@ -36,7 +36,8 @@ export const keywords = {
         "tan",
         "atan",
         "index",
-        "dist"
+        "dist",
+        "find_by_coordinates"
     ].join('|')})\\b`, 'g'),
     booleans: new RegExp(`\\b(?:${[
         "true",
