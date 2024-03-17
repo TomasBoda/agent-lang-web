@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { InterpreterStatus } from "../services/interpreter.service";
 import { useServices, useStatus } from "../hooks";
 import { MessageType } from "@/src/services/message.service";
-import { BooleanValue, InterpreterOutput, NumberValue } from "@/agent-lang-interpreter/src";
+import { BooleanValue, ColourValue, InterpreterOutput, NumberValue } from "@/agent-lang-interpreter/src";
 
 export default function Visualisation({ output }: { output: InterpreterOutput }) {
 
@@ -61,22 +61,22 @@ export default function Visualisation({ output }: { output: InterpreterOutput })
                 y?: NumberValue,
                 w?: NumberValue,
                 h?: NumberValue,
-                coloured: BooleanValue
+                c?: ColourValue,
             };
 
             if (variables.x === undefined || variables.y === undefined) {
                 continue;
             }
 
-            const { x, y, w, h, coloured } = variables;
+            const { x, y, w, h, c } = variables;
             
             const xValue = x.value;
             const yValue = y.value;
             const wValue = w?.value ?? 7;
             const hValue = h?.value ?? 7;
-            const cValue = coloured?.value ?? false;
+            const cValue = c?.value ?? { red: 255, green: 255, blue: 255 };
 
-            context.fillStyle = cValue ? "#DE3C4B" : "#FFFFFF";
+            context.fillStyle = `rgb(${cValue.red}, ${cValue.green}, ${cValue.blue})`;
             context.fillRect(xValue, yValue, wValue, hValue);
         }
     }

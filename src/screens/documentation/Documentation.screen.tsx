@@ -70,6 +70,7 @@ const Content = styled.div`
   align-items: start;
 
   padding: 50px 100px;
+  padding-left: 310px;
 
   position: relative;
 `;

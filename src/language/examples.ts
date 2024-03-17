@@ -18,7 +18,7 @@ agent person 50 {
     property y: random(50, height() - 50) = (y + speed * sin(angle)) % height();
 
     # people in proximity #
-    property infected_in_proximity = filter(agents(person) => p => dist(x, y, p.x, p.y) <= distance and p.infected == true);
+    property infected_in_proximity = filter(agents(person) | p -> dist(x, y, p.x, p.y) <= distance and p.infected == true);
 
     # remaining days to heal #
     property remaining: timespan = if infected then remaining - 1 else timespan;
@@ -26,7 +26,7 @@ agent person 50 {
     property should_infect = prob(0.4);
     property infected: prob(0.5) = (infected and remaining > 0) or (count(infected_in_proximity) > 0 and should_infect);
 
-    property coloured = infected;
+    property c = if infected then rgb(255, 0, 0) else rgb(255, 255, 255);
 }`;
 
     public static SNOWFALL = `agent snowflake 200 {
@@ -39,21 +39,21 @@ agent person 50 {
     const h = 10;
 }`;
 
-    public static FOREST_FIRE = `agent tree 64 {
+    public static FOREST_FIRE = `agent tree 100 {
     const offset = 100;
     const size = height() - 2 * offset;
-    const spacing = size / 8;
+    const spacing = size / 10;
 
-    const x = offset + floor(index() % 8) * spacing;
-    const y = offset + floor(index() / 8) * spacing;
+    const x = offset + floor(index() % 10) * spacing;
+    const y = offset + floor(index() / 10) * spacing;
 
     property trees = agents(tree);
-    property in_proximity = filter(trees => t => dist(x, y, t.x, t.y) <= spacing);
+    property in_proximity = filter(trees | t -> dist(x, y, t.x, t.y) <= spacing);
 
-    property top_tree = min(in_proximity => t => t.y);
-    property bot_tree = max(in_proximity => t => t.y);
-    property lef_tree = min(in_proximity => t => t.x);
-    property rig_tree = max(in_proximity => t => t.x);
+    property top_tree = min(in_proximity | t -> t.y);
+    property bot_tree = max(in_proximity | t -> t.y);
+    property lef_tree = min(in_proximity | t -> t.x);
+    property rig_tree = max(in_proximity | t -> t.x);
 
     property top_col = top_tree.coloured otherwise false;
     property bot_col = bot_tree.coloured otherwise false;
@@ -64,6 +64,8 @@ agent person 50 {
     property should_color: false = top_col or bot_col or lef_col or rig_col and probability;
 
     property coloured: index() == 0 = if coloured then true else should_color;
+
+    property c = if coloured then rgb(255, 0, 0) else rgb(255, 255, 255);
 }`;
 
     public static BOIDS = `define visual_range = 100;
@@ -73,14 +75,14 @@ define avoid_factor = 0.005;
 define matching_factor = 0.05;
 
 # min and max speed #
-define s_max = 6;
-define s_min = 4;
+define s_max = 8;
+define s_min = 6;
 
 agent boid 50 {
 
     # width and height #
-    const w = 12;
-    const h = 12;
+    const w = 10;
+    const h = 10;
 
     const x_init = random(100, width() - 100);
     const y_init = random(100, height() - 100);
@@ -100,29 +102,29 @@ agent boid 50 {
     property y_vel_limit = if s > s_max then y_vel / s * s_max else if s < s_min then y_vel / s * s_min else y_vel;
 
     # boids in close proximity #
-    property boids_ar: empty() = filter(agents(boid) => b => dist(b.x, b.y, x, y) < avoid_range);
+    property boids_ar: empty() = filter(agents(boid) | b -> dist(b.x, b.y, x, y) < avoid_range);
     # boids in visual range #
-    property boids_vr: empty() = filter(agents(boid) => b => dist(b.x, b.y, x, y) < visual_range);
+    property boids_vr: empty() = filter(agents(boid) | b -> dist(b.x, b.y, x, y) < visual_range);
     # number of boids in visual range #
     property bvrc = count(boids_vr);
 
     # separation #
-    property x_sep = sum(boids_ar => b => x - b.x) * avoid_factor;
-    property y_sep = sum(boids_ar => b => y - b.y) * avoid_factor;
+    property x_sep = sum(boids_ar | b -> x - b.x) * avoid_factor;
+    property y_sep = sum(boids_ar | b -> y - b.y) * avoid_factor;
 
     # alignment #
-    property x_align = if bvrc > 0 then (sum(boids_vr => b => b.x_vel) / bvrc - x_vel) * matching_factor else 0;
-    property y_align = if bvrc > 0 then (sum(boids_vr => b => b.y_vel) / bvrc - y_vel) * matching_factor else 0;
+    property x_align = if bvrc > 0 then (sum(boids_vr | b -> b.x_vel) / bvrc - x_vel) * matching_factor else 0;
+    property y_align = if bvrc > 0 then (sum(boids_vr | b -> b.y_vel) / bvrc - y_vel) * matching_factor else 0;
 
     # cohesion #
-    property x_coh = if bvrc > 0 then (sum(boids_vr => b => b.x) / bvrc - x) * centering_factor else 0;
-    property y_coh = if bvrc > 0 then (sum(boids_vr => b => b.y) / bvrc - y) * centering_factor else 0;
+    property x_coh = if bvrc > 0 then (sum(boids_vr | b -> b.x) / bvrc - x) * centering_factor else 0;
+    property y_coh = if bvrc > 0 then (sum(boids_vr | b -> b.y) / bvrc - y) * centering_factor else 0;
 }`;
 
     public static ALL: CodeItem[] = [
         { label: "Epidemic", code: Examples.EPIDEMIC, steps: 10000, delay: 20 },
         { label: "Snowfall", code: Examples.SNOWFALL, steps: 10000, delay: 20 },
-        { label: "Forest Fire", code: Examples.FOREST_FIRE, steps: 100, delay: 1000 },
+        { label: "Forest Fire", code: Examples.FOREST_FIRE, steps: 100, delay: 1 },
         { label: "Boid's Algorithm", code: Examples.BOIDS, steps: 10000, delay: 20 },
     ]
 }

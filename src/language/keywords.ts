@@ -38,7 +38,8 @@ export const keywords = {
         "atan",
         "index",
         "dist",
-        "find_by_coordinates"
+        "find_by_coordinates",
+        "rgb"
     ].join('|')})\\b`, 'g'),
     booleans: new RegExp(`\\b(?:${[
         "true",
@@ -49,5 +50,5 @@ export const keywords = {
         "or"
     ].join('|')})\\b`, 'g'),
     numbers: /-?\d+(\.\d+)?/g,
-    operators: /\+|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\=\>/g
+    operators: /\+|\-|\*|\/|\%|\<|\<\=|\>|\>\=|\=|\=\=|\-\>|\|/g
 };
