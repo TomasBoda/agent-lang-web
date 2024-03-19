@@ -39,33 +39,44 @@ agent person 50 {
     const h = 10;
 }`;
 
-    public static FOREST_FIRE = `agent tree 100 {
-    const offset = 100;
-    const size = height() - 2 * offset;
-    const spacing = size / 10;
+    public static FOREST_FIRE = `define forest_size = 324;
 
-    const x = offset + floor(index() % 10) * spacing;
-    const y = offset + floor(index() / 10) * spacing;
+agent tree forest_size {
+    const fs = floor(sqrt(forest_size));
+
+    const offset = 0;
+    const size = height() - 2 * offset;
+    const spacing = floor(size / fs);
+    
+    const w = spacing;
+    const h = spacing;
+
+    const x = offset + floor(index() % fs) * spacing;
+    const y = offset + floor(index() / fs) * spacing;
 
     property trees = agents(tree);
-    property in_proximity = filter(trees | t -> dist(x, y, t.x, t.y) <= spacing);
 
-    property top_tree = min(in_proximity | t -> t.y);
-    property bot_tree = max(in_proximity | t -> t.y);
-    property lef_tree = min(in_proximity | t -> t.x);
-    property rig_tree = max(in_proximity | t -> t.x);
+    property tree_t = find_by_coordinates(trees, x, y - spacing);
+    property tree_b = find_by_coordinates(trees, x, y + spacing);
+    property tree_l = find_by_coordinates(trees, x - spacing, y);
+    property tree_r = find_by_coordinates(trees, x + spacing, y);
+    
+    # 1 = idle | 2 = burning | 3 = burnt #
+    const initial_index = index() == round(forest_size / 2 + fs / 2);
+    const initial_burning = if initial_index then 2 else 1;
+    
+    property burning_remaining: 10 = if state == 2 then burning_remaining - 1 else 10;
+    
+    property state: initial_burning = if state == 1 and should_burn then 2 else if state == 2 then if burning_remaining == 0 then 3 else 2 else state;
+    
+    property burn_t = tree_t.state == 2 otherwise false;
+    property burn_b = tree_b.state == 2 otherwise false;
+    property burn_l = tree_l.state == 2 otherwise false;
+    property burn_r = tree_r.state == 2 otherwise false;
 
-    property top_col = top_tree.coloured otherwise false;
-    property bot_col = bot_tree.coloured otherwise false;
-    property lef_col = lef_tree.coloured otherwise false;
-    property rig_col = rig_tree.coloured otherwise false;
+    property should_burn: false = burn_t or burn_b or burn_l or burn_r and prob(0.08);
 
-    const probability = prob(0.9);
-    property should_color: false = top_col or bot_col or lef_col or rig_col and probability;
-
-    property coloured: index() == 0 = if coloured then true else should_color;
-
-    property c = if coloured then rgb(255, 0, 0) else rgb(255, 255, 255);
+    property c = if state == 1 then rgb(48, 107, 64) else if state == 2 then rgb(230, 66, 41) else rgb(92, 53, 47    );
 }`;
 
     public static BOIDS = `define visual_range = 100;
@@ -124,7 +135,7 @@ agent boid 50 {
     public static ALL: CodeItem[] = [
         { label: "Epidemic", code: Examples.EPIDEMIC, steps: 10000, delay: 20 },
         { label: "Snowfall", code: Examples.SNOWFALL, steps: 10000, delay: 20 },
-        { label: "Forest Fire", code: Examples.FOREST_FIRE, steps: 100, delay: 1 },
+        { label: "Forest Fire", code: Examples.FOREST_FIRE, steps: 1000, delay: 1 },
         { label: "Boid's Algorithm", code: Examples.BOIDS, steps: 10000, delay: 20 },
     ]
 }
