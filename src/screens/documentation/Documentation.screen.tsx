@@ -6,8 +6,11 @@ import { Breadcrumb } from "@/src/components/breadcrumbs";
 import { useEffect, useState } from "react";
 import { Language } from "@/src/language";
 import { useRouter } from "next/router";
+import { DocumentItem } from "@/src/documentation";
+import Link from "next/link";
+import { Button } from "@/src/components/button";
 
-export default function DocumentationScreen({ html, breadcrumbs }: { html: string, breadcrumbs: Breadcrumb[] }) {
+export default function DocumentationScreen({ html, breadcrumbs, nextDocument }: { html: string, breadcrumbs: Breadcrumb[], nextDocument: DocumentItem | undefined }) {
 
     const [loaded, setLoaded] = useState(false);
     const [content, setContent] = useState("");
@@ -45,6 +48,7 @@ export default function DocumentationScreen({ html, breadcrumbs }: { html: strin
                     <DocsPage>
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
                         {loaded && <HTML className="markdown" dangerouslySetInnerHTML={{ __html: content }} />}
+                        {nextDocument && <Button size="small" href={nextDocument.slug}>Next: {nextDocument.label}</Button>}
                     </DocsPage>
                 </Content>
             </PageWrapper>

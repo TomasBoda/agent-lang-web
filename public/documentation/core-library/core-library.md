@@ -1,0 +1,2 @@
+# Core Library
+The AgentLang's core library consists of several built-in functions necessary for agent manipulation as well as mathematical calculations. Below is the complete list of built-in functions and their usage.

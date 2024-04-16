@@ -5,5 +5,3 @@ Agent-based model is a computational model and a simulation technique that uses 
 Agent-based models are most commonly implemented as computer simulations, therefore, a programming language for defining agents and their behaviour is necessary to be able to simulate an agent-based model.
 
 That is where **AgentLang** comes into play. It allows for quick and simple simulation modelling using a simplistic code syntax which is easy to understand and use.
-
-[**Next:** Installation and Usage](/documentation/introduction/installation-and-usage)

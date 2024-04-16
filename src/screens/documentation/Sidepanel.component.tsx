@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { Logo } from "@/src/components/logo";
+import { documentation } from "@/src/documentation/documentation";
 
 export default function SidePanel() {
 
@@ -11,6 +12,16 @@ export default function SidePanel() {
                     <Logo />
                 </LogoContainer>
 
+                {documentation.map(({ header, items }) =>
+                    <Section>
+                        <HeadingItem href={header.slug}>{header.label}</HeadingItem>
+                        {items.map(item =>
+                            <Item href={item.slug}>{item.label}</Item>    
+                        )}
+                    </Section>    
+                )}
+
+                {/*
                 <Section>
                     <HeadingItem href="/documentation/introduction">Introduction</HeadingItem>
                     <Item href="/documentation/introduction/what-is-agent-lang">What is AgentLang</Item>
@@ -25,6 +36,7 @@ export default function SidePanel() {
                     <Item href="/documentation/language-specification/expressions">Expressions</Item>
                     <Item href="/documentation/language-specification/core-library">Core Library</Item>
                 </Section>
+                */}
             </Content>
         </Container>
     )

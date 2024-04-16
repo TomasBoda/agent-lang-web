@@ -1,3 +1,1 @@
-export * from "./document";
-export * from "./documents";
-export * from "./utils";
+export * from "./documentation";

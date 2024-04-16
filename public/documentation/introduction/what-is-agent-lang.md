@@ -12,5 +12,3 @@ agent snowflake 200 {
 }
 ```
 The above program generates 200 snowflakes at random `x` and `y` positions, each having a random fall speed (between `10` and `20`). In each step of the simulation, the `y` coordinate is incremented by the snowflake's speed.
-
-[**Next:** Agent-based modeling](/documentation/introduction/agent-based-modeling)
