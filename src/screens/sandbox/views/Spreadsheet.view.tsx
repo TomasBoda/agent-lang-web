@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { Formatter, Program, ParserUtil, Agent, InterpreterOutput, AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType, VariableType } from "@/agent-lang-interpreter/src";
+import { Formatter, Program, ParserUtil, Agent, InterpreterOutput, AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType, VariableType } from "@/agent-lang-interpreter";
 import Editor from 'react-simple-code-editor';
 import { Language } from "@/src/language";
 import { Button } from "@/src/components/button";
@@ -100,8 +100,7 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
         interpreterService.rebuild();
 
         const newCode = ParserUtil.astToCode(newProgram);
-        //const formattedCode = Formatter.getFormatted(newCode);
-        const formattedCode = newCode;
+        const formattedCode = Formatter.getFormatted(newCode);
 
         codeService.set({ code: formattedCode });
 

@@ -3,7 +3,7 @@ import { InputField } from "@/src/components/Components.styles";
 import styled from "styled-components";
 import { InterpreterStatus } from "../services/interpreter.service";
 import { MessageType } from "@/src/services/message.service";
-import { ErrorModel, Formatter } from "@/agent-lang-interpreter/src";
+import { ErrorModel, Formatter } from "@/agent-lang-interpreter";
 import { useCode, useInterpreter, useServices, useStatus, useView } from "../hooks";
 
 export function Toolbar() {
@@ -32,6 +32,10 @@ export function Toolbar() {
     }
 
     function start(): void {
+        if (status === InterpreterStatus.RUNNING) {
+            return;
+        }
+
         build(() => {
             interpreterService.initialize(code, steps, delay);
             interpreterService.start();
@@ -47,10 +51,18 @@ export function Toolbar() {
     }
 
     function pause(): void {
+        if (status !== InterpreterStatus.RUNNING) {
+            return;
+        }
+
         interpreterService.pause();
     }
 
     function resume(): void {
+        if (status !== InterpreterStatus.PAUSED) {
+            return;
+        }
+
         interpreterService.resume();
 
         if (view === 0) {
@@ -59,6 +71,10 @@ export function Toolbar() {
     }
 
     function next(): void {
+        if (status !== InterpreterStatus.PAUSED) {
+            return;
+        }
+
         interpreterService.step();
 
         if (view === 0) {
@@ -96,8 +112,7 @@ export function Toolbar() {
         }
 
         try {
-            //const formattedCode = Formatter.getFormatted(code);
-            const formattedCode = code;
+            const formattedCode = Formatter.getFormatted(code);
             codeService.set({ code: formattedCode });
             messageService.showMessage(MessageType.Success, "Build succeeded");
             callback?.();
@@ -110,7 +125,7 @@ export function Toolbar() {
     const showResetButton = status === InterpreterStatus.RUNNING || status === InterpreterStatus.PAUSED;
     const showPauseButton = status === InterpreterStatus.RUNNING;
     const showResumeButton = status === InterpreterStatus.PAUSED;
-    const showNextButton = status === InterpreterStatus.STOPPED || status === InterpreterStatus.PAUSED;
+    const showNextButton = status === InterpreterStatus.PAUSED;
     const showBuildButton = status === InterpreterStatus.STOPPED;
 
     return (
