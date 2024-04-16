@@ -17,29 +17,13 @@ export default function SidePanel() {
                     <Item href="/documentation/introduction/agent-based-modeling">Agent-based modeling</Item>
                     <Item href="/documentation/introduction/installation-and-usage">Installation and Usage</Item>
                 </Section>
-
-                <Section>
-                    <HeadingItem href="/documentation/software-specification">Software Specification</HeadingItem>
-                    <Item href="/documentation/software-specification/project-description">Project Description</Item>
-                    <Item href="/documentation/software-specification/technologies">Technologies</Item>
-                    <Item href="/documentation/software-specification/aim-of-the-project">Aim of the Project</Item>
-                    <Item href="/documentation/software-specification/main-functionality">Main Functionality</Item>
-                </Section>
                 
                 <Section>
-                    <HeadingItem href="/documentation/language-design">Language Design</HeadingItem>
-                    <Item href="/documentation/language-design/data-types">Data Types</Item>
-                    <Item href="/documentation/language-design/properties">Properties</Item>
-                    <Item href="/documentation/language-design/agents">Agents</Item>
-                    <Item href="/documentation/language-design/conditional-expressions">Conditional Expressions</Item>
-                    <Item href="/documentation/language-design/built-in-functions">Built-in Functions</Item>
-                </Section>
-
-                <Section>
-                    <HeadingItem href="/documentation/code-sandbox">Code Sandbox</HeadingItem>
-                    <Item href="/documentation/code-sandbox/code-editor">Code Editor</Item>
-                    <Item href="/documentation/code-sandbox/table-editor">Table Editor</Item>
-                    <Item href="/documentation/code-sandbox/visualisation">Visualisation</Item>
+                    <HeadingItem href="/documentation/language-specification">Language Specification</HeadingItem>
+                    <Item href="/documentation/language-specification/declarations">Declarations</Item>
+                    <Item href="/documentation/language-specification/data-types">Data Types</Item>
+                    <Item href="/documentation/language-specification/expressions">Expressions</Item>
+                    <Item href="/documentation/language-specification/core-library">Core Library</Item>
                 </Section>
             </Content>
         </Container>

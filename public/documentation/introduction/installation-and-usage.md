@@ -35,4 +35,4 @@ subscription = interpreter.interpret(code, config).subscribe(output => {
 ```
 The subscription will receive new `output` every `delay` milliseconds for `steps` times.
 
-[**Next:** Software Specification](/documentation/software-specification)
+[**Next:** Language Specification](/documentation/language-specification)
