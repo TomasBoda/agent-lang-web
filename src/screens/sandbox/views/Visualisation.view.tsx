@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { InterpreterStatus } from "../services/interpreter.service";
 import { useServices, useStatus } from "../hooks";
 import { MessageType } from "@/src/services/message.service";
-import { ColourValue, InterpreterOutput, NumberValue } from "@/agent-lang-interpreter/src";
+import { ColourValue, InterpreterOutput, NumberValue } from "@/agent-lang-interpreter";
 
 export default function Visualisation({ output }: { output: InterpreterOutput }) {
 
