@@ -33,6 +33,7 @@
   "devDependencies": {
     "@types/jquery": "^3.5.16",
     "@types/prismjs": "^1.26.3",
-    "babel-plugin-styled-components": "^2.1.4"
+    "babel-plugin-styled-components": "^2.1.4",
+    "bun-types": "latest"
   }
 }
