@@ -76,7 +76,7 @@ agent tree forest_size {
 
     property should_burn: false = burn_t or burn_b or burn_l or burn_r and prob(0.08);
 
-    property c = if state == 1 then rgb(48, 107, 64) else if state == 2 then rgb(230, 66, 41) else rgb(92, 53, 47    );
+    property c = if state == 1 then rgb(48, 107, 64) else if state == 2 then rgb(230, 66, 41) else rgb(92, 53, 47);
 }`;
 
     public static BOIDS = `define visual_range = 100;
@@ -132,10 +132,55 @@ agent boid 50 {
     property y_coh = if bvrc > 0 then (sum(boids_vr | b -> b.y) / bvrc - y) * centering_factor else 0;
 }`;
 
+    public static NOISE_GRAYSCALE = `
+define block_count = 2500;
+
+agent block block_count {
+    const fs = floor(sqrt(block_count));
+
+    const offset = 0;
+    const size = height() - 2 * offset;
+    const spacing = floor(size / fs);
+    
+    const w = spacing;
+    const h = spacing;
+
+    const x = offset + floor(index() % fs) * spacing;
+    const y = offset + floor(index() / fs) * spacing;
+
+    property colour = floor(random(0, 255));
+    property c = rgb(colour, colour, colour);
+}`;
+
+    public static NOISE_COLOURED = `
+define block_count = 2500;
+
+agent block block_count {
+    const fs = floor(sqrt(block_count));
+
+    const offset = 0;
+    const size = height() - 2 * offset;
+    const spacing = floor(size / fs);
+    
+    const w = spacing;
+    const h = spacing;
+
+    const x = offset + floor(index() % fs) * spacing;
+    const y = offset + floor(index() / fs) * spacing;
+
+    property r = floor(random(0, 255));
+    property g = floor(random(0, 255));
+    property b = floor(random(0, 255));
+    
+    property c = rgb(r, g, b);
+}`;
+
     public static ALL: CodeItem[] = [
         { label: "Epidemic", code: Examples.EPIDEMIC, steps: 10000, delay: 20 },
         { label: "Snowfall", code: Examples.SNOWFALL, steps: 10000, delay: 20 },
         { label: "Forest Fire", code: Examples.FOREST_FIRE, steps: 1000, delay: 1 },
         { label: "Boid's Algorithm", code: Examples.BOIDS, steps: 10000, delay: 20 },
+        { label: "Noise Coloured", code: Examples.NOISE_COLOURED, steps: 10000, delay: 20 },
+        { label: "Noise Grayscale", code: Examples.NOISE_GRAYSCALE, steps: 10000, delay: 20 },
     ]
 }
