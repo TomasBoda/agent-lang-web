@@ -3,7 +3,7 @@ import { InputField } from "@/src/components/Components.styles";
 import styled from "styled-components";
 import { InterpreterStatus } from "../services/interpreter.service";
 import { MessageType } from "@/src/services/message.service";
-import { ErrorModel, Formatter } from "@/agent-lang-interpreter";
+import { ErrorModel, Formatter } from "@/agent-lang-interpreter/src";
 import { useCode, useInterpreter, useServices, useStatus, useView } from "../hooks";
 
 export function Toolbar() {

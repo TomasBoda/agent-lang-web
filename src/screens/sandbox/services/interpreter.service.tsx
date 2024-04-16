@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { BehaviorSubject, Observable } from "rxjs";
-import { Interpreter, Program, InterpreterConfiguration, InterpreterOutput } from "@/agent-lang-interpreter";
+import { Interpreter, Program, InterpreterConfiguration, InterpreterOutput } from "@/agent-lang-interpreter/src";
 
 export enum InterpreterStatus {
     STOPPED = "Stopped",

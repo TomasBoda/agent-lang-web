@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { Formatter, Program, ParserUtil, Agent, InterpreterOutput, AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType, VariableType } from "@/agent-lang-interpreter";
+import { Formatter, Program, ParserUtil, Agent, InterpreterOutput, AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType, VariableType } from "@/agent-lang-interpreter/src";
 import Editor from 'react-simple-code-editor';
 import { Language } from "@/src/language";
 import { Button } from "@/src/components/button";
