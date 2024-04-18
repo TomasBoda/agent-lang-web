@@ -29,7 +29,8 @@
     "styled-components": "^6.0.5",
     "typescript": "5.1.6",
     "uuid": "^9.0.1",
-    "command-line-args": "^5.2.1"
+    "command-line-args": "^5.2.1",
+    "bun": "^1.1.4"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.16",
