@@ -6,7 +6,7 @@
 ![License Badge](https://img.shields.io/badge/license-MIT-red?style=flat)
 
 ## About
-Web interface with code sandbox for the **AgentLang** programming language written in TypeScript.
+Web interface with code sandbox for the **AgentLang** programming language written in [TypeScript](https://www.typescriptlang.org/) using the [Next.js](https://nextjs.org/) framework.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
