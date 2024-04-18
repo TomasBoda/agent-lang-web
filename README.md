@@ -1,5 +1,5 @@
-<img src="./assets/agent-lang-web-logo-black.png#gh-light-mode-only" width="300">
-<img src="./assets/agent-lang-web-logo-white.png#gh-dark-mode-only" width="300">
+<img src="https://github.com/TomasBoda/agent-lang/blob/main/assets/logos/agent-lang-web-logo-black.png#gh-light-mode-only" width="300">
+<img src="https://github.com/TomasBoda/agent-lang/blob/main/assets/logos/agent-lang-web-logo-white.png#gh-dark-mode-only" width="300">
 
 ![Version Badge](https://img.shields.io/badge/version-1.0.0-blue?style=flat)
 ![Contributors Badge](https://img.shields.io/badge/contributors-1-green?style=flat)
