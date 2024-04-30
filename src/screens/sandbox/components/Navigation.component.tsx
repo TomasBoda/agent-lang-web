@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { useViewService } from "../services";
-import { useEffect, useState } from "react";
 import { useServices, useView } from "../hooks";
 
 export default function Navigation() {

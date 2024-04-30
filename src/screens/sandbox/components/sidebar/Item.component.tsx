@@ -3,7 +3,6 @@ import { MessageType } from "@/src/services/message.service";
 import { useCode, useServices } from "../../hooks";
 import { CodeItem } from "../../model";
 import { getFormattedDate } from "@/src/utils/datetime";
-import { Spacer } from "@/src/components/Components.styles";
 
 export default function Item({ item }: { item: CodeItem }) {
 

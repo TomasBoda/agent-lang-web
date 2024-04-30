@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Language } from "@/src/language";
 import { useRouter } from "next/router";
 import { DocumentItem } from "@/src/documentation";
-import Link from "next/link";
 import { Button } from "@/src/components/button";
 
 export default function DocumentationScreen({ html, breadcrumbs, nextDocument }: { html: string, breadcrumbs: Breadcrumb[], nextDocument: DocumentItem | undefined }) {

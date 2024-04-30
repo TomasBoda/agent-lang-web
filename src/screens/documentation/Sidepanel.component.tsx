@@ -20,23 +20,6 @@ export default function SidePanel() {
                         )}
                     </Section>    
                 )}
-
-                {/*
-                <Section>
-                    <HeadingItem href="/documentation/introduction">Introduction</HeadingItem>
-                    <Item href="/documentation/introduction/what-is-agent-lang">What is AgentLang</Item>
-                    <Item href="/documentation/introduction/agent-based-modeling">Agent-based modeling</Item>
-                    <Item href="/documentation/introduction/installation-and-usage">Installation and Usage</Item>
-                </Section>
-                
-                <Section>
-                    <HeadingItem href="/documentation/language-specification">Language Specification</HeadingItem>
-                    <Item href="/documentation/language-specification/declarations">Declarations</Item>
-                    <Item href="/documentation/language-specification/data-types">Data Types</Item>
-                    <Item href="/documentation/language-specification/expressions">Expressions</Item>
-                    <Item href="/documentation/language-specification/core-library">Core Library</Item>
-                </Section>
-                */}
             </Content>
         </Container>
     )
