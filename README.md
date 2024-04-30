@@ -8,6 +8,33 @@
 ## About
 Web interface with code sandbox for the **AgentLang** programming language written in [TypeScript](https://www.typescriptlang.org/) using the [Next.js](https://nextjs.org/) framework.
 
+## Running Locally
+If you wish to run the project locally, clone the repository to your local machine, install all necessary packages and start the application.
+```bash
+# clone the repository
+git clone https://github.com/TomasBoda/agent-lang-web.git
+# checkout the project
+cd agent-lang-web
+# install necessary packages
+npm install
+# run the application
+npm run dev
+```
+
+## Running Using Docker
+If you wish to run the project using Docker, build the Docker image and run it using the following commands:
+```bash
+# clone the repository
+git clone https://github.com/TomasBoda/agent-lang-web.git
+# checkout the project
+cd agent-lang-web
+# build the image
+docker build -it agent-lang-web-image .
+# run the image
+docker run -p 3000:3000 agent-lang-web-image
+```
+The last command will forward the port `3000` to your local machine, so your app is available in the browser on the address `http://localhost:3000`.
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
