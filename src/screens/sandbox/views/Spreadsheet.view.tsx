@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { Formatter, Program, ParserUtil, Agent, InterpreterOutput, AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType, VariableType } from "@/agent-lang-interpreter";
+import { Formatter, Program, ParserUtil, Agent, InterpreterOutput, AgentValue, AgentsValue, BooleanValue, NumberValue, RuntimeValue, ValueType, VariableType, ColourValue } from "@/agent-lang-interpreter";
 import Editor from 'react-simple-code-editor';
 import { Language } from "@/src/language";
 import { Button } from "@/src/components/button";
@@ -154,6 +154,9 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
             case ValueType.Agents: {
                 return "List";
             }
+            case ValueType.Colour: {
+                return "C";
+            }
             default:
                 return "?"
         }
@@ -163,7 +166,7 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
         switch (property.type) {
             case ValueType.Number: {
                 const value: number = (property as NumberValue).value;
-                return value.toString();
+                return value.toFixed(2).toString();
             }
             case ValueType.Boolean: {
                 const value: boolean = (property as BooleanValue).value;
@@ -176,6 +179,10 @@ export default function Spreadsheet({ output }: { output: InterpreterOutput }) {
             case ValueType.Agents: {
                 const value: Agent[] = (property as AgentsValue).value;
                 return value.length.toString();
+            }
+            case ValueType.Colour: {
+                const value = (property as ColourValue).value;
+                return `(${value.red}, ${value.green}, ${value.blue})`;
             }
             default:
                 return "Unknown"
